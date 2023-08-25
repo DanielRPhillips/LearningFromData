@@ -1,16 +1,13 @@
-# Ohio State University Physics 8820
-## "Learning from data: Bayesian methods and (some) machine learning"
+# Ohio University PHYS 6601
+## "Learning from data: Bayesian methods and machine learning"
 
-### Objectives
+(With credit to Dick Furnstahl and Christian Forssen, from whom I shamelessly stole much of this material.)
 
-In recent years there has been an explosion of interest in the use of Bayesian methods in many sub-fields of physics. In nuclear physics (my specialty), these methods are being used to quantify the uncertainties in theoretical work on topics ranging from the inter-nucleon forces to high-energy heavy-ion collisions, develop more reliable extrapolants of nuclear-energy-density functionals towards the limits of nuclear existence, predict the impact that future NICER observations may have on the equation of state of neutron matter, and determine whether or not nucleon resonances are present in experimental data. Meanwhile machine learning is gaining increased currency as a method for identifying interesting signals in both experiments and simulations. 
+### Overview
 
-While most physics Ph.D. students are taught some standard (frequentist) statistics as part of their course work, relatively few encounter Bayesian methods until they are engaged in research. But Bayesian methods provide a coherent and compelling framework to think about inference, and so can be applied to many important questions in physics. The overall learning goal of this course is to take students who have had little (or no) previous exposure to Bayes’ theorem and show them how it can be applied to problems of parameter estimation, model selection, and machine learning. Jupyter notebooks will be used extensively throughout the course, so this is also a great opportunity to learn some Python and the use of these notebooks. There will be several guided "mini-projects" on topics including Bayesian parameter estimation, model selection, Bayesian optimization, and Bayesian neutral networks. You will be asked to put together a "project" based on your own physics interests and using methods from the course. Grading will be based on Juypter-based problems and these projects.
+Physics is an empirical science. This means that any serious attempt to do physics involves trying to wrest truth from data. This semester we will discuss how Bayesian statistics provides a mathematically consistent framework for deriving inferences from data and quantifying the strength of those inferences.
 
-
-### Prerequisites
-
-The course will only assume statistics knowledge at the level taught in undergraduate physics labs (e.g., least-squares fitting) and physics knowledge at the first-year graduate level.
+While most physics Ph.D. students are taught some standard (frequentist) statistics as part of their course work, relatively few encounter Bayesian methods until they are engaged in research. But Bayesian methods provide a coherent and compelling framework to think about inference, and so can be applied to many important questions in physics. The overall learning goal of this course is to show students who have had little or no previous exposure to Bayes’ theorem how it can be applied to the extraction of model parameters from data as well as how to use it to compare the efficacy of different models. We will also discuss machine learning tools for data analysis: simple ones such as Gaussian Processes, and more modern ones such as Neural Networks. 
 
 
 ### Learning outcomes
@@ -37,5 +34,4 @@ The following topics will be covered (this is not an exclusive list):
 * Model selection
 * Model checking
 * Gaussian processes
-* Special topic: Bayesian methods and machine learning. [Note: we will not cover machine *earning in great detail, but learn about connections to Bayesian methods, e.g., with *ayesian neural networks as a working example.]
-* Special topic: emulators
+* Special topic: Bayesian methods and machine learning. [Note: we will not cover machine learning in great detail, but learn about connections to Bayesian methods, e.g., with Bayesian neural networks as a working example.]
