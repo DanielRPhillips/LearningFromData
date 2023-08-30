@@ -1,888 +1,571 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
     <title>9.2. Bayesian Optimization &#8212; Learning from data</title>
-    
-  <link href="../../_static/css/theme.css" rel="stylesheet" />
-  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.e8e5499552300ddf5d7adccae7cc3b70.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/togglebutton.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
-    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
-    <script>
-        const thebe_selector = ".thebe,.cell"
-        const thebe_selector_input = "pre,.cell_input div.highlight"
-        const thebe_selector_output = ".output,.cell_output"
-    </script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
-    <script>window.MathJax = {"tex": {"macros": {"N": ["\\mathbb{N}"], "Z": ["\\mathbb{Z}"], "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"], "alphavec": ["\\boldsymbol{\\alpha}"], "muvec": ["\\boldsymbol{\\mu}"], "phivec": ["\\boldsymbol{\\phi}"], "sigmavec": ["\\boldsymbol{\\sigma}"], "Sigmavec": ["\\boldsymbol{\\Sigma}"], "thetavec": ["\\boldsymbol{\\theta}"], "thetavechat": ["\\widehat\\thetavec"], "avec": ["\\boldsymbol{a}"], "Bvec": ["\\boldsymbol{B}"], "fvec": ["\\boldsymbol{f}"], "mvec": ["\\boldsymbol{m}"], "qvec": ["\\boldsymbol{q}"], "rvec": ["\\boldsymbol{r}"], "uvec": ["\\boldsymbol{u}"], "wvec": ["\\boldsymbol{w}"], "xvec": ["\\boldsymbol{x}"], "yvec": ["\\boldsymbol{y}"], "Lra": ["\\Longrightarrow"], "abar": ["\\overline a"], "Xbar": ["\\overline X"], "alphahat": ["\\widehat\\alpha"], "Hhat": ["\\hat H"], "yth": ["y_{\\text{th}}"], "yexp": ["y_{\\text{exp}}"], "ym": ["y_{\\text{m}}"], "gs": ["{0}"]}}}</script>
+    <script>window.MathJax = {"tex": {"macros": {"N": ["\\mathbb{N}"], "Z": ["\\mathbb{Z}"], "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"], "alphavec": ["\\boldsymbol{\\alpha}"], "muvec": ["\\boldsymbol{\\mu}"], "phivec": ["\\boldsymbol{\\phi}"], "sigmavec": ["\\boldsymbol{\\sigma}"], "Sigmavec": ["\\boldsymbol{\\Sigma}"], "thetavec": ["\\boldsymbol{\\theta}"], "thetavechat": ["\\widehat\\thetavec"], "avec": ["\\boldsymbol{a}"], "Bvec": ["\\boldsymbol{B}"], "fvec": ["\\boldsymbol{f}"], "mvec": ["\\boldsymbol{m}"], "qvec": ["\\boldsymbol{q}"], "rvec": ["\\boldsymbol{r}"], "uvec": ["\\boldsymbol{u}"], "wvec": ["\\boldsymbol{w}"], "xvec": ["\\boldsymbol{x}"], "yvec": ["\\boldsymbol{y}"], "Lra": ["\\Longrightarrow"], "abar": ["\\overline a"], "Xbar": ["\\overline X"], "alphahat": ["\\widehat\\alpha"], "Hhat": ["\\hat H"], "yth": ["y_{\\text{th}}"], "yexp": ["y_{\\text{exp}}"], "ym": ["y_{\\text{m}}"], "gs": ["{0}"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/Machine_learning/Bayesian_optimization';</script>
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="9.3. Lecture 23" href="../../content/Machine_learning/lecture_23.html" />
     <link rel="prev" title="9.1. Lecture 22" href="../../content/Machine_learning/lecture_22.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="en" />
-    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
-    
-    <div class="container-fluid" id="banner"></div>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
 
-    <div class="container-xl">
-      <div class="row">
-          
-<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+  
+  <div class="sidebar-header-items sidebar-primary__section">
     
-        <div class="navbar-brand-box">
-    <a class="navbar-brand text-wrap" href="../../index.html">
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../about.html">
+  
+  
+  
+  
+    
+    
       
-      <img src="../../_static/8820_icon.png" class="logo" alt="logo">
-      
-      
-      <h1 class="site-logo" id="site-title">Learning from data</h1>
-      
-    </a>
-</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-    <div class="bd-toc-item active">
-        <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../about.html">
-   About this Jupyter Book
-  </a>
- </li>
-</ul>
-<p class="caption" role="heading">
- <span class="caption-text">
-  Course overview
- </span>
-</p>
+    
+    
+    <img src="../../_static/buqeye_logo_web.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/buqeye_logo_web.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../about.html">
+                    About this Jupyter Book
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Course overview</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../content/Course/overview.html">
-   Objectives
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../../content/Course/overview.html">Objectives</a></li>
 </ul>
-<p class="caption" role="heading">
- <span class="caption-text">
-  Topics
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Topics</span></p>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../content/Basics/basics.html">
-   1. Basics of Bayesian statistics
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Basics/lecture_01.html">
-     1.1. Lecture 1
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Basics/Exploring_pdfs.html">
-     1.2. Exploring PDFs
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Basics/simple_sum_product_rule.html">
-     1.3. Checking the sum and product rules, and their consequences
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Basics/lecture_02.html">
-     1.4. Lecture 2
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Basics/Bayesian_updating_coinflip_interactive.html">
-     1.5. Interactive Bayesian updating: coin flipping example
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Basics/medical_example_by_Bayes.html">
-     1.6. Standard medical example by applying Bayesian rules of probability
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Basics/radioactive_lighthouse_exercise.html">
-     1.7. Radioactive lighthouse problem
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Basics/lecture_03.html">
-     1.8. Lecture 3
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../content/Parameter_estimation/param_est.html">
-   2. Bayesian parameter estimation
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Parameter_estimation/lecture_04.html">
-     2.1. Lecture 4: Parameter estimation
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Parameter_estimation/parameter_estimation_Gaussian_noise.html">
-     2.2. Parameter estimation example: Gaussian noise and averages
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Assignment_extending_radioactive_lighthouse.html">
-     2.3. Assignment: 2D radioactive lighthouse location using MCMC
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Parameter_estimation/lecture_05.html">
-     2.4. Lecture 5
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Parameter_estimation/parameter_estimation_fitting_straight_line_I.html">
-     2.5. Parameter estimation example: fitting a straight line
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Parameter_estimation/demo-ModelValidation.html">
-     2.6. Linear Regression and Model Validation demonstration
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Parameter_estimation/lecture_06.html">
-     2.7. Lecture 6
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Parameter_estimation/amplitude_in_presence_of_background.html">
-     2.8. Amplitude of a signal in the presence of background
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Assignment_parameter_estimation_followups.html">
-     2.9. Assignment: Follow-ups to Parameter Estimation notebooks
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Parameter_estimation/exercise_LinearRegression.html">
-     2.10. Linear Regression exercise
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Parameter_estimation/linear_algebra_games_I.html">
-     2.11. Linear algebra games including SVD for PCA
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/fluctuation_trend_with_number_of_points_and_data_errors.html">
-     2.12. Follow-up: fluctuation trends with # of points and data errors
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../content/MCMC_sampling_I/MCMC_sampling_I.html">
-   3. MCMC sampling I
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-  <label for="toctree-checkbox-3">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/MCMC_sampling_I/lecture_07.html">
-     3.1. Lecture 7
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../MCMC_sampling_I/Metropolis_Poisson_example.html">
-     3.2. Metropolis-Hasting MCMC sampling of a Poisson distribution
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/MCMC_sampling_I/lecture_08.html">
-     3.3. Lecture 8
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../MCMC_sampling_I/MCMC-random-walk-and-sampling.html">
-     3.4. Exercise: Random walk
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../content/Why_Bayes_is_better/bayes_is_better.html">
-   4. Why Bayes is better
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-  <label for="toctree-checkbox-4">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Why_Bayes_is_better/lecture_09.html">
-     4.1. Lecture 9
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Why_Bayes_is_better/bayes_billiard.html">
-     4.2. A Bayesian Billiard game
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Why_Bayes_is_better/lecture_10.html">
-     4.3. Lecture 10
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Why_Bayes_is_better/parameter_estimation_fitting_straight_line_II.html">
-     4.4. Parameter estimation example: fitting a straight line II
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Why_Bayes_is_better/lecture_11.html">
-     4.5. Lecture 11
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Why_Bayes_is_better/error_propagation_to_functions_of_uncertain_parameters.html">
-     4.6. Error propagation: Example 3.6.2 in Sivia
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Basics/visualization_of_CLT.html">
-     4.7. Visualization of the Central Limit Theorem
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Basics/correlation_intuition.html">
-     4.8. Building intuition about correlations (and a bit of Python linear algebra)
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Why_Bayes_is_better/lecture_12.html">
-     4.9. Lecture 12
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../MCMC_sampling_I/MCMC-diagnostics.html">
-     4.10. Overview: MCMC Diagnostics
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Why_Bayes_is_better/lecture_13.html">
-     4.12. Lecture 13
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Why_Bayes_is_better/dealing_with_outliers.html">
-     4.13. Dealing with outliers
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../content/Model_selection/model_selection.html">
-   5. Model selection
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
-  <label for="toctree-checkbox-5">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Model_selection/lecture_14.html">
-     5.1. Lecture 14
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Model_selection/lecture_15.html">
-     5.2. Lecture 15
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Model_selection/Evidence_for_model_EFT_coefficients.html">
-     5.3. Evidence calculation for EFT expansions
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Model_selection/lecture_16.html">
-     5.4. Lecture 16
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../mini-projects/MCMC-parallel-tempering_ptemcee.html">
-     5.5. Example: Parallel tempering for multimodal distributions
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../mini-projects/MCMC-parallel-tempering_ptemcee_vs_zeus.html">
-     5.6. Example: Parallel tempering for multimodal distributions vs. zeus
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../content/MCMC_sampling_II/MCMC_sampling_II.html">
-   6. MCMC sampling II
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
-  <label for="toctree-checkbox-6">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/MCMC_sampling_II/lecture_17.html">
-     6.1. Lecture 17
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../MCMC_sampling_II/chi_squared_tests.html">
-     6.2. Quick check of the distribution of normal variables squared
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../MCMC_sampling_II/Liouville_theorem_visualization.html">
-     6.3. Liouville Theorem Visualization
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../MCMC_sampling_II/Orbital_eqs_with_different_algorithms.html">
-     6.4. Solving orbital equations with different algorithms
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/MCMC_sampling_II/lecture_18.html">
-     6.5. Lecture 18
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../MCMC_sampling_II/PyMC3_intro_updated.html">
-     6.6. PyMC3 Introduction
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../MCMC_sampling_II/PyMC3_docs_getting_started_updated.html">
-     6.7. Getting started with PyMC3
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Parameter_estimation/parameter_estimation_Gaussian_noise_compare_samplers.html">
-     6.8. Comparing samplers for a simple problem
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../mini-projects/zeus_multimodal.html">
-     6.9. zeus: Sampling from multimodal distributions
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../content/Gaussian_processes/gaussian_processes.html">
-   7. Gaussian processes
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
-  <label for="toctree-checkbox-7">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Gaussian_processes/lecture_19.html">
-     7.1. Lecture 19
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Gaussian_processes/demo-GaussianProcesses.html">
-     7.2. Gaussian processes demonstration
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Gaussian_processes/GaussianProcesses.html">
-     7.3. Learning from data: Gaussian processes
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Gaussian_processes/Gaussian_processes_exercises.html">
-     7.4. Exercise: Gaussian Process models with GPy
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Gaussian_processes/lecture_20.html">
-     7.5. Lecture 20
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../content/Maximum_entropy/max_ent.html">
-   8. Assigning probabilities
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
-  <label for="toctree-checkbox-8">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Maximum_entropy/lecture_21.html">
-     8.1. Lecture 21
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Maximum_entropy/MaxEnt.html">
-     8.2. Ignorance pdfs: Indifference and translation groups
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Maximum_entropy/Pdfs_from_MaxEnt.html">
-     8.3. MaxEnt for deriving some probability distributions
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Maximum_entropy/MaxEnt_Function_Reconstruction.html">
-     8.4. Maximum Entropy for reconstructing a function from its moments
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Maximum_entropy/demo-MaxEnt.html">
-     8.5. Making figures for Ignorance PDF notebook
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 current active has-children">
-  <a class="reference internal" href="../../content/Machine_learning/machine_learning.html">
-   9. Machine learning: Bayesian methods
-  </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
-  <label for="toctree-checkbox-9">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Machine_learning/lecture_22.html">
-     9.1. Lecture 22
-    </a>
-   </li>
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
-     9.2. Bayesian Optimization
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Machine_learning/lecture_23.html">
-     9.3. Lecture 23
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="Neural_networks_explained.html">
-     9.4. What Are Neural Networks?
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="Forssen_tif285_NeuralNet.html">
-     9.5. Neural networks
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="Forssen_tif285_demo-NeuralNet.html">
-     9.6. Neural network classifier demonstration
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="Bayesian_neural_networks_tif285.html">
-     9.7. Bayesian neural networks
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Machine_learning/lecture_24.html">
-     9.8. Lecture 24
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="demo-Bayesian_neural_networks_tif285.html">
-     9.9. Variational Inference: Bayesian Neural Networks
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="Convolutional_neural_network_explained.html">
-     9.10. What is a convolutional neural network?
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../content/SVD/svd.html">
-   10. PCA, SVD, and all that
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
-  <label for="toctree-checkbox-10">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/SVD/lecture_25.html">
-     10.1. Lecture 25
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../SVD/linear_algebra_games_including_SVD.html">
-     10.2. Linear algebra games including SVD for PCA
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../content/Basics/basics.html">1. Basics of Bayesian statistics</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Basics/lecture_01.html">1.1. Lecture 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Basics/Exploring_pdfs.html">1.2. Exploring PDFs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Basics/simple_sum_product_rule.html">1.3. Checking the sum and product rules, and their consequences</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Basics/lecture_02.html">1.4. Lecture 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Basics/Bayesian_updating_coinflip_interactive.html">1.5. Interactive Bayesian updating: coin flipping example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Basics/medical_example_by_Bayes.html">1.6. Standard medical example by applying Bayesian rules of probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Basics/radioactive_lighthouse_exercise.html">1.7. Radioactive lighthouse problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Basics/lecture_03.html">1.8. Lecture 3</a></li>
 </ul>
-<p class="caption" role="heading">
- <span class="caption-text">
-  Mini-projects
- </span>
-</p>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../content/Parameter_estimation/param_est.html">2. Bayesian parameter estimation</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Parameter_estimation/lecture_04.html">2.1. Lecture 4: Parameter estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Parameter_estimation/parameter_estimation_Gaussian_noise.html">2.2. Parameter estimation example: Gaussian noise and averages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Assignment_extending_radioactive_lighthouse.html">2.3. Assignment: 2D radioactive lighthouse location using MCMC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Parameter_estimation/lecture_05.html">2.4. Lecture 5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Parameter_estimation/parameter_estimation_fitting_straight_line_I.html">2.5. Parameter estimation example: fitting a straight line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Parameter_estimation/demo-ModelValidation.html">2.6. Linear Regression and Model Validation demonstration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Parameter_estimation/lecture_06.html">2.7. Lecture 6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Parameter_estimation/amplitude_in_presence_of_background.html">2.8. Amplitude of a signal in the presence of background</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Assignment_parameter_estimation_followups.html">2.9. Assignment: Follow-ups to Parameter Estimation notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Parameter_estimation/exercise_LinearRegression.html">2.10. Linear Regression exercise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Parameter_estimation/linear_algebra_games_I.html">2.11. Linear algebra games including SVD for PCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/fluctuation_trend_with_number_of_points_and_data_errors.html">2.12. Follow-up: fluctuation trends with # of points and data errors</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../content/MCMC_sampling_I/MCMC_sampling_I.html">3. MCMC sampling I</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../content/MCMC_sampling_I/lecture_07.html">3.1. Lecture 7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../MCMC_sampling_I/Metropolis_Poisson_example.html">3.2. Metropolis-Hasting MCMC sampling of a Poisson distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/MCMC_sampling_I/lecture_08.html">3.3. Lecture 8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../MCMC_sampling_I/MCMC-random-walk-and-sampling.html">3.4. Exercise: Random walk</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../content/Why_Bayes_is_better/bayes_is_better.html">4. Why Bayes is better</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Why_Bayes_is_better/lecture_09.html">4.1. Lecture 9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Why_Bayes_is_better/bayes_billiard.html">4.2. A Bayesian Billiard game</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Why_Bayes_is_better/lecture_10.html">4.3. Lecture 10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Why_Bayes_is_better/parameter_estimation_fitting_straight_line_II.html">4.4. Parameter estimation example: fitting a straight line II</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Why_Bayes_is_better/lecture_11.html">4.5. Lecture 11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Why_Bayes_is_better/error_propagation_to_functions_of_uncertain_parameters.html">4.6. Error propagation: Example 3.6.2 in Sivia</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Basics/visualization_of_CLT.html">4.7. Visualization of the Central Limit Theorem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Basics/correlation_intuition.html">4.8. Building intuition about correlations (and a bit of Python linear algebra)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Why_Bayes_is_better/lecture_12.html">4.9. Lecture 12</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../MCMC_sampling_I/MCMC-diagnostics.html">4.10. Overview: MCMC Diagnostics</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../content/Why_Bayes_is_better/lecture_13.html">4.12. Lecture 13</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Why_Bayes_is_better/dealing_with_outliers.html">4.13. Dealing with outliers</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../content/Model_selection/model_selection.html">5. Model selection</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Model_selection/lecture_14.html">5.1. Lecture 14</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Model_selection/lecture_15.html">5.2. Lecture 15</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Model_selection/Evidence_for_model_EFT_coefficients.html">5.3. Evidence calculation for EFT expansions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Model_selection/lecture_16.html">5.4. Lecture 16</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mini-projects/MCMC-parallel-tempering_ptemcee.html">5.5. Example: Parallel tempering for multimodal distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mini-projects/MCMC-parallel-tempering_ptemcee_vs_zeus.html">5.6. Example: Parallel tempering for multimodal distributions vs. zeus</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../content/MCMC_sampling_II/MCMC_sampling_II.html">6. MCMC sampling II</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../content/MCMC_sampling_II/lecture_17.html">6.1. Lecture 17</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../MCMC_sampling_II/chi_squared_tests.html">6.2. Quick check of the distribution of normal variables squared</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../MCMC_sampling_II/Liouville_theorem_visualization.html">6.3. Liouville Theorem Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../MCMC_sampling_II/Orbital_eqs_with_different_algorithms.html">6.4. Solving orbital equations with different algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/MCMC_sampling_II/lecture_18.html">6.5. Lecture 18</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../MCMC_sampling_II/PyMC3_intro_updated.html">6.6. PyMC3 Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../MCMC_sampling_II/PyMC3_docs_getting_started_updated.html">6.7. Getting started with PyMC3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Parameter_estimation/parameter_estimation_Gaussian_noise_compare_samplers.html">6.8. Comparing samplers for a simple problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mini-projects/zeus_multimodal.html">6.9. zeus: Sampling from multimodal distributions</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../content/Gaussian_processes/gaussian_processes.html">7. Gaussian processes</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Gaussian_processes/lecture_19.html">7.1. Lecture 19</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Gaussian_processes/demo-GaussianProcesses.html">7.2. Gaussian processes demonstration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Gaussian_processes/GaussianProcesses.html">7.3. Learning from data: Gaussian processes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Gaussian_processes/Gaussian_processes_exercises.html">7.4. Exercise: Gaussian Process models with GPy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Gaussian_processes/lecture_20.html">7.5. Lecture 20</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../content/Maximum_entropy/max_ent.html">8. Assigning probabilities</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Maximum_entropy/lecture_21.html">8.1. Lecture 21</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Maximum_entropy/MaxEnt.html">8.2. Ignorance pdfs: Indifference and translation groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Maximum_entropy/Pdfs_from_MaxEnt.html">8.3. MaxEnt for deriving some probability distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Maximum_entropy/MaxEnt_Function_Reconstruction.html">8.4. Maximum Entropy for reconstructing a function from its moments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Maximum_entropy/demo-MaxEnt.html">8.5. Making figures for Ignorance PDF notebook</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../../content/Machine_learning/machine_learning.html">9. Machine learning: Bayesian methods</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../content/Machine_learning/lecture_22.html">9.1. Lecture 22</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">9.2. Bayesian Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Machine_learning/lecture_23.html">9.3. Lecture 23</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Neural_networks_explained.html">9.4. What Are Neural Networks?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Forssen_tif285_NeuralNet.html">9.5. Neural networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Forssen_tif285_demo-NeuralNet.html">9.6. Neural network classifier demonstration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bayesian_neural_networks_tif285.html">9.7. Bayesian neural networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Machine_learning/lecture_24.html">9.8. Lecture 24</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demo-Bayesian_neural_networks_tif285.html">9.9. Variational Inference: Bayesian Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Convolutional_neural_network_explained.html">9.10. What is a convolutional neural network?</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../content/SVD/svd.html">10. PCA, SVD, and all that</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../content/SVD/lecture_25.html">10.1. Lecture 25</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SVD/linear_algebra_games_including_SVD.html">10.2. Linear algebra games including SVD for PCA</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Mini-projects</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../mini-projects/mini-project_I_toy_model_of_EFT.html">
-   Mini-project I: Parameter estimation for a toy model of an EFT
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../mini-projects/model-selection_mini-project-IIa.html">
-   Mini-project IIa: Model selection basics
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../mini-projects/model-selection_mini-project-IIb_How_many_lines_ptemcee.html">
-   Mini-project IIb: How many lines are there?
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../mini-projects/mini-project_IIIa_bayesian_optimization.html">
-   Mini-project IIIa: Bayesian optimization
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../mini-projects/mini-project_IIIb_Bayesian_neural_networks_from_demo.html">
-   Mini-project IIIb: Bayesian Neural Networks
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../mini-projects/mini-project_I_toy_model_of_EFT.html">Mini-project I: Parameter estimation for a toy model of an EFT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mini-projects/model-selection_mini-project-IIa.html">Mini-project IIa: Model selection basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mini-projects/model-selection_mini-project-IIb_How_many_lines_ptemcee.html">Mini-project IIb: How many lines are there?</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../mini-projects/mini-project_IIIa_bayesian_optimization.html">Mini-project IIIa: Bayesian optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mini-projects/mini-project_IIIb_Bayesian_neural_networks_from_demo.html">Mini-project IIIb: Bayesian Neural Networks</a></li>
 </ul>
-<p class="caption" role="heading">
- <span class="caption-text">
-  Reference material
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference material</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../content/zbibliography.html">
-   Bibliography
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../content/related_topics.html">
-   Related topics
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../content/Reference/installing_anaconda.html">
-   Using Anaconda
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../content/Reference/using_github.html">
-   Using GitHub
-  </a>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../content/Reference/python_jupyter.html">
-   Python and Jupyter notebooks
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
-  <label for="toctree-checkbox-11">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Reference/Jupyter_Python_intro_01.html">
-     Python and Jupyter notebooks: part 01
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Reference/Jupyter_Python_intro_02.html">
-     Python and Jupyter notebooks: part 02
-    </a>
-   </li>
+<li class="toctree-l1"><a class="reference internal" href="../../content/zbibliography.html">Bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../content/related_topics.html">Related topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../content/Reference/installing_anaconda.html">Using Anaconda</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../content/Reference/using_github.html">Using GitHub</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../content/Reference/python_jupyter.html">Python and Jupyter notebooks</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Reference/Jupyter_Python_intro_01.html">Python and Jupyter notebooks: part 01</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Reference/Jupyter_Python_intro_02.html">Python and Jupyter notebooks: part 02</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../content/jb_tests.html">Examples: Jupyter jb-book</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Notebook keys</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../Basics/simple_sum_product_rule_KEY.html">Checking the sum and product rules, and their consequences <span style="color: red">Key</span></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Basics/medical_example_by_Bayes_KEY.html">Standard medical example by applying Bayesian rules of probability <span style="color: red">Key</span></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Basics/radioactive_lighthouse_exercise_key.html">Radioactive lighthouse problem  <span style="color: red">Key</span></a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/DanielRPhillips/LearningFromData/main?urlpath=tree/./LectureNotes/notebooks/Machine_learning/Bayesian_optimization.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onBinder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="initThebeSBT()"
+  class="btn btn-sm btn-launch-thebe dropdown-item"
+  title="Launch Thebe"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-play"></i>
+  </span>
+<span class="btn__text-container">Live Code</span>
+</button>
+</li>
+      
   </ul>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../content/jb_tests.html">
-   Examples: Jupyter jb-book
-  </a>
- </li>
-</ul>
-<p class="caption" role="heading">
- <span class="caption-text">
-  Notebook keys
- </span>
-</p>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../Basics/simple_sum_product_rule_KEY.html">
-   Checking the sum and product rules, and their consequences
-   <span style="color: red">
-    Key
-   </span>
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../Basics/medical_example_by_Bayes_KEY.html">
-   Standard medical example by applying Bayesian rules of probability
-   <span style="color: red">
-    Key
-   </span>
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../Basics/radioactive_lighthouse_exercise_key.html">
-   Radioactive lighthouse problem
-   <span style="color: red">
-    Key
-   </span>
-  </a>
- </li>
-</ul>
+</div>
 
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/DanielRPhillips/LearningFromData" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/DanielRPhillips/LearningFromData/issues/new?title=Issue%20on%20page%20%2Fnotebooks/Machine_learning/Bayesian_optimization.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/Machine_learning/Bayesian_optimization.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
     </div>
-</nav> <!-- To handle the deprecated key -->
-
-<div class="navbar_extra_footer">
-  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+  
 </div>
-
 </div>
+              
+              
 
-
-          
-
-
-          
-<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
-    
-    <div class="topbar container-xl fixed-top">
-    <div class="topbar-contents row">
-        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
-        <div class="col pl-md-4 topbar-main">
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Bayesian Optimization</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
             
-            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
-                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
-                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
-                <i class="fas fa-bars"></i>
-                <i class="fas fa-arrow-left"></i>
-                <i class="fas fa-arrow-up"></i>
-            </button>
-            
-            
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
-            class="fas fa-download"></i></button>
-
-    <div class="dropdown-buttons">
-        <!-- ipynb file if we had a myst markdown file -->
-        
-        <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../_sources/notebooks/Machine_learning/Bayesian_optimization.ipynb"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.ipynb</button></a>
-        <!-- Download PDF via print -->
-        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
-    </div>
-</div>
-
-            <!-- Source interaction buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
-    <div class="dropdown-buttons sourcebuttons">
-        <a class="repository-button"
-            href="https://github.com/furnstahl/Physics-8820"><button type="button" class="btn btn-secondary topbarbtn"
-                data-toggle="tooltip" data-placement="left" title="Source repository"><i
-                    class="fab fa-github"></i>repository</button></a>
-        <a class="issues-button"
-            href="https://github.com/furnstahl/Physics-8820/issues/new?title=Issue%20on%20page%20%2Fnotebooks/Machine_learning/Bayesian_optimization.html&body=Your%20issue%20content%20here."><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
-        
-    </div>
-</div>
-
-            <!-- Full screen (wrap in <a> to have style consistency -->
-
-<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-        title="Fullscreen mode"><i
-            class="fas fa-expand"></i></button></a>
-
-            <!-- Launch buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
-    <div class="dropdown-buttons">
-        
-        <a class="binder-button" href="https://mybinder.org/v2/gh/furnstahl/Physics-8820/main?urlpath=tree/./LectureNotes/notebooks/Machine_learning/Bayesian_optimization.ipynb"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
-                data-placement="left"><img class="binder-button-logo"
-                    src="../../_static/images/logo_binder.svg"
-                    alt="Interact on binder">Binder</button></a>
-        
-        
-        
-        <button type="button" class="btn btn-secondary topbarbtn"
-            onclick="initThebeSBT()" title="Launch Thebe" data-toggle="tooltip" data-placement="left"><i
-                class="fas fa-play"></i><span style="margin-left: .4em;">Live Code</span></button>
-        
-    </div>
-</div>
-
-        </div>
-
-        <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show">
-            
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
+            <div>
+                <h2> Contents </h2>
             </div>
-            <nav id="bd-toc-nav">
+            <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#optimization-of-expensive-objective-functions">
-   Optimization of expensive objective functions
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#id1">
-   Bayesian optimization
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#acquisition-functions">
-   Acquisition functions
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#expected-improvement">
-     Expected Improvement
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#lower-confidence-bound">
-     Lower Confidence Bound
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#univariate-example-of-bayesian-optimization">
-   Univariate example of Bayesian optimization
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#bivariate-example-two-parameters">
-   Bivariate example (two parameters)
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#space-filling-sampling">
-     Space-filling sampling
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#some-concluding-remarks">
-   Some concluding remarks
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimization-of-expensive-objective-functions">Optimization of expensive objective functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Bayesian optimization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acquisition-functions">Acquisition functions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#expected-improvement">Expected Improvement</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lower-confidence-bound">Lower Confidence Bound</a></li>
 </ul>
-
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#univariate-example-of-bayesian-optimization">Univariate example of Bayesian optimization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bivariate-example-two-parameters">Bivariate example (two parameters)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#space-filling-sampling">Space-filling sampling</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#some-concluding-remarks">Some concluding remarks</a></li>
+</ul>
             </nav>
         </div>
     </div>
 </div>
-    <div id="main-content" class="row">
-        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-        
-              <div>
+
+              
                 
-  <div class="section" id="bayesian-optimization">
-<h1><span class="section-number">9.2. </span>Bayesian Optimization<a class="headerlink" href="#bayesian-optimization" title="Permalink to this headline">¶</a></h1>
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="bayesian-optimization">
+<h1><span class="section-number">9.2. </span>Bayesian Optimization<a class="headerlink" href="#bayesian-optimization" title="Permalink to this heading">#</a></h1>
 <p>Adapted from Christian Forssen, TALENT Course 11, June, 2019, with extra documentation by Dick Furnstahl in November, 2019.</p>
 <p>Selected references</p>
 <ul class="simple">
@@ -907,8 +590,8 @@
 </div>
 </div>
 </div>
-<div class="section" id="optimization-of-expensive-objective-functions">
-<h2>Optimization of expensive objective functions<a class="headerlink" href="#optimization-of-expensive-objective-functions" title="Permalink to this headline">¶</a></h2>
+<section id="optimization-of-expensive-objective-functions">
+<h2>Optimization of expensive objective functions<a class="headerlink" href="#optimization-of-expensive-objective-functions" title="Permalink to this heading">#</a></h2>
 <p>Let us first state an inconvenient fact about optimization:</p>
 <blockquote>
 <div><p>Global minimization is almost always intractable. In practice, we have to resort to local minimization:</p>
@@ -929,9 +612,9 @@ Consider <strong>expensive</strong> objective functions, e.g.</p>
 f(\theta) = \chi^2(\theta) \equiv \sum_{i=1}^N \frac{\left[ y_i^\mathrm{exp} - y_i^\mathrm{th}(\theta) \right]^2}{\sigma_i^2},
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(y_i^\mathrm{th}(\theta)\)</span> may be computationally costly to evaluate.  (The objective function is the function we want to minimize, such as a <span class="math notranslate nohighlight">\(\chi^2\)</span> function.)  How shall we proceed?  Here we consider one strategy, Bayesian optimization, which has been used in the optimization of hyperparameters of deep neural networks.  It is not necessarily the best strategy (see comments at the end), but it is an option in our toolkit.</p>
-</div>
-<div class="section" id="id1">
-<h2>Bayesian optimization<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="id1">
+<h2>Bayesian optimization<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
 <blockquote>
 <div><p>An optimization algorithm for expensive black-box functions</p>
 </div></blockquote>
@@ -940,18 +623,18 @@ f(\theta) = \chi^2(\theta) \equiv \sum_{i=1}^N \frac{\left[ y_i^\mathrm{exp} - y
 <a class="reference internal" href="https://upload.wikimedia.org/wikipedia/commons/b/bb/Newton%E2%80%93Raphson_method.png"><img alt="Newton method scheme" src="https://upload.wikimedia.org/wikipedia/commons/b/bb/Newton%E2%80%93Raphson_method.png" style="width: 256px;" /></a>
 If applied to the derivative of a function, this yields a sequential approximation to a local minimum or maximum. We seek a different way to construct this sequence.</p>
 <p>There are two main components in the Bayesian optimization algorithm, which will each be contingent on what we call the data <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>, which will be the previously evaluated pairs of <span class="math notranslate nohighlight">\(\theta\)</span> and <span class="math notranslate nohighlight">\(f(\theta)\)</span>.</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>A prior probabilistic pdf <span class="math notranslate nohighlight">\(p(f|\mathcal{D})\)</span> for the objective function <span class="math notranslate nohighlight">\(f(\theta)\)</span> given some data <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>. The prior is often a Gaussian process (GP) or a GP emulator. This will be updated with every iteration. The GP acts as a <em>surrogate</em> for the actual objective function, which we can evaluate at any given <span class="math notranslate nohighlight">\(\theta\)</span>, but it is so expensive to do so that we don’t know its structure a priori. The idea is that we will do Bayesian updating each iteration after confronting the surrogate model with actual data <span class="math notranslate nohighlight">\(f(\theta)\)</span>.  So we refine the posterior for <span class="math notranslate nohighlight">\(f\)</span>, which becomes the prior for the next iteration.</p></li>
 <li><p>An acquisition function <span class="math notranslate nohighlight">\(\mathcal{A}(\theta|\mathcal{D})\)</span> given some data <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>.  This is a heuristic that balances <em>exploration</em> against <em>exploitation</em> and determines where to evaluate the objective function <span class="math notranslate nohighlight">\(f(\theta)\)</span> next. Explorative means that you evaluate points in a domain of <span class="math notranslate nohighlight">\(\theta\)</span> where the prior pdf for <span class="math notranslate nohighlight">\(f\)</span> has large uncertainty.  This enables the escape from local minima in <span class="math notranslate nohighlight">\(\theta\)</span>.  Exploitive means that you evaluate points in a domain of <span class="math notranslate nohighlight">\(\theta\)</span> where the prior pdf for <span class="math notranslate nohighlight">\(f\)</span> exhibits low mean values. (This zeroes in on a local minimum.)</p></li>
 </ol>
 <p>Pseudo-code for BayesOpt:</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>choose initial <span class="math notranslate nohighlight">\(\mathbf{\theta}^{(1)},\mathbf{\theta}^{(2)},\ldots \mathbf{\theta}^{(k)}\)</span>, where <span class="math notranslate nohighlight">\(k \geq 2\)</span></p></li>
 <li><p>evaluate the objective function <span class="math notranslate nohighlight">\(f(\mathbf{\theta})\)</span> to obtain <span class="math notranslate nohighlight">\(y^{(i)}=f(\mathbf{\theta}^{(i)})\)</span> for <span class="math notranslate nohighlight">\(i=1,\ldots,k\)</span></p></li>
 <li><p>initialize a data vector <span class="math notranslate nohighlight">\(\mathcal{D}_k = \left\{(\mathbf{\theta}^{(i)},y^{(i)})\right\}_{i=1}^k\)</span></p></li>
 <li><p>select a statistical model for <span class="math notranslate nohighlight">\(f(\mathbf{\theta})\)</span> (for us some choice of GP kernel)</p></li>
 <li><p><strong>for</strong> {<span class="math notranslate nohighlight">\(n=k+1,k+2,\ldots\)</span>}</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>select <span class="math notranslate nohighlight">\(\mathbf{\theta}^{(n)}\)</span> by optimizing (maximizing) the acquisition function</p></li>
 <li><p><span class="math notranslate nohighlight">\(\mathbf{\theta}^{(n)} = \underset{\mathbf{\theta}}{\text{arg max}}\, \mathcal{A}(\mathbf{\theta}|\mathcal{D}_{n-1})\)</span></p></li>
 <li><p>evaluate the objective function to obtain <span class="math notranslate nohighlight">\(y^{(n)}=f(\mathbf{\theta}^{(n)})\)</span></p></li>
@@ -975,17 +658,17 @@ If applied to the derivative of a function, this yields a sequential approximati
 <li><p>At each iteration, <em>all</em> collected data points are used, thus we build on the full history of the optimization procedure.</p></li>
 <li><p>The stopping criterion might be a fixed computational budget that limits the number of function evaluations that can be made.</p></li>
 </ul>
-</div>
-<div class="section" id="acquisition-functions">
-<h2>Acquisition functions<a class="headerlink" href="#acquisition-functions" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="acquisition-functions">
+<h2>Acquisition functions<a class="headerlink" href="#acquisition-functions" title="Permalink to this heading">#</a></h2>
 <p>We will consider two different acquisition functions:</p>
 <ul class="simple">
 <li><p>Expected Improvement (EI)</p></li>
 <li><p>Lower Confidence Bound (LCB)</p></li>
 </ul>
 <p>Note that we abbreviate the notation below and write <span class="math notranslate nohighlight">\(\mathcal{A}(\mathbf{\theta}) \equiv \mathcal{A}(\mathbf{\theta}| D)\)</span>.</p>
-<div class="section" id="expected-improvement">
-<h3>Expected Improvement<a class="headerlink" href="#expected-improvement" title="Permalink to this headline">¶</a></h3>
+<section id="expected-improvement">
+<h3>Expected Improvement<a class="headerlink" href="#expected-improvement" title="Permalink to this heading">#</a></h3>
 <p>The expected improvement acquisition function is defined by the
 expectation value of the rectifier <span class="math notranslate nohighlight">\({\rm max}(0,f_{\rm min} -
 f(\mathbf{\theta}))\)</span>, i.e. we reward any expected reduction of <span class="math notranslate nohighlight">\(f\)</span> in
@@ -1024,9 +707,9 @@ observed data <span class="math notranslate nohighlight">\(\mathcal{D}_n\)</span
   -\frac{1}{2\sigma^2}(\theta-\mu)^2\right)\)</span></p>
 <p>Note 2: Density function of the <em>standard</em> normal distribution: <span class="math notranslate nohighlight">\(\phi(z) \equiv \mathcal{N}(z|\mu=0,\sigma^2=1) = \frac{1}{\sqrt{2 \pi}}\exp\left( -\frac{1}{2}z^2\right)\)</span></p>
 <p>Note 3: Cumulative distribution function of the standard normal: <span class="math notranslate nohighlight">\(\Phi(z) = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{z}\exp\left(-\frac{t^2}{2}\right)\, dt\)</span></p>
-</div>
-<div class="section" id="lower-confidence-bound">
-<h3>Lower Confidence Bound<a class="headerlink" href="#lower-confidence-bound" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="lower-confidence-bound">
+<h3>Lower Confidence Bound<a class="headerlink" href="#lower-confidence-bound" title="Permalink to this heading">#</a></h3>
 <p>The lower confidence-bound acquisition function introduces an additional
 parameter <span class="math notranslate nohighlight">\(\beta\)</span> that explicitly sets the level of exploration</p>
 <div class="math notranslate nohighlight">
@@ -1037,10 +720,10 @@ parameter <span class="math notranslate nohighlight">\(\beta\)</span> that expli
 the <span class="math notranslate nohighlight">\(\beta\)</span>-enlarged confidence envelope of the <span class="math notranslate nohighlight">\(\mathcal{GP}\)</span>. We
 use <span class="math notranslate nohighlight">\(\beta=2\)</span>, which is a very common setting. Larger values of
 <span class="math notranslate nohighlight">\(\beta\)</span> leads to even more explorative BayesOpt algorithms.</p>
-</div>
-</div>
-<div class="section" id="univariate-example-of-bayesian-optimization">
-<h2>Univariate example of Bayesian optimization<a class="headerlink" href="#univariate-example-of-bayesian-optimization" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="univariate-example-of-bayesian-optimization">
+<h2>Univariate example of Bayesian optimization<a class="headerlink" href="#univariate-example-of-bayesian-optimization" title="Permalink to this heading">#</a></h2>
 <p>Here there is only one parameter: <span class="math notranslate nohighlight">\(\theta = \{x\}\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1048,7 +731,7 @@ use <span class="math notranslate nohighlight">\(\beta=2\)</span>, which is a ve
 <span class="n">xmax</span> <span class="o">=</span>  <span class="mf">1.</span>
 
 <span class="k">def</span> <span class="nf">Ftrue</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Example true function, with two local minima in [0,1].&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Example true function, with two local minima in [0,1].&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">x</span><span class="o">**</span><span class="mi">4</span>
 </pre></div>
 </div>
@@ -1094,7 +777,7 @@ use <span class="math notranslate nohighlight">\(\beta=2\)</span>, which is a ve
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/Bayesian_optimization_22_0.png" src="../../_images/Bayesian_optimization_22_0.png" />
+<img alt="../../_images/9a6531a296bf0c300a91a296ec8bd55f5a56c4f7a655515857919ca1aec04845.png" src="../../_images/9a6531a296bf0c300a91a296ec8bd55f5a56c4f7a655515857919ca1aec04845.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1148,21 +831,21 @@ use <span class="math notranslate nohighlight">\(\beta=2\)</span>, which is a ve
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/Bayesian_optimization_27_0.png" src="../../_images/Bayesian_optimization_27_0.png" />
-<img alt="../../_images/Bayesian_optimization_27_1.png" src="../../_images/Bayesian_optimization_27_1.png" />
-<img alt="../../_images/Bayesian_optimization_27_2.png" src="../../_images/Bayesian_optimization_27_2.png" />
-<img alt="../../_images/Bayesian_optimization_27_3.png" src="../../_images/Bayesian_optimization_27_3.png" />
-<img alt="../../_images/Bayesian_optimization_27_4.png" src="../../_images/Bayesian_optimization_27_4.png" />
-<img alt="../../_images/Bayesian_optimization_27_5.png" src="../../_images/Bayesian_optimization_27_5.png" />
-<img alt="../../_images/Bayesian_optimization_27_6.png" src="../../_images/Bayesian_optimization_27_6.png" />
-<img alt="../../_images/Bayesian_optimization_27_7.png" src="../../_images/Bayesian_optimization_27_7.png" />
-<img alt="../../_images/Bayesian_optimization_27_8.png" src="../../_images/Bayesian_optimization_27_8.png" />
-<img alt="../../_images/Bayesian_optimization_27_9.png" src="../../_images/Bayesian_optimization_27_9.png" />
-<img alt="../../_images/Bayesian_optimization_27_10.png" src="../../_images/Bayesian_optimization_27_10.png" />
-<img alt="../../_images/Bayesian_optimization_27_11.png" src="../../_images/Bayesian_optimization_27_11.png" />
-<img alt="../../_images/Bayesian_optimization_27_12.png" src="../../_images/Bayesian_optimization_27_12.png" />
-<img alt="../../_images/Bayesian_optimization_27_13.png" src="../../_images/Bayesian_optimization_27_13.png" />
-<img alt="../../_images/Bayesian_optimization_27_14.png" src="../../_images/Bayesian_optimization_27_14.png" />
+<img alt="../../_images/7235fb359881760e6f8b8b57ac7ec8e468c5bb4e7ab656baef5e068c4a31eed0.png" src="../../_images/7235fb359881760e6f8b8b57ac7ec8e468c5bb4e7ab656baef5e068c4a31eed0.png" />
+<img alt="../../_images/2d7abde9ac467d65645bcfc0db0f819430517c626d5cfc652138316d436ab7e8.png" src="../../_images/2d7abde9ac467d65645bcfc0db0f819430517c626d5cfc652138316d436ab7e8.png" />
+<img alt="../../_images/849a0df0ed78efe58252d030022ff41949f1d9ef83179981ae99e1a6c0265f65.png" src="../../_images/849a0df0ed78efe58252d030022ff41949f1d9ef83179981ae99e1a6c0265f65.png" />
+<img alt="../../_images/f2785d22f099194584bbf5d9caf75a7dca1f8fdc1e609919abfe69c4de0b5341.png" src="../../_images/f2785d22f099194584bbf5d9caf75a7dca1f8fdc1e609919abfe69c4de0b5341.png" />
+<img alt="../../_images/ba893e42d47db914b59e6b4fefdcec1a92ee84b9d827f408836468e7998fca67.png" src="../../_images/ba893e42d47db914b59e6b4fefdcec1a92ee84b9d827f408836468e7998fca67.png" />
+<img alt="../../_images/b566dfffa2888abe030012087f700f8500814729a39ba224826a1bab76590d6f.png" src="../../_images/b566dfffa2888abe030012087f700f8500814729a39ba224826a1bab76590d6f.png" />
+<img alt="../../_images/ca5112aea7228d72ed158c2ad4885e8eea448b26d68a8caf4650b97089512128.png" src="../../_images/ca5112aea7228d72ed158c2ad4885e8eea448b26d68a8caf4650b97089512128.png" />
+<img alt="../../_images/4c0d71df3978ccaf3a19df217d2fc19d61799f213bbc5771a9662c39f8d28a1b.png" src="../../_images/4c0d71df3978ccaf3a19df217d2fc19d61799f213bbc5771a9662c39f8d28a1b.png" />
+<img alt="../../_images/560979cc11b3243c94e3cc3dd1d43484c6ede67752bbc0f186f27f999827530a.png" src="../../_images/560979cc11b3243c94e3cc3dd1d43484c6ede67752bbc0f186f27f999827530a.png" />
+<img alt="../../_images/9409d37d53eb6fb97489eddf72bc9e0504178a4ed7613fe4a4bf6c86c45021af.png" src="../../_images/9409d37d53eb6fb97489eddf72bc9e0504178a4ed7613fe4a4bf6c86c45021af.png" />
+<img alt="../../_images/0d5338bd7b2ef0e20f51290c77bf13bf2816128de4988d9a193ff3595545cda4.png" src="../../_images/0d5338bd7b2ef0e20f51290c77bf13bf2816128de4988d9a193ff3595545cda4.png" />
+<img alt="../../_images/7d6a06fcb609fe5fc41f30d71f395f8c493045a995132937b6223cf9e516d6f5.png" src="../../_images/7d6a06fcb609fe5fc41f30d71f395f8c493045a995132937b6223cf9e516d6f5.png" />
+<img alt="../../_images/1695dc36ec605c6c94e08d64563963657cc41f287b11316608fba776f5e51738.png" src="../../_images/1695dc36ec605c6c94e08d64563963657cc41f287b11316608fba776f5e51738.png" />
+<img alt="../../_images/cfa45c651f6f58440aaaa6fcc978b152c01ec65236166bff00b5355a47dad532.png" src="../../_images/cfa45c651f6f58440aaaa6fcc978b152c01ec65236166bff00b5355a47dad532.png" />
+<img alt="../../_images/9ac2b95bc1c6000896c3bc0f8fb65d6854604efd246fe3a476b48ea2ee02a78d.png" src="../../_images/9ac2b95bc1c6000896c3bc0f8fb65d6854604efd246fe3a476b48ea2ee02a78d.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1179,16 +862,16 @@ use <span class="math notranslate nohighlight">\(\beta=2\)</span>, which is a ve
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/Bayesian_optimization_28_0.png" src="../../_images/Bayesian_optimization_28_0.png" />
+<img alt="../../_images/daa54ce878d981ac8cc23e8c002be1b82e2748378bbb858143aca4bfa6603ff8.png" src="../../_images/daa54ce878d981ac8cc23e8c002be1b82e2748378bbb858143aca4bfa6603ff8.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Optimal x value = [0.37378141]
 Minimized function value = -0.98036
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="bivariate-example-two-parameters">
-<h2>Bivariate example (two parameters)<a class="headerlink" href="#bivariate-example-two-parameters" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="bivariate-example-two-parameters">
+<h2>Bivariate example (two parameters)<a class="headerlink" href="#bivariate-example-two-parameters" title="Permalink to this heading">#</a></h2>
 <p>Next, we try a 2-dimensional example. In this case we minimize the Six-hump camel function</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1207,7 +890,7 @@ f(\theta_1,\theta_2)=\left( 4−2.1 \theta_1^2 + \frac{\theta_1^4}{3}\right)\the
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/Bayesian_optimization_31_0.png" src="../../_images/Bayesian_optimization_31_0.png" />
+<img alt="../../_images/7ff7b2a05ef61ccf91cb7c642e145521bc795941b4e2fb67f6916d19b6269c8d.png" src="../../_images/7ff7b2a05ef61ccf91cb7c642e145521bc795941b4e2fb67f6916d19b6269c8d.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1242,7 +925,7 @@ f(\theta_1,\theta_2)=\left( 4−2.1 \theta_1^2 + \frac{\theta_1^4}{3}\right)\the
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/Bayesian_optimization_34_0.png" src="../../_images/Bayesian_optimization_34_0.png" />
+<img alt="../../_images/dcd02584138657c319da70aad78276faa26f9c744567b6ef34b44a000b529e57.png" src="../../_images/dcd02584138657c319da70aad78276faa26f9c744567b6ef34b44a000b529e57.png" />
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 432x288 with 0 Axes&gt;
 </pre></div>
 </div>
@@ -1257,25 +940,25 @@ f(\theta_1,\theta_2)=\left( 4−2.1 \theta_1^2 + \frac{\theta_1^4}{3}\right)\the
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/Bayesian_optimization_35_0.png" src="../../_images/Bayesian_optimization_35_0.png" />
+<img alt="../../_images/5678926706bb03020674a413d07b60cd89b06b1fa9833e41c0bad93342116214.png" src="../../_images/5678926706bb03020674a413d07b60cd89b06b1fa9833e41c0bad93342116214.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Optimal x values = [-0.05271112  0.65292401]
 Minimized function value = -1.23848
 </pre></div>
 </div>
 </div>
 </div>
-<div class="section" id="space-filling-sampling">
-<h3>Space-filling sampling<a class="headerlink" href="#space-filling-sampling" title="Permalink to this headline">¶</a></h3>
+<section id="space-filling-sampling">
+<h3>Space-filling sampling<a class="headerlink" href="#space-filling-sampling" title="Permalink to this heading">#</a></h3>
 <p><img alt="sampling" src="../../_images/space_filling_sampling.png" /></p>
 <ul class="simple">
 <li><p>Sobol sequence sampling in Python, e.g. with <a class="reference external" href="https://github.com/naught101/sobol_seq">sobol_seq</a></p></li>
 <li><p>Latin Hypercube Sampling in Python, e.g. with <a class="reference external" href="https://pythonhosted.org/pyDOE/index.html">pyDOE</a></p></li>
 <li><p>Mersenne-Twister is the core random number generator in Python / numpy</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="some-concluding-remarks">
-<h2>Some concluding remarks<a class="headerlink" href="#some-concluding-remarks" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="some-concluding-remarks">
+<h2>Some concluding remarks<a class="headerlink" href="#some-concluding-remarks" title="Permalink to this heading">#</a></h2>
 <p>from the paper <a class="reference external" href="https://arxiv.org/abs/1902.00941">arXiv:1902.00941</a>:</p>
 <ul class="simple">
 <li><p><strong>Prior knowledge/belief is everything!</strong> Important to tailor the acquisition function and the GP kernel to the spatial structure of the objective function. Thus, the usefulness of BayesOpt hinges on the arbitrariness and uncertainty of a priori information. Complicated by the fact that we resort to BayesOpt when little is known about the objective function in the first place, since it is computationally expensive to evaluate.</p></li>
@@ -1284,14 +967,14 @@ Minimized function value = -1.23848
 <li><p>BayesOpt would probably benefit from a prior that captures the <strong>large-scale structure of the objective function</strong>.</p></li>
 <li><p><strong>High-dimensional parameter domains</strong> are always challenging (subspace learning, dim reduction).</p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
         requestKernel: true,
         binderOptions: {
-            repo: "furnstahl/Physics-8820",
+            repo: "DanielRPhillips/LearningFromData",
             ref: "main",
         },
         codeMirrorConfig: {
@@ -1299,7 +982,7 @@ Minimized function value = -1.23848
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./notebooks/Machine_learning"
         },
         predefinedOutput: true
@@ -1307,36 +990,117 @@ Minimized function value = -1.23848
     </script>
     <script>kernelName = 'python3'</script>
 
-              </div>
+                </article>
               
-        
-        <div class='prev-next-bottom'>
-            
-    <a class='left-prev' id="prev-link" href="../../content/Machine_learning/lecture_22.html" title="previous page"><span class="section-number">9.1. </span>Lecture 22</a>
-    <a class='right-next' id="next-link" href="../../content/Machine_learning/lecture_23.html" title="next page"><span class="section-number">9.3. </span>Lecture 23</a>
 
-        </div>
-        
-        </div>
-    </div>
-    <footer class="footer mt-5 mt-md-0">
-    <div class="container">
-      <p>
-        
-          By Dick Furnstahl<br/>
-        
-            &copy; Copyright 2021.<br/>
-      </p>
-    </div>
-  </footer>
-</main>
-
-
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../../content/Machine_learning/lecture_22.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">9.1. </span>Lecture 22</p>
       </div>
-    </div>
+    </a>
+    <a class="right-next"
+       href="../../content/Machine_learning/lecture_23.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">9.3. </span>Lecture 23</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
   
-  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+</div>
 
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimization-of-expensive-objective-functions">Optimization of expensive objective functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Bayesian optimization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acquisition-functions">Acquisition functions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#expected-improvement">Expected Improvement</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lower-confidence-bound">Lower Confidence Bound</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#univariate-example-of-bayesian-optimization">Univariate example of Bayesian optimization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bivariate-example-two-parameters">Bivariate example (two parameters)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#space-filling-sampling">Space-filling sampling</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#some-concluding-remarks">Some concluding remarks</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
   
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dick Furnstahl
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2021.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
   </body>
 </html>

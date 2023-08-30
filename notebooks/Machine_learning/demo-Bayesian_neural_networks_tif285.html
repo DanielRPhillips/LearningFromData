@@ -1,919 +1,579 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
     <title>9.9. Variational Inference: Bayesian Neural Networks &#8212; Learning from data</title>
-    
-  <link href="../../_static/css/theme.css" rel="stylesheet" />
-  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.e8e5499552300ddf5d7adccae7cc3b70.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/togglebutton.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
-    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
-    <script>
-        const thebe_selector = ".thebe,.cell"
-        const thebe_selector_input = "pre,.cell_input div.highlight"
-        const thebe_selector_output = ".output,.cell_output"
-    </script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/Machine_learning/demo-Bayesian_neural_networks_tif285';</script>
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="9.10. What is a convolutional neural network?" href="Convolutional_neural_network_explained.html" />
     <link rel="prev" title="9.8. Lecture 24" href="../../content/Machine_learning/lecture_24.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="en" />
-    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
-    
-    <div class="container-fluid" id="banner"></div>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
 
-    <div class="container-xl">
-      <div class="row">
-          
-<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+  
+  <div class="sidebar-header-items sidebar-primary__section">
     
-        <div class="navbar-brand-box">
-    <a class="navbar-brand text-wrap" href="../../index.html">
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../about.html">
+  
+  
+  
+  
+    
+    
       
-      <img src="../../_static/8820_icon.png" class="logo" alt="logo">
-      
-      
-      <h1 class="site-logo" id="site-title">Learning from data</h1>
-      
-    </a>
-</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-    <div class="bd-toc-item active">
-        <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../about.html">
-   About this Jupyter Book
-  </a>
- </li>
-</ul>
-<p class="caption" role="heading">
- <span class="caption-text">
-  Course overview
- </span>
-</p>
+    
+    
+    <img src="../../_static/buqeye_logo_web.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/buqeye_logo_web.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../about.html">
+                    About this Jupyter Book
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Course overview</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../content/Course/overview.html">
-   Objectives
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../../content/Course/overview.html">Objectives</a></li>
 </ul>
-<p class="caption" role="heading">
- <span class="caption-text">
-  Topics
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Topics</span></p>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../content/Basics/basics.html">
-   1. Basics of Bayesian statistics
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Basics/lecture_01.html">
-     1.1. Lecture 1
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Basics/Exploring_pdfs.html">
-     1.2. Exploring PDFs
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Basics/simple_sum_product_rule.html">
-     1.3. Checking the sum and product rules, and their consequences
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Basics/lecture_02.html">
-     1.4. Lecture 2
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Basics/Bayesian_updating_coinflip_interactive.html">
-     1.5. Interactive Bayesian updating: coin flipping example
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Basics/medical_example_by_Bayes.html">
-     1.6. Standard medical example by applying Bayesian rules of probability
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Basics/radioactive_lighthouse_exercise.html">
-     1.7. Radioactive lighthouse problem
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Basics/lecture_03.html">
-     1.8. Lecture 3
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../content/Parameter_estimation/param_est.html">
-   2. Bayesian parameter estimation
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Parameter_estimation/lecture_04.html">
-     2.1. Lecture 4: Parameter estimation
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Parameter_estimation/parameter_estimation_Gaussian_noise.html">
-     2.2. Parameter estimation example: Gaussian noise and averages
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Assignment_extending_radioactive_lighthouse.html">
-     2.3. Assignment: 2D radioactive lighthouse location using MCMC
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Parameter_estimation/lecture_05.html">
-     2.4. Lecture 5
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Parameter_estimation/parameter_estimation_fitting_straight_line_I.html">
-     2.5. Parameter estimation example: fitting a straight line
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Parameter_estimation/demo-ModelValidation.html">
-     2.6. Linear Regression and Model Validation demonstration
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Parameter_estimation/lecture_06.html">
-     2.7. Lecture 6
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Parameter_estimation/amplitude_in_presence_of_background.html">
-     2.8. Amplitude of a signal in the presence of background
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Assignment_parameter_estimation_followups.html">
-     2.9. Assignment: Follow-ups to Parameter Estimation notebooks
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Parameter_estimation/exercise_LinearRegression.html">
-     2.10. Linear Regression exercise
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Parameter_estimation/linear_algebra_games_I.html">
-     2.11. Linear algebra games including SVD for PCA
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/fluctuation_trend_with_number_of_points_and_data_errors.html">
-     2.12. Follow-up: fluctuation trends with # of points and data errors
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../content/MCMC_sampling_I/MCMC_sampling_I.html">
-   3. MCMC sampling I
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-  <label for="toctree-checkbox-3">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/MCMC_sampling_I/lecture_07.html">
-     3.1. Lecture 7
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../MCMC_sampling_I/Metropolis_Poisson_example.html">
-     3.2. Metropolis-Hasting MCMC sampling of a Poisson distribution
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/MCMC_sampling_I/lecture_08.html">
-     3.3. Lecture 8
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../MCMC_sampling_I/MCMC-random-walk-and-sampling.html">
-     3.4. Exercise: Random walk
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../content/Why_Bayes_is_better/bayes_is_better.html">
-   4. Why Bayes is better
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-  <label for="toctree-checkbox-4">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Why_Bayes_is_better/lecture_09.html">
-     4.1. Lecture 9
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Why_Bayes_is_better/bayes_billiard.html">
-     4.2. A Bayesian Billiard game
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Why_Bayes_is_better/lecture_10.html">
-     4.3. Lecture 10
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Why_Bayes_is_better/parameter_estimation_fitting_straight_line_II.html">
-     4.4. Parameter estimation example: fitting a straight line II
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Why_Bayes_is_better/lecture_11.html">
-     4.5. Lecture 11
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Why_Bayes_is_better/error_propagation_to_functions_of_uncertain_parameters.html">
-     4.6. Error propagation: Example 3.6.2 in Sivia
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Basics/visualization_of_CLT.html">
-     4.7. Visualization of the Central Limit Theorem
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Basics/correlation_intuition.html">
-     4.8. Building intuition about correlations (and a bit of Python linear algebra)
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Why_Bayes_is_better/lecture_12.html">
-     4.9. Lecture 12
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../MCMC_sampling_I/MCMC-diagnostics.html">
-     4.10. Overview: MCMC Diagnostics
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Why_Bayes_is_better/lecture_13.html">
-     4.12. Lecture 13
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Why_Bayes_is_better/dealing_with_outliers.html">
-     4.13. Dealing with outliers
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../content/Model_selection/model_selection.html">
-   5. Model selection
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
-  <label for="toctree-checkbox-5">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Model_selection/lecture_14.html">
-     5.1. Lecture 14
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Model_selection/lecture_15.html">
-     5.2. Lecture 15
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Model_selection/Evidence_for_model_EFT_coefficients.html">
-     5.3. Evidence calculation for EFT expansions
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Model_selection/lecture_16.html">
-     5.4. Lecture 16
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../mini-projects/MCMC-parallel-tempering_ptemcee.html">
-     5.5. Example: Parallel tempering for multimodal distributions
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../mini-projects/MCMC-parallel-tempering_ptemcee_vs_zeus.html">
-     5.6. Example: Parallel tempering for multimodal distributions vs. zeus
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../content/MCMC_sampling_II/MCMC_sampling_II.html">
-   6. MCMC sampling II
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
-  <label for="toctree-checkbox-6">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/MCMC_sampling_II/lecture_17.html">
-     6.1. Lecture 17
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../MCMC_sampling_II/chi_squared_tests.html">
-     6.2. Quick check of the distribution of normal variables squared
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../MCMC_sampling_II/Liouville_theorem_visualization.html">
-     6.3. Liouville Theorem Visualization
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../MCMC_sampling_II/Orbital_eqs_with_different_algorithms.html">
-     6.4. Solving orbital equations with different algorithms
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/MCMC_sampling_II/lecture_18.html">
-     6.5. Lecture 18
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../MCMC_sampling_II/PyMC3_intro_updated.html">
-     6.6. PyMC3 Introduction
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../MCMC_sampling_II/PyMC3_docs_getting_started_updated.html">
-     6.7. Getting started with PyMC3
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Parameter_estimation/parameter_estimation_Gaussian_noise_compare_samplers.html">
-     6.8. Comparing samplers for a simple problem
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../mini-projects/zeus_multimodal.html">
-     6.9. zeus: Sampling from multimodal distributions
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../content/Gaussian_processes/gaussian_processes.html">
-   7. Gaussian processes
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
-  <label for="toctree-checkbox-7">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Gaussian_processes/lecture_19.html">
-     7.1. Lecture 19
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Gaussian_processes/demo-GaussianProcesses.html">
-     7.2. Gaussian processes demonstration
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Gaussian_processes/GaussianProcesses.html">
-     7.3. Learning from data: Gaussian processes
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Gaussian_processes/Gaussian_processes_exercises.html">
-     7.4. Exercise: Gaussian Process models with GPy
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Gaussian_processes/lecture_20.html">
-     7.5. Lecture 20
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../content/Maximum_entropy/max_ent.html">
-   8. Assigning probabilities
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
-  <label for="toctree-checkbox-8">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Maximum_entropy/lecture_21.html">
-     8.1. Lecture 21
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Maximum_entropy/MaxEnt.html">
-     8.2. Ignorance pdfs: Indifference and translation groups
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Maximum_entropy/Pdfs_from_MaxEnt.html">
-     8.3. MaxEnt for deriving some probability distributions
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Maximum_entropy/MaxEnt_Function_Reconstruction.html">
-     8.4. Maximum Entropy for reconstructing a function from its moments
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Maximum_entropy/demo-MaxEnt.html">
-     8.5. Making figures for Ignorance PDF notebook
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 current active has-children">
-  <a class="reference internal" href="../../content/Machine_learning/machine_learning.html">
-   9. Machine learning: Bayesian methods
-  </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
-  <label for="toctree-checkbox-9">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Machine_learning/lecture_22.html">
-     9.1. Lecture 22
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="Bayesian_optimization.html">
-     9.2. Bayesian Optimization
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Machine_learning/lecture_23.html">
-     9.3. Lecture 23
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="Neural_networks_explained.html">
-     9.4. What Are Neural Networks?
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="Forssen_tif285_NeuralNet.html">
-     9.5. Neural networks
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="Forssen_tif285_demo-NeuralNet.html">
-     9.6. Neural network classifier demonstration
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="Bayesian_neural_networks_tif285.html">
-     9.7. Bayesian neural networks
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Machine_learning/lecture_24.html">
-     9.8. Lecture 24
-    </a>
-   </li>
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
-     9.9. Variational Inference: Bayesian Neural Networks
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="Convolutional_neural_network_explained.html">
-     9.10. What is a convolutional neural network?
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../content/SVD/svd.html">
-   10. PCA, SVD, and all that
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
-  <label for="toctree-checkbox-10">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/SVD/lecture_25.html">
-     10.1. Lecture 25
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../SVD/linear_algebra_games_including_SVD.html">
-     10.2. Linear algebra games including SVD for PCA
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../content/Basics/basics.html">1. Basics of Bayesian statistics</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Basics/lecture_01.html">1.1. Lecture 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Basics/Exploring_pdfs.html">1.2. Exploring PDFs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Basics/simple_sum_product_rule.html">1.3. Checking the sum and product rules, and their consequences</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Basics/lecture_02.html">1.4. Lecture 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Basics/Bayesian_updating_coinflip_interactive.html">1.5. Interactive Bayesian updating: coin flipping example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Basics/medical_example_by_Bayes.html">1.6. Standard medical example by applying Bayesian rules of probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Basics/radioactive_lighthouse_exercise.html">1.7. Radioactive lighthouse problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Basics/lecture_03.html">1.8. Lecture 3</a></li>
 </ul>
-<p class="caption" role="heading">
- <span class="caption-text">
-  Mini-projects
- </span>
-</p>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../content/Parameter_estimation/param_est.html">2. Bayesian parameter estimation</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Parameter_estimation/lecture_04.html">2.1. Lecture 4: Parameter estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Parameter_estimation/parameter_estimation_Gaussian_noise.html">2.2. Parameter estimation example: Gaussian noise and averages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Assignment_extending_radioactive_lighthouse.html">2.3. Assignment: 2D radioactive lighthouse location using MCMC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Parameter_estimation/lecture_05.html">2.4. Lecture 5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Parameter_estimation/parameter_estimation_fitting_straight_line_I.html">2.5. Parameter estimation example: fitting a straight line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Parameter_estimation/demo-ModelValidation.html">2.6. Linear Regression and Model Validation demonstration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Parameter_estimation/lecture_06.html">2.7. Lecture 6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Parameter_estimation/amplitude_in_presence_of_background.html">2.8. Amplitude of a signal in the presence of background</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Assignment_parameter_estimation_followups.html">2.9. Assignment: Follow-ups to Parameter Estimation notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Parameter_estimation/exercise_LinearRegression.html">2.10. Linear Regression exercise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Parameter_estimation/linear_algebra_games_I.html">2.11. Linear algebra games including SVD for PCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/fluctuation_trend_with_number_of_points_and_data_errors.html">2.12. Follow-up: fluctuation trends with # of points and data errors</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../content/MCMC_sampling_I/MCMC_sampling_I.html">3. MCMC sampling I</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../content/MCMC_sampling_I/lecture_07.html">3.1. Lecture 7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../MCMC_sampling_I/Metropolis_Poisson_example.html">3.2. Metropolis-Hasting MCMC sampling of a Poisson distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/MCMC_sampling_I/lecture_08.html">3.3. Lecture 8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../MCMC_sampling_I/MCMC-random-walk-and-sampling.html">3.4. Exercise: Random walk</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../content/Why_Bayes_is_better/bayes_is_better.html">4. Why Bayes is better</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Why_Bayes_is_better/lecture_09.html">4.1. Lecture 9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Why_Bayes_is_better/bayes_billiard.html">4.2. A Bayesian Billiard game</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Why_Bayes_is_better/lecture_10.html">4.3. Lecture 10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Why_Bayes_is_better/parameter_estimation_fitting_straight_line_II.html">4.4. Parameter estimation example: fitting a straight line II</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Why_Bayes_is_better/lecture_11.html">4.5. Lecture 11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Why_Bayes_is_better/error_propagation_to_functions_of_uncertain_parameters.html">4.6. Error propagation: Example 3.6.2 in Sivia</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Basics/visualization_of_CLT.html">4.7. Visualization of the Central Limit Theorem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Basics/correlation_intuition.html">4.8. Building intuition about correlations (and a bit of Python linear algebra)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Why_Bayes_is_better/lecture_12.html">4.9. Lecture 12</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../MCMC_sampling_I/MCMC-diagnostics.html">4.10. Overview: MCMC Diagnostics</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../content/Why_Bayes_is_better/lecture_13.html">4.12. Lecture 13</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Why_Bayes_is_better/dealing_with_outliers.html">4.13. Dealing with outliers</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../content/Model_selection/model_selection.html">5. Model selection</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Model_selection/lecture_14.html">5.1. Lecture 14</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Model_selection/lecture_15.html">5.2. Lecture 15</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Model_selection/Evidence_for_model_EFT_coefficients.html">5.3. Evidence calculation for EFT expansions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Model_selection/lecture_16.html">5.4. Lecture 16</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mini-projects/MCMC-parallel-tempering_ptemcee.html">5.5. Example: Parallel tempering for multimodal distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mini-projects/MCMC-parallel-tempering_ptemcee_vs_zeus.html">5.6. Example: Parallel tempering for multimodal distributions vs. zeus</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../content/MCMC_sampling_II/MCMC_sampling_II.html">6. MCMC sampling II</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../content/MCMC_sampling_II/lecture_17.html">6.1. Lecture 17</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../MCMC_sampling_II/chi_squared_tests.html">6.2. Quick check of the distribution of normal variables squared</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../MCMC_sampling_II/Liouville_theorem_visualization.html">6.3. Liouville Theorem Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../MCMC_sampling_II/Orbital_eqs_with_different_algorithms.html">6.4. Solving orbital equations with different algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/MCMC_sampling_II/lecture_18.html">6.5. Lecture 18</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../MCMC_sampling_II/PyMC3_intro_updated.html">6.6. PyMC3 Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../MCMC_sampling_II/PyMC3_docs_getting_started_updated.html">6.7. Getting started with PyMC3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Parameter_estimation/parameter_estimation_Gaussian_noise_compare_samplers.html">6.8. Comparing samplers for a simple problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mini-projects/zeus_multimodal.html">6.9. zeus: Sampling from multimodal distributions</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../content/Gaussian_processes/gaussian_processes.html">7. Gaussian processes</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Gaussian_processes/lecture_19.html">7.1. Lecture 19</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Gaussian_processes/demo-GaussianProcesses.html">7.2. Gaussian processes demonstration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Gaussian_processes/GaussianProcesses.html">7.3. Learning from data: Gaussian processes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Gaussian_processes/Gaussian_processes_exercises.html">7.4. Exercise: Gaussian Process models with GPy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Gaussian_processes/lecture_20.html">7.5. Lecture 20</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../content/Maximum_entropy/max_ent.html">8. Assigning probabilities</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Maximum_entropy/lecture_21.html">8.1. Lecture 21</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Maximum_entropy/MaxEnt.html">8.2. Ignorance pdfs: Indifference and translation groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Maximum_entropy/Pdfs_from_MaxEnt.html">8.3. MaxEnt for deriving some probability distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Maximum_entropy/MaxEnt_Function_Reconstruction.html">8.4. Maximum Entropy for reconstructing a function from its moments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Maximum_entropy/demo-MaxEnt.html">8.5. Making figures for Ignorance PDF notebook</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../../content/Machine_learning/machine_learning.html">9. Machine learning: Bayesian methods</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../content/Machine_learning/lecture_22.html">9.1. Lecture 22</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bayesian_optimization.html">9.2. Bayesian Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Machine_learning/lecture_23.html">9.3. Lecture 23</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Neural_networks_explained.html">9.4. What Are Neural Networks?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Forssen_tif285_NeuralNet.html">9.5. Neural networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Forssen_tif285_demo-NeuralNet.html">9.6. Neural network classifier demonstration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bayesian_neural_networks_tif285.html">9.7. Bayesian neural networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Machine_learning/lecture_24.html">9.8. Lecture 24</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">9.9. Variational Inference: Bayesian Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Convolutional_neural_network_explained.html">9.10. What is a convolutional neural network?</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../content/SVD/svd.html">10. PCA, SVD, and all that</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../content/SVD/lecture_25.html">10.1. Lecture 25</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SVD/linear_algebra_games_including_SVD.html">10.2. Linear algebra games including SVD for PCA</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Mini-projects</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../mini-projects/mini-project_I_toy_model_of_EFT.html">
-   Mini-project I: Parameter estimation for a toy model of an EFT
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../mini-projects/model-selection_mini-project-IIa.html">
-   Mini-project IIa: Model selection basics
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../mini-projects/model-selection_mini-project-IIb_How_many_lines_ptemcee.html">
-   Mini-project IIb: How many lines are there?
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../mini-projects/mini-project_IIIa_bayesian_optimization.html">
-   Mini-project IIIa: Bayesian optimization
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../mini-projects/mini-project_IIIb_Bayesian_neural_networks_from_demo.html">
-   Mini-project IIIb: Bayesian Neural Networks
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../mini-projects/mini-project_I_toy_model_of_EFT.html">Mini-project I: Parameter estimation for a toy model of an EFT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mini-projects/model-selection_mini-project-IIa.html">Mini-project IIa: Model selection basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mini-projects/model-selection_mini-project-IIb_How_many_lines_ptemcee.html">Mini-project IIb: How many lines are there?</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../mini-projects/mini-project_IIIa_bayesian_optimization.html">Mini-project IIIa: Bayesian optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mini-projects/mini-project_IIIb_Bayesian_neural_networks_from_demo.html">Mini-project IIIb: Bayesian Neural Networks</a></li>
 </ul>
-<p class="caption" role="heading">
- <span class="caption-text">
-  Reference material
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference material</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../content/zbibliography.html">
-   Bibliography
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../content/related_topics.html">
-   Related topics
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../content/Reference/installing_anaconda.html">
-   Using Anaconda
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../content/Reference/using_github.html">
-   Using GitHub
-  </a>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../content/Reference/python_jupyter.html">
-   Python and Jupyter notebooks
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
-  <label for="toctree-checkbox-11">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Reference/Jupyter_Python_intro_01.html">
-     Python and Jupyter notebooks: part 01
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Reference/Jupyter_Python_intro_02.html">
-     Python and Jupyter notebooks: part 02
-    </a>
-   </li>
+<li class="toctree-l1"><a class="reference internal" href="../../content/zbibliography.html">Bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../content/related_topics.html">Related topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../content/Reference/installing_anaconda.html">Using Anaconda</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../content/Reference/using_github.html">Using GitHub</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../content/Reference/python_jupyter.html">Python and Jupyter notebooks</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Reference/Jupyter_Python_intro_01.html">Python and Jupyter notebooks: part 01</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Reference/Jupyter_Python_intro_02.html">Python and Jupyter notebooks: part 02</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../content/jb_tests.html">Examples: Jupyter jb-book</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Notebook keys</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../Basics/simple_sum_product_rule_KEY.html">Checking the sum and product rules, and their consequences <span style="color: red">Key</span></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Basics/medical_example_by_Bayes_KEY.html">Standard medical example by applying Bayesian rules of probability <span style="color: red">Key</span></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Basics/radioactive_lighthouse_exercise_key.html">Radioactive lighthouse problem  <span style="color: red">Key</span></a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/DanielRPhillips/LearningFromData/main?urlpath=tree/./LectureNotes/notebooks/Machine_learning/demo-Bayesian_neural_networks_tif285.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onBinder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="initThebeSBT()"
+  class="btn btn-sm btn-launch-thebe dropdown-item"
+  title="Launch Thebe"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-play"></i>
+  </span>
+<span class="btn__text-container">Live Code</span>
+</button>
+</li>
+      
   </ul>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../content/jb_tests.html">
-   Examples: Jupyter jb-book
-  </a>
- </li>
-</ul>
-<p class="caption" role="heading">
- <span class="caption-text">
-  Notebook keys
- </span>
-</p>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../Basics/simple_sum_product_rule_KEY.html">
-   Checking the sum and product rules, and their consequences
-   <span style="color: red">
-    Key
-   </span>
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../Basics/medical_example_by_Bayes_KEY.html">
-   Standard medical example by applying Bayesian rules of probability
-   <span style="color: red">
-    Key
-   </span>
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../Basics/radioactive_lighthouse_exercise_key.html">
-   Radioactive lighthouse problem
-   <span style="color: red">
-    Key
-   </span>
-  </a>
- </li>
-</ul>
+</div>
 
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/DanielRPhillips/LearningFromData" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/DanielRPhillips/LearningFromData/issues/new?title=Issue%20on%20page%20%2Fnotebooks/Machine_learning/demo-Bayesian_neural_networks_tif285.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/Machine_learning/demo-Bayesian_neural_networks_tif285.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
     </div>
-</nav> <!-- To handle the deprecated key -->
-
-<div class="navbar_extra_footer">
-  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+  
 </div>
-
 </div>
+              
+              
 
-
-          
-
-
-          
-<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
-    
-    <div class="topbar container-xl fixed-top">
-    <div class="topbar-contents row">
-        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
-        <div class="col pl-md-4 topbar-main">
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Variational Inference: Bayesian Neural Networks</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
             
-            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
-                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
-                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
-                <i class="fas fa-bars"></i>
-                <i class="fas fa-arrow-left"></i>
-                <i class="fas fa-arrow-up"></i>
-            </button>
-            
-            
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
-            class="fas fa-download"></i></button>
-
-    <div class="dropdown-buttons">
-        <!-- ipynb file if we had a myst markdown file -->
-        
-        <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../_sources/notebooks/Machine_learning/demo-Bayesian_neural_networks_tif285.ipynb"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.ipynb</button></a>
-        <!-- Download PDF via print -->
-        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
-    </div>
-</div>
-
-            <!-- Source interaction buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
-    <div class="dropdown-buttons sourcebuttons">
-        <a class="repository-button"
-            href="https://github.com/furnstahl/Physics-8820"><button type="button" class="btn btn-secondary topbarbtn"
-                data-toggle="tooltip" data-placement="left" title="Source repository"><i
-                    class="fab fa-github"></i>repository</button></a>
-        <a class="issues-button"
-            href="https://github.com/furnstahl/Physics-8820/issues/new?title=Issue%20on%20page%20%2Fnotebooks/Machine_learning/demo-Bayesian_neural_networks_tif285.html&body=Your%20issue%20content%20here."><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
-        
-    </div>
-</div>
-
-            <!-- Full screen (wrap in <a> to have style consistency -->
-
-<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-        title="Fullscreen mode"><i
-            class="fas fa-expand"></i></button></a>
-
-            <!-- Launch buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
-    <div class="dropdown-buttons">
-        
-        <a class="binder-button" href="https://mybinder.org/v2/gh/furnstahl/Physics-8820/main?urlpath=tree/./LectureNotes/notebooks/Machine_learning/demo-Bayesian_neural_networks_tif285.ipynb"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
-                data-placement="left"><img class="binder-button-logo"
-                    src="../../_static/images/logo_binder.svg"
-                    alt="Interact on binder">Binder</button></a>
-        
-        
-        
-        <button type="button" class="btn btn-secondary topbarbtn"
-            onclick="initThebeSBT()" title="Launch Thebe" data-toggle="tooltip" data-placement="left"><i
-                class="fas fa-play"></i><span style="margin-left: .4em;">Live Code</span></button>
-        
-    </div>
-</div>
-
-        </div>
-
-        <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show">
-            
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
+            <div>
+                <h2> Contents </h2>
             </div>
-            <nav id="bd-toc-nav">
+            <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#current-trends-in-machine-learning">
-   Current trends in Machine Learning
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#probabilistic-programming-at-scale">
-     Probabilistic Programming at scale
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#deep-learning">
-     Deep Learning
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#bridging-deep-learning-and-probabilistic-programming">
-     Bridging Deep Learning and Probabilistic Programming
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#bayesian-neural-networks-in-pymc3">
-   Bayesian Neural Networks in PyMC3
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#generating-data">
-     Generating data
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#import-theano-and-pymc3">
-       Import theano and pymc3
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#model-specification">
-     Model specification
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#variational-inference-scaling-model-complexity">
-     Variational Inference: Scaling model complexity
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#lets-look-at-what-the-classifier-has-learned">
-   Lets look at what the classifier has learned
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#probability-surface">
-     Probability surface
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#uncertainty-in-predicted-value">
-     Uncertainty in predicted value
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#mini-batch-advi">
-   Mini-batch ADVI
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#next-steps">
-   Next steps
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#acknowledgements">
-   Acknowledgements
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#current-trends-in-machine-learning">Current trends in Machine Learning</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#probabilistic-programming-at-scale">Probabilistic Programming at scale</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-learning">Deep Learning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bridging-deep-learning-and-probabilistic-programming">Bridging Deep Learning and Probabilistic Programming</a></li>
 </ul>
-
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bayesian-neural-networks-in-pymc3">Bayesian Neural Networks in PyMC3</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generating-data">Generating data</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#import-theano-and-pymc3">Import theano and pymc3</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-specification">Model specification</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variational-inference-scaling-model-complexity">Variational Inference: Scaling model complexity</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lets-look-at-what-the-classifier-has-learned">Lets look at what the classifier has learned</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#probability-surface">Probability surface</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uncertainty-in-predicted-value">Uncertainty in predicted value</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mini-batch-advi">Mini-batch ADVI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next steps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acknowledgements">Acknowledgements</a></li>
+</ul>
             </nav>
         </div>
     </div>
 </div>
-    <div id="main-content" class="row">
-        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-        
-              <div>
+
+              
                 
-  <div class="section" id="variational-inference-bayesian-neural-networks">
-<h1><span class="section-number">9.9. </span>Variational Inference: Bayesian Neural Networks<a class="headerlink" href="#variational-inference-bayesian-neural-networks" title="Permalink to this headline">¶</a></h1>
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="variational-inference-bayesian-neural-networks">
+<h1><span class="section-number">9.9. </span>Variational Inference: Bayesian Neural Networks<a class="headerlink" href="#variational-inference-bayesian-neural-networks" title="Permalink to this heading">#</a></h1>
 <p>© 2016-2018 by Thomas Wiecki, updated by Maxim Kochurov.<br />
 Comments by Christian Forssén, 2019.<br />
 Updates by Dick Furnstahl, November, 2021.</p>
@@ -926,16 +586,16 @@ and udated version: <a class="reference external" href="https://docs.pymc.io/not
 <li><p><code class="docutils literal notranslate"><span class="pre">arviz</span></code>: ArviZ (pronounced “AR-vees”) is a Python package for exploratory analysis of Bayesian models. Includes functions for posterior analysis, model checking, comparison and diagnostics.</p></li>
 </ul>
 <p>This should work with the original environment.yml conda file on Macs and Linux machines and with the environment_windows.yml conda file on Windows 10.</p>
-<div class="section" id="current-trends-in-machine-learning">
-<h2>Current trends in Machine Learning<a class="headerlink" href="#current-trends-in-machine-learning" title="Permalink to this headline">¶</a></h2>
+<section id="current-trends-in-machine-learning">
+<h2>Current trends in Machine Learning<a class="headerlink" href="#current-trends-in-machine-learning" title="Permalink to this heading">#</a></h2>
 <p>In this demonstration, it is shown how to use <strong>Variational Inference</strong> in PyMC3 to fit a simple Bayesian Neural Network. The authors will also discuss how bridging Probabilistic Programming and Deep Learning can open up very interesting avenues to explore in future research.</p>
-<div class="section" id="probabilistic-programming-at-scale">
-<h3>Probabilistic Programming at scale<a class="headerlink" href="#probabilistic-programming-at-scale" title="Permalink to this headline">¶</a></h3>
+<section id="probabilistic-programming-at-scale">
+<h3>Probabilistic Programming at scale<a class="headerlink" href="#probabilistic-programming-at-scale" title="Permalink to this heading">#</a></h3>
 <p><strong>Probabilistic Programming</strong> allows very flexible creation of custom probabilistic models and is mainly concerned with <strong>insight</strong> and learning from your data. The approach is inherently <strong>Bayesian</strong> so we can specify <strong>priors</strong> to inform and constrain our models and get uncertainty estimation in form of a <strong>posterior</strong> distribution. Using <a class="reference external" href="https://twiecki.github.io/blog/2015/11/10/mcmc-sampling/">MCMC sampling algorithms</a> we can draw samples from this posterior to very flexibly estimate these models. PyMC3 and <a class="reference external" href="http://mc-stan.org/">Stan</a> are the current state-of-the-art tools to consruct and estimate these models. One major drawback of sampling, however, is that it’s often very slow, especially for high-dimensional models. That’s why more recently, <strong>variational inference</strong> algorithms have been developed that are almost as flexible as MCMC but much faster. Instead of drawing samples from the posterior, these algorithms instead fit a distribution (e.g. normal) to the posterior turning a sampling problem into and optimization problem. <a class="reference external" href="http://arxiv.org/abs/1506.03431">ADVI</a> – Automatic Differentation Variational Inference – is implemented in PyMC3 and <a class="reference external" href="http://mc-stan.org/">Stan</a>, as well as a new package called <a class="reference external" href="https://github.com/blei-lab/edward/">Edward</a> which is mainly concerned with Variational Inference.</p>
 <p>Unfortunately, when it comes to traditional ML problems like classification or (non-linear) regression, Probabilistic Programming often plays second fiddle (in terms of accuracy and scalability) to more algorithmic approaches like <a class="reference external" href="https://en.wikipedia.org/wiki/Ensemble_learning">ensemble learning</a> (e.g. <a class="reference external" href="https://en.wikipedia.org/wiki/Random_forest">random forests</a> or <a class="reference external" href="https://en.wikipedia.org/wiki/Boosting_(machine_learning)">gradient boosted regression trees</a>.</p>
-</div>
-<div class="section" id="deep-learning">
-<h3>Deep Learning<a class="headerlink" href="#deep-learning" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="deep-learning">
+<h3>Deep Learning<a class="headerlink" href="#deep-learning" title="Permalink to this heading">#</a></h3>
 <p>Now in its third renaissance, deep learning has been making headlines repeatadly by dominating almost any object recognition benchmark, <a class="reference external" href="https://www.cs.toronto.edu/~vmnih/docs/dqn.pdf">kicking ass at Atari games</a>, and <a class="reference external" href="http://www.nature.com/nature/journal/v529/n7587/full/nature16961.html">beating the world-champion Lee Sedol at Go</a>. From a statistical point, Neural Networks are extremely good non-linear function approximators and representation learners. While mostly known for classification, they have been extended to unsupervised learning with <a class="reference external" href="https://arxiv.org/abs/1312.6114">AutoEncoders</a> and in all sorts of other interesting ways (e.g. <a class="reference external" href="https://en.wikipedia.org/wiki/Recurrent_neural_network">Recurrent Networks</a>, or <a class="reference external" href="http://cbonnett.github.io/MDN_EDWARD_KERAS_TF.html">MDNs</a> to estimate multimodal distributions). Why do they work so well? No one really knows as the statistical properties are still not fully understood.</p>
 <p>A large part of the innoviation in deep learning is the ability to train these extremely complex models. This rests on several pillars:</p>
 <ul class="simple">
@@ -944,9 +604,9 @@ and udated version: <a class="reference external" href="https://docs.pymc.io/not
 <li><p>Learning algorithms: training on sub-sets of the data – stochastic gradient descent – allows us to train these models on massive amounts of data. Techniques like drop-out avoid overfitting.</p></li>
 <li><p>Architectural: A lot of innovation comes from changing the input layers, like for convolutional neural nets, or the output layers, like for <a class="reference external" href="http://cbonnett.github.io/MDN_EDWARD_KERAS_TF.html">MDNs</a>.</p></li>
 </ul>
-</div>
-<div class="section" id="bridging-deep-learning-and-probabilistic-programming">
-<h3>Bridging Deep Learning and Probabilistic Programming<a class="headerlink" href="#bridging-deep-learning-and-probabilistic-programming" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="bridging-deep-learning-and-probabilistic-programming">
+<h3>Bridging Deep Learning and Probabilistic Programming<a class="headerlink" href="#bridging-deep-learning-and-probabilistic-programming" title="Permalink to this heading">#</a></h3>
 <p>On one hand we have Probabilistic Programming which allows us to build rather small and focused models in a very principled and well-understood way to gain insight into our data; on the other hand we have deep learning which uses many heuristics to train huge and highly complex models that are amazing at prediction. Recent innovations in variational inference allow probabilistic programming to scale model complexity as well as data size. We are thus at the cusp of being able to combine these two approaches to hopefully unlock new innovations in Machine Learning. For more motivation, see also <a class="reference external" href="https://twitter.com/dustinvtran">Dustin Tran’s</a> recent <a class="reference external" href="http://dustintran.com/blog/a-quick-update-edward-and-some-motivations/">blog post</a>.</p>
 <p>While this would allow Probabilistic Programming to be applied to a much wider set of interesting problems, I believe this bridging also holds great promise for innovations in Deep Learning. Some ideas are:</p>
 <ul class="simple">
@@ -957,12 +617,12 @@ and udated version: <a class="reference external" href="https://docs.pymc.io/not
 <li><p><strong>Hierarchical Neural Networks</strong>: A very powerful approach in Probabilistic Programming is hierarchical modeling that allows pooling of things that were learned on sub-groups to the overall population (see my tutorial on <a class="reference external" href="https://twiecki.github.io/blog/2014/03/17/bayesian-glms-3/">Hierarchical Linear Regression in PyMC3</a>). Applied to Neural Networks, in hierarchical data sets, we could train individual neural nets to specialize on sub-groups while still being informed about representations of the overall population. For example, imagine a network trained to classify car models from pictures of cars. We could train a hierarchical neural network where a sub-neural network is trained to tell apart models from only a single manufacturer. The intuition being that all cars from a certain manufactures share certain similarities so it would make sense to train individual networks that specialize on brands. However, due to the individual networks being connected at a higher layer, they would still share information with the other specialized sub-networks about features that are useful to all brands. Interestingly, different layers of the network could be informed by various levels of the hierarchy – e.g. early layers that extract visual lines could be identical in all sub-networks while the higher-order representations would be different. The hierarchical model would learn all that from the data.</p></li>
 <li><p><strong>Other hybrid architectures</strong>: We can more freely build all kinds of neural networks. For example, Bayesian non-parametrics could be used to flexibly adjust the size and shape of the hidden layers to optimally scale the network architecture to the problem at hand during training. Currently, this requires costly hyper-parameter optimization and a lot of tribal knowledge.</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="bayesian-neural-networks-in-pymc3">
-<h2>Bayesian Neural Networks in PyMC3<a class="headerlink" href="#bayesian-neural-networks-in-pymc3" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="generating-data">
-<h3>Generating data<a class="headerlink" href="#generating-data" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+<section id="bayesian-neural-networks-in-pymc3">
+<h2>Bayesian Neural Networks in PyMC3<a class="headerlink" href="#bayesian-neural-networks-in-pymc3" title="Permalink to this heading">#</a></h2>
+<section id="generating-data">
+<h3>Generating data<a class="headerlink" href="#generating-data" title="Permalink to this heading">#</a></h3>
 <p>First, lets generate some toy data – a simple binary classification problem that’s not linearly separable.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -987,8 +647,8 @@ and udated version: <a class="reference external" href="https://docs.pymc.io/not
 </div>
 </div>
 </div>
-<div class="section" id="import-theano-and-pymc3">
-<h4>Import theano and pymc3<a class="headerlink" href="#import-theano-and-pymc3" title="Permalink to this headline">¶</a></h4>
+<section id="import-theano-and-pymc3">
+<h4>Import theano and pymc3<a class="headerlink" href="#import-theano-and-pymc3" title="Permalink to this heading">#</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># suppress some theano compilation errors with MacOSX clang compiler</span>
@@ -1024,13 +684,13 @@ and udated version: <a class="reference external" href="https://docs.pymc.io/not
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/demo-Bayesian_neural_networks_tif285_12_0.png" src="../../_images/demo-Bayesian_neural_networks_tif285_12_0.png" />
+<img alt="../../_images/7b32ae9aa0b1b32139af8900f869045985745c6045b14cf79ffa9de74402feb4.png" src="../../_images/7b32ae9aa0b1b32139af8900f869045985745c6045b14cf79ffa9de74402feb4.png" />
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="model-specification">
-<h3>Model specification<a class="headerlink" href="#model-specification" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+<section id="model-specification">
+<h3>Model specification<a class="headerlink" href="#model-specification" title="Permalink to this heading">#</a></h3>
 <p>A neural network is quite simple. The basic unit is a <a class="reference external" href="https://en.wikipedia.org/wiki/Perceptron">perceptron</a> which is nothing more than <a class="reference external" href="http://pymc-devs.github.io/pymc3/notebooks/posterior_predictive.html#Prediction">logistic regression</a>. We use many of these in parallel and then stack them up to get hidden layers. Here we will use 2 hidden layers with 5 neurons each which is sufficient for such a simple problem.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1088,9 +748,9 @@ and udated version: <a class="reference external" href="https://docs.pymc.io/not
 </div>
 </div>
 <p>That’s not so bad. The <code class="docutils literal notranslate"><span class="pre">Normal</span></code> priors help regularize the weights. Usually we would add a constant <code class="docutils literal notranslate"><span class="pre">b</span></code> to the inputs but I omitted it here to keep the code cleaner.</p>
-</div>
-<div class="section" id="variational-inference-scaling-model-complexity">
-<h3>Variational Inference: Scaling model complexity<a class="headerlink" href="#variational-inference-scaling-model-complexity" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="variational-inference-scaling-model-complexity">
+<h3>Variational Inference: Scaling model complexity<a class="headerlink" href="#variational-inference-scaling-model-complexity" title="Permalink to this heading">#</a></h3>
 <p>We could now just run a MCMC sampler like NUTS which works pretty well in this case, but as I already mentioned, this will become very slow as we scale our model up to deeper architectures with more layers.</p>
 <p>Instead, we will use <a class="reference external" href="https://arxiv.org/abs/1603.00788">ADVI</a> variational inference algorithm which was recently added to <code class="docutils literal notranslate"><span class="pre">PyMC3</span></code>, and updated to use the operator variational inference (OPVI) framework. This is much faster and will scale better.</p>
 <p><strong>Note</strong>, however, that this is a mean-field approximation so we <strong>ignore correlations</strong> in the posterior.</p>
@@ -1116,23 +776,23 @@ and udated version: <a class="reference external" href="https://docs.pymc.io/not
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html">
-<div>
-    <style>
-        /* Turns off some styling */
-        progress {
-            /* gets rid of default border in Firefox and Opera. */
-            border: none;
-            /* Needs to be in here for Safari polyfill so background images work as expected. */
-            background-size: auto;
-        }
-        .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
-            background: #F44336;
-        }
-    </style>
-  <progress value='30000' class='' max='30000' style='width:300px; height:20px; vertical-align: middle;'></progress>
-  100.00% [30000/30000 00:08<00:00 Average Loss = 143.42]
-</div>
-</div><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Finished [100%]: Average Loss = 143.31
+    <div>
+        <style>
+            /* Turns off some styling */
+            progress {
+                /* gets rid of default border in Firefox and Opera. */
+                border: none;
+                /* Needs to be in here for Safari polyfill so background images work as expected. */
+                background-size: auto;
+            }
+            .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+                background: #F44336;
+            }
+        </style>
+      <progress value='30000' class='' max='30000' style='width:300px; height:20px; vertical-align: middle;'></progress>
+      100.00% [30000/30000 00:08<00:00 Average Loss = 143.42]
+    </div>
+    </div><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Finished [100%]: Average Loss = 143.31
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 33.4 s, sys: 1.05 s, total: 34.5 s
@@ -1157,7 +817,7 @@ Wall time: 14.7 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/demo-Bayesian_neural_networks_tif285_22_0.png" src="../../_images/demo-Bayesian_neural_networks_tif285_22_0.png" />
+<img alt="../../_images/bdd80e4e715eebe683e6e58a7b8d922937ef4d042a426eb4b3c0919b87a6db77.png" src="../../_images/bdd80e4e715eebe683e6e58a7b8d922937ef4d042a426eb4b3c0919b87a6db77.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1168,7 +828,7 @@ Wall time: 14.7 s
 </div>
 </div>
 <p>Now that we trained our model, lets predict on the hold-out set using a posterior predictive check (PPC).</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>We can use <code class="docutils literal notranslate"><span class="pre">sample_posterior_predictive()</span> <span class="pre">&lt;../api/inference.rst&gt;</span></code>__ to generate new data (in this case class predictions) from the posterior (sampled from the variational estimation).</p></li>
 <li><p>It is better to get the node directly and build theano graph using our approximation (approx.sample_node) , we get a lot of speed up</p></li>
 </ol>
@@ -1260,7 +920,7 @@ Wall time: 14.7 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/demo-Bayesian_neural_networks_tif285_32_0.png" src="../../_images/demo-Bayesian_neural_networks_tif285_32_0.png" />
+<img alt="../../_images/d38a6814a0a85efacd4613f8fe1cc7d9f2ba45768ed6445c9c0bd3f2f357e4a6.png" src="../../_images/d38a6814a0a85efacd4613f8fe1cc7d9f2ba45768ed6445c9c0bd3f2f357e4a6.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1276,10 +936,10 @@ Wall time: 14.7 s
 </div>
 </div>
 <p>Hey, our neural network did all right!</p>
-</div>
-</div>
-<div class="section" id="lets-look-at-what-the-classifier-has-learned">
-<h2>Lets look at what the classifier has learned<a class="headerlink" href="#lets-look-at-what-the-classifier-has-learned" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="lets-look-at-what-the-classifier-has-learned">
+<h2>Lets look at what the classifier has learned<a class="headerlink" href="#lets-look-at-what-the-classifier-has-learned" title="Permalink to this heading">#</a></h2>
 <p>For this, we evaluate the class probability predictions on a grid over the whole input space.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1297,8 +957,8 @@ Wall time: 14.7 s
 </div>
 </div>
 </div>
-<div class="section" id="probability-surface">
-<h3>Probability surface<a class="headerlink" href="#probability-surface" title="Permalink to this headline">¶</a></h3>
+<section id="probability-surface">
+<h3>Probability surface<a class="headerlink" href="#probability-surface" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cmap</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">diverging_palette</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">85</span><span class="p">,</span> <span class="n">l</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">as_cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1313,12 +973,12 @@ Wall time: 14.7 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/demo-Bayesian_neural_networks_tif285_39_0.png" src="../../_images/demo-Bayesian_neural_networks_tif285_39_0.png" />
+<img alt="../../_images/da019aaa64b90790079206cab2a2ab70c5df0f1e189f0baa2356a60cffa8e475.png" src="../../_images/da019aaa64b90790079206cab2a2ab70c5df0f1e189f0baa2356a60cffa8e475.png" />
 </div>
 </div>
-</div>
-<div class="section" id="uncertainty-in-predicted-value">
-<h3>Uncertainty in predicted value<a class="headerlink" href="#uncertainty-in-predicted-value" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="uncertainty-in-predicted-value">
+<h3>Uncertainty in predicted value<a class="headerlink" href="#uncertainty-in-predicted-value" title="Permalink to this heading">#</a></h3>
 <p>So far, everything I showed we could have done with a non-Bayesian Neural Network. The mean of the posterior predictive for each class-label should be identical to maximum likelihood predicted values. However, we can also look at the standard deviation of the posterior predictive to get a sense for the uncertainty in our predictions. Here is what that looks like:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1334,15 +994,15 @@ Wall time: 14.7 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/demo-Bayesian_neural_networks_tif285_41_0.png" src="../../_images/demo-Bayesian_neural_networks_tif285_41_0.png" />
+<img alt="../../_images/ac9b7f9a11c669d99f0ac41be72995c7983f517fab04d28cd9e3d3579feb01dc.png" src="../../_images/ac9b7f9a11c669d99f0ac41be72995c7983f517fab04d28cd9e3d3579feb01dc.png" />
 </div>
 </div>
 <p>We can see that very close to the decision boundary, our uncertainty as to which label to predict is highest. You can imagine that associating predictions with uncertainty is a critical property for many applications like health care. To further maximize accuracy, we might want to train the model primarily on samples from that high-uncertainty region.</p>
 <p>It is also clear that the uncertainty is large in the region where there is no training data. That is what should be expected, and it is good that our network shows this explicitly. The normal neural network would not give any such signals.</p>
-</div>
-</div>
-<div class="section" id="mini-batch-advi">
-<h2>Mini-batch ADVI<a class="headerlink" href="#mini-batch-advi" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="mini-batch-advi">
+<h2>Mini-batch ADVI<a class="headerlink" href="#mini-batch-advi" title="Permalink to this heading">#</a></h2>
 <p>So far, we have trained our model on all data at once. Obviously this won’t scale to something like ImageNet. Moreover, training on mini-batches of data (stochastic gradient descent) avoids local minima and can lead to faster convergence.</p>
 <p>Fortunately, ADVI can be run on mini-batches as well. It just requires some setting up:</p>
 <div class="cell docutils container">
@@ -1357,23 +1017,23 @@ Wall time: 14.7 s
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html">
-<div>
-    <style>
-        /* Turns off some styling */
-        progress {
-            /* gets rid of default border in Firefox and Opera. */
-            border: none;
-            /* Needs to be in here for Safari polyfill so background images work as expected. */
-            background-size: auto;
-        }
-        .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
-            background: #F44336;
-        }
-    </style>
-  <progress value='40000' class='' max='40000' style='width:300px; height:20px; vertical-align: middle;'></progress>
-  100.00% [40000/40000 00:10<00:00 Average Loss = 128.93]
-</div>
-</div><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Finished [100%]: Average Loss = 128.92
+    <div>
+        <style>
+            /* Turns off some styling */
+            progress {
+                /* gets rid of default border in Firefox and Opera. */
+                border: none;
+                /* Needs to be in here for Safari polyfill so background images work as expected. */
+                background-size: auto;
+            }
+            .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+                background: #F44336;
+            }
+        </style>
+      <progress value='40000' class='' max='40000' style='width:300px; height:20px; vertical-align: middle;'></progress>
+      100.00% [40000/40000 00:10<00:00 Average Loss = 128.93]
+    </div>
+    </div><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Finished [100%]: Average Loss = 128.92
 </pre></div>
 </div>
 </div>
@@ -1389,7 +1049,7 @@ Wall time: 14.7 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/demo-Bayesian_neural_networks_tif285_46_0.png" src="../../_images/demo-Bayesian_neural_networks_tif285_46_0.png" />
+<img alt="../../_images/72f95b5db28d7e55ae34ad92673a79567a330a4a71846cb475ec2840afe4774d.png" src="../../_images/72f95b5db28d7e55ae34ad92673a79567a330a4a71846cb475ec2840afe4774d.png" />
 </div>
 </div>
 <p>As you can see, mini-batch ADVI’s running time is much lower. It also seems to converge faster.</p>
@@ -1403,26 +1063,26 @@ Wall time: 14.7 s
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="next-steps">
-<h2>Next steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="next-steps">
+<h2>Next steps<a class="headerlink" href="#next-steps" title="Permalink to this heading">#</a></h2>
 <p><a class="reference external" href="http://deeplearning.net/software/theano/"><code class="docutils literal notranslate"><span class="pre">Theano</span></code></a>, which is used by <code class="docutils literal notranslate"><span class="pre">PyMC3</span></code> as its computational backend, was mainly developed for estimating neural networks and there are great libraries like <a class="reference external" href="https://github.com/Lasagne/Lasagne"><code class="docutils literal notranslate"><span class="pre">Lasagne</span></code></a> that build on top of <code class="docutils literal notranslate"><span class="pre">Theano</span></code> to make construction of the most common neural network architectures easy. There is a <a class="reference external" href="https://twiecki.github.io/blog/2016/07/05/bayesian-deep-learning/">follow-up blog post on how to use Lasagne together with PyMC3</a>.</p>
 <p>You should be able to run this example on the GPU by setting <code class="docutils literal notranslate"><span class="pre">device</span> <span class="pre">=</span> <span class="pre">gpu</span></code> and <code class="docutils literal notranslate"><span class="pre">floatX</span> <span class="pre">=</span> <span class="pre">float32</span></code> in your <code class="docutils literal notranslate"><span class="pre">.theanorc</span></code>.</p>
 <p>You might argue that the above network isn’t really deep, but note that we could easily extend it to have more layers, including convolutional ones to train on more challenging data sets, as demonstrated [here](<a class="reference external" href="https://twiecki.github.io/blog/2016/07/05/bayesian-deep-learning/">follow-up blog post on how to use Lasagne together with PyMC3</a>.</p>
-</div>
-<div class="section" id="acknowledgements">
-<h2>Acknowledgements<a class="headerlink" href="#acknowledgements" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="acknowledgements">
+<h2>Acknowledgements<a class="headerlink" href="#acknowledgements" title="Permalink to this heading">#</a></h2>
 <p>This notebook is very much inspired by a blog post written by Thomas Wiecki (and updated by Maxim Kochurov). The
 original posts are available <a class="reference external" href="http://twiecki.github.io/blog/2016/06/01/bayesian-deep-learning/">here</a> and <a class="reference external" href="https://docs.pymc.io/notebooks/bayesian_neural_network_advi.html">here</a>.</p>
 <p>This example uses the <a class="reference external" href="https://docs.pymc.io/">PyMC3</a> package for probabilistic programming, and relies in particular on the <a class="reference external" href="http://pymc-devs.github.io/pymc3/api.html#advi">ADVI</a> implementation by <a class="reference external" href="https://github.com/taku-y">Taku Yoshioka</a>.</p>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
         requestKernel: true,
         binderOptions: {
-            repo: "furnstahl/Physics-8820",
+            repo: "DanielRPhillips/LearningFromData",
             ref: "main",
         },
         codeMirrorConfig: {
@@ -1430,7 +1090,7 @@ original posts are available <a class="reference external" href="http://twiecki.
             mode: "conda-env-8805-env-py"
         },
         kernelOptions: {
-            kernelName: "conda-env-8805-env-py",
+            name: "conda-env-8805-env-py",
             path: "./notebooks/Machine_learning"
         },
         predefinedOutput: true
@@ -1438,36 +1098,127 @@ original posts are available <a class="reference external" href="http://twiecki.
     </script>
     <script>kernelName = 'conda-env-8805-env-py'</script>
 
-              </div>
+                </article>
               
-        
-        <div class='prev-next-bottom'>
-            
-    <a class='left-prev' id="prev-link" href="../../content/Machine_learning/lecture_24.html" title="previous page"><span class="section-number">9.8. </span>Lecture 24</a>
-    <a class='right-next' id="next-link" href="Convolutional_neural_network_explained.html" title="next page"><span class="section-number">9.10. </span>What is a convolutional neural network?</a>
 
-        </div>
-        
-        </div>
-    </div>
-    <footer class="footer mt-5 mt-md-0">
-    <div class="container">
-      <p>
-        
-          By Dick Furnstahl<br/>
-        
-            &copy; Copyright 2021.<br/>
-      </p>
-    </div>
-  </footer>
-</main>
-
-
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../../content/Machine_learning/lecture_24.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">9.8. </span>Lecture 24</p>
       </div>
-    </div>
+    </a>
+    <a class="right-next"
+       href="Convolutional_neural_network_explained.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">9.10. </span>What is a convolutional neural network?</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
   
-  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+</div>
 
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#current-trends-in-machine-learning">Current trends in Machine Learning</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#probabilistic-programming-at-scale">Probabilistic Programming at scale</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-learning">Deep Learning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bridging-deep-learning-and-probabilistic-programming">Bridging Deep Learning and Probabilistic Programming</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bayesian-neural-networks-in-pymc3">Bayesian Neural Networks in PyMC3</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generating-data">Generating data</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#import-theano-and-pymc3">Import theano and pymc3</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-specification">Model specification</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variational-inference-scaling-model-complexity">Variational Inference: Scaling model complexity</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lets-look-at-what-the-classifier-has-learned">Lets look at what the classifier has learned</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#probability-surface">Probability surface</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uncertainty-in-predicted-value">Uncertainty in predicted value</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mini-batch-advi">Mini-batch ADVI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next steps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acknowledgements">Acknowledgements</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
   
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dick Furnstahl
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2021.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
   </body>
 </html>
