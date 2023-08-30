@@ -1,922 +1,581 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
     <title>2.11. Linear algebra games including SVD for PCA &#8212; Learning from data</title>
-    
-  <link href="../../_static/css/theme.css" rel="stylesheet" />
-  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.e8e5499552300ddf5d7adccae7cc3b70.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/togglebutton.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
-    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
-    <script>
-        const thebe_selector = ".thebe,.cell"
-        const thebe_selector_input = "pre,.cell_input div.highlight"
-        const thebe_selector_output = ".output,.cell_output"
-    </script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
-    <script>window.MathJax = {"tex": {"macros": {"N": ["\\mathbb{N}"], "Z": ["\\mathbb{Z}"], "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"], "alphavec": ["\\boldsymbol{\\alpha}"], "muvec": ["\\boldsymbol{\\mu}"], "phivec": ["\\boldsymbol{\\phi}"], "sigmavec": ["\\boldsymbol{\\sigma}"], "Sigmavec": ["\\boldsymbol{\\Sigma}"], "thetavec": ["\\boldsymbol{\\theta}"], "thetavechat": ["\\widehat\\thetavec"], "avec": ["\\boldsymbol{a}"], "Bvec": ["\\boldsymbol{B}"], "fvec": ["\\boldsymbol{f}"], "mvec": ["\\boldsymbol{m}"], "qvec": ["\\boldsymbol{q}"], "rvec": ["\\boldsymbol{r}"], "uvec": ["\\boldsymbol{u}"], "wvec": ["\\boldsymbol{w}"], "xvec": ["\\boldsymbol{x}"], "yvec": ["\\boldsymbol{y}"], "Lra": ["\\Longrightarrow"], "abar": ["\\overline a"], "Xbar": ["\\overline X"], "alphahat": ["\\widehat\\alpha"], "Hhat": ["\\hat H"], "yth": ["y_{\\text{th}}"], "yexp": ["y_{\\text{exp}}"], "ym": ["y_{\\text{m}}"], "gs": ["{0}"]}}}</script>
+    <script>window.MathJax = {"tex": {"macros": {"N": ["\\mathbb{N}"], "Z": ["\\mathbb{Z}"], "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"], "alphavec": ["\\boldsymbol{\\alpha}"], "muvec": ["\\boldsymbol{\\mu}"], "phivec": ["\\boldsymbol{\\phi}"], "sigmavec": ["\\boldsymbol{\\sigma}"], "Sigmavec": ["\\boldsymbol{\\Sigma}"], "thetavec": ["\\boldsymbol{\\theta}"], "thetavechat": ["\\widehat\\thetavec"], "avec": ["\\boldsymbol{a}"], "Bvec": ["\\boldsymbol{B}"], "fvec": ["\\boldsymbol{f}"], "mvec": ["\\boldsymbol{m}"], "qvec": ["\\boldsymbol{q}"], "rvec": ["\\boldsymbol{r}"], "uvec": ["\\boldsymbol{u}"], "wvec": ["\\boldsymbol{w}"], "xvec": ["\\boldsymbol{x}"], "yvec": ["\\boldsymbol{y}"], "Lra": ["\\Longrightarrow"], "abar": ["\\overline a"], "Xbar": ["\\overline X"], "alphahat": ["\\widehat\\alpha"], "Hhat": ["\\hat H"], "yth": ["y_{\\text{th}}"], "yexp": ["y_{\\text{exp}}"], "ym": ["y_{\\text{m}}"], "gs": ["{0}"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/Parameter_estimation/linear_algebra_games_I';</script>
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="2.12. Follow-up: fluctuation trends with # of points and data errors" href="../assignments/fluctuation_trend_with_number_of_points_and_data_errors.html" />
     <link rel="prev" title="2.10. Linear Regression exercise" href="exercise_LinearRegression.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="en" />
-    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
-    
-    <div class="container-fluid" id="banner"></div>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
 
-    <div class="container-xl">
-      <div class="row">
-          
-<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+  
+  <div class="sidebar-header-items sidebar-primary__section">
     
-        <div class="navbar-brand-box">
-    <a class="navbar-brand text-wrap" href="../../index.html">
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../about.html">
+  
+  
+  
+  
+    
+    
       
-      <img src="../../_static/8820_icon.png" class="logo" alt="logo">
-      
-      
-      <h1 class="site-logo" id="site-title">Learning from data</h1>
-      
-    </a>
-</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-    <div class="bd-toc-item active">
-        <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../about.html">
-   About this Jupyter Book
-  </a>
- </li>
-</ul>
-<p class="caption" role="heading">
- <span class="caption-text">
-  Course overview
- </span>
-</p>
+    
+    
+    <img src="../../_static/buqeye_logo_web.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/buqeye_logo_web.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../about.html">
+                    About this Jupyter Book
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Course overview</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../content/Course/overview.html">
-   Objectives
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../../content/Course/overview.html">Objectives</a></li>
 </ul>
-<p class="caption" role="heading">
- <span class="caption-text">
-  Topics
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Topics</span></p>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../content/Basics/basics.html">
-   1. Basics of Bayesian statistics
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Basics/lecture_01.html">
-     1.1. Lecture 1
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Basics/Exploring_pdfs.html">
-     1.2. Exploring PDFs
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Basics/simple_sum_product_rule.html">
-     1.3. Checking the sum and product rules, and their consequences
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Basics/lecture_02.html">
-     1.4. Lecture 2
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Basics/Bayesian_updating_coinflip_interactive.html">
-     1.5. Interactive Bayesian updating: coin flipping example
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Basics/medical_example_by_Bayes.html">
-     1.6. Standard medical example by applying Bayesian rules of probability
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Basics/radioactive_lighthouse_exercise.html">
-     1.7. Radioactive lighthouse problem
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Basics/lecture_03.html">
-     1.8. Lecture 3
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 current active has-children">
-  <a class="reference internal" href="../../content/Parameter_estimation/param_est.html">
-   2. Bayesian parameter estimation
-  </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Parameter_estimation/lecture_04.html">
-     2.1. Lecture 4: Parameter estimation
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="parameter_estimation_Gaussian_noise.html">
-     2.2. Parameter estimation example: Gaussian noise and averages
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Assignment_extending_radioactive_lighthouse.html">
-     2.3. Assignment: 2D radioactive lighthouse location using MCMC
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Parameter_estimation/lecture_05.html">
-     2.4. Lecture 5
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="parameter_estimation_fitting_straight_line_I.html">
-     2.5. Parameter estimation example: fitting a straight line
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="demo-ModelValidation.html">
-     2.6. Linear Regression and Model Validation demonstration
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Parameter_estimation/lecture_06.html">
-     2.7. Lecture 6
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="amplitude_in_presence_of_background.html">
-     2.8. Amplitude of a signal in the presence of background
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Assignment_parameter_estimation_followups.html">
-     2.9. Assignment: Follow-ups to Parameter Estimation notebooks
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="exercise_LinearRegression.html">
-     2.10. Linear Regression exercise
-    </a>
-   </li>
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
-     2.11. Linear algebra games including SVD for PCA
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/fluctuation_trend_with_number_of_points_and_data_errors.html">
-     2.12. Follow-up: fluctuation trends with # of points and data errors
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../content/MCMC_sampling_I/MCMC_sampling_I.html">
-   3. MCMC sampling I
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-  <label for="toctree-checkbox-3">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/MCMC_sampling_I/lecture_07.html">
-     3.1. Lecture 7
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../MCMC_sampling_I/Metropolis_Poisson_example.html">
-     3.2. Metropolis-Hasting MCMC sampling of a Poisson distribution
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/MCMC_sampling_I/lecture_08.html">
-     3.3. Lecture 8
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../MCMC_sampling_I/MCMC-random-walk-and-sampling.html">
-     3.4. Exercise: Random walk
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../content/Why_Bayes_is_better/bayes_is_better.html">
-   4. Why Bayes is better
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-  <label for="toctree-checkbox-4">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Why_Bayes_is_better/lecture_09.html">
-     4.1. Lecture 9
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Why_Bayes_is_better/bayes_billiard.html">
-     4.2. A Bayesian Billiard game
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Why_Bayes_is_better/lecture_10.html">
-     4.3. Lecture 10
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Why_Bayes_is_better/parameter_estimation_fitting_straight_line_II.html">
-     4.4. Parameter estimation example: fitting a straight line II
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Why_Bayes_is_better/lecture_11.html">
-     4.5. Lecture 11
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Why_Bayes_is_better/error_propagation_to_functions_of_uncertain_parameters.html">
-     4.6. Error propagation: Example 3.6.2 in Sivia
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Basics/visualization_of_CLT.html">
-     4.7. Visualization of the Central Limit Theorem
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Basics/correlation_intuition.html">
-     4.8. Building intuition about correlations (and a bit of Python linear algebra)
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Why_Bayes_is_better/lecture_12.html">
-     4.9. Lecture 12
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../MCMC_sampling_I/MCMC-diagnostics.html">
-     4.10. Overview: MCMC Diagnostics
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Why_Bayes_is_better/lecture_13.html">
-     4.12. Lecture 13
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Why_Bayes_is_better/dealing_with_outliers.html">
-     4.13. Dealing with outliers
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../content/Model_selection/model_selection.html">
-   5. Model selection
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
-  <label for="toctree-checkbox-5">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Model_selection/lecture_14.html">
-     5.1. Lecture 14
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Model_selection/lecture_15.html">
-     5.2. Lecture 15
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Model_selection/Evidence_for_model_EFT_coefficients.html">
-     5.3. Evidence calculation for EFT expansions
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Model_selection/lecture_16.html">
-     5.4. Lecture 16
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../mini-projects/MCMC-parallel-tempering_ptemcee.html">
-     5.5. Example: Parallel tempering for multimodal distributions
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../mini-projects/MCMC-parallel-tempering_ptemcee_vs_zeus.html">
-     5.6. Example: Parallel tempering for multimodal distributions vs. zeus
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../content/MCMC_sampling_II/MCMC_sampling_II.html">
-   6. MCMC sampling II
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
-  <label for="toctree-checkbox-6">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/MCMC_sampling_II/lecture_17.html">
-     6.1. Lecture 17
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../MCMC_sampling_II/chi_squared_tests.html">
-     6.2. Quick check of the distribution of normal variables squared
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../MCMC_sampling_II/Liouville_theorem_visualization.html">
-     6.3. Liouville Theorem Visualization
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../MCMC_sampling_II/Orbital_eqs_with_different_algorithms.html">
-     6.4. Solving orbital equations with different algorithms
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/MCMC_sampling_II/lecture_18.html">
-     6.5. Lecture 18
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../MCMC_sampling_II/PyMC3_intro_updated.html">
-     6.6. PyMC3 Introduction
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../MCMC_sampling_II/PyMC3_docs_getting_started_updated.html">
-     6.7. Getting started with PyMC3
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="parameter_estimation_Gaussian_noise_compare_samplers.html">
-     6.8. Comparing samplers for a simple problem
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../mini-projects/zeus_multimodal.html">
-     6.9. zeus: Sampling from multimodal distributions
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../content/Gaussian_processes/gaussian_processes.html">
-   7. Gaussian processes
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
-  <label for="toctree-checkbox-7">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Gaussian_processes/lecture_19.html">
-     7.1. Lecture 19
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Gaussian_processes/demo-GaussianProcesses.html">
-     7.2. Gaussian processes demonstration
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Gaussian_processes/GaussianProcesses.html">
-     7.3. Learning from data: Gaussian processes
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Gaussian_processes/Gaussian_processes_exercises.html">
-     7.4. Exercise: Gaussian Process models with GPy
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Gaussian_processes/lecture_20.html">
-     7.5. Lecture 20
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../content/Maximum_entropy/max_ent.html">
-   8. Assigning probabilities
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
-  <label for="toctree-checkbox-8">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Maximum_entropy/lecture_21.html">
-     8.1. Lecture 21
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Maximum_entropy/MaxEnt.html">
-     8.2. Ignorance pdfs: Indifference and translation groups
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Maximum_entropy/Pdfs_from_MaxEnt.html">
-     8.3. MaxEnt for deriving some probability distributions
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Maximum_entropy/MaxEnt_Function_Reconstruction.html">
-     8.4. Maximum Entropy for reconstructing a function from its moments
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Maximum_entropy/demo-MaxEnt.html">
-     8.5. Making figures for Ignorance PDF notebook
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../content/Machine_learning/machine_learning.html">
-   9. Machine learning: Bayesian methods
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
-  <label for="toctree-checkbox-9">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Machine_learning/lecture_22.html">
-     9.1. Lecture 22
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Machine_learning/Bayesian_optimization.html">
-     9.2. Bayesian Optimization
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Machine_learning/lecture_23.html">
-     9.3. Lecture 23
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Machine_learning/Neural_networks_explained.html">
-     9.4. What Are Neural Networks?
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Machine_learning/Forssen_tif285_NeuralNet.html">
-     9.5. Neural networks
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Machine_learning/Forssen_tif285_demo-NeuralNet.html">
-     9.6. Neural network classifier demonstration
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Machine_learning/Bayesian_neural_networks_tif285.html">
-     9.7. Bayesian neural networks
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/Machine_learning/lecture_24.html">
-     9.8. Lecture 24
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Machine_learning/demo-Bayesian_neural_networks_tif285.html">
-     9.9. Variational Inference: Bayesian Neural Networks
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Machine_learning/Convolutional_neural_network_explained.html">
-     9.10. What is a convolutional neural network?
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../content/SVD/svd.html">
-   10. PCA, SVD, and all that
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
-  <label for="toctree-checkbox-10">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../content/SVD/lecture_25.html">
-     10.1. Lecture 25
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../SVD/linear_algebra_games_including_SVD.html">
-     10.2. Linear algebra games including SVD for PCA
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../content/Basics/basics.html">1. Basics of Bayesian statistics</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Basics/lecture_01.html">1.1. Lecture 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Basics/Exploring_pdfs.html">1.2. Exploring PDFs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Basics/simple_sum_product_rule.html">1.3. Checking the sum and product rules, and their consequences</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Basics/lecture_02.html">1.4. Lecture 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Basics/Bayesian_updating_coinflip_interactive.html">1.5. Interactive Bayesian updating: coin flipping example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Basics/medical_example_by_Bayes.html">1.6. Standard medical example by applying Bayesian rules of probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Basics/radioactive_lighthouse_exercise.html">1.7. Radioactive lighthouse problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Basics/lecture_03.html">1.8. Lecture 3</a></li>
 </ul>
-<p class="caption" role="heading">
- <span class="caption-text">
-  Mini-projects
- </span>
-</p>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../../content/Parameter_estimation/param_est.html">2. Bayesian parameter estimation</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../content/Parameter_estimation/lecture_04.html">2.1. Lecture 4: Parameter estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parameter_estimation_Gaussian_noise.html">2.2. Parameter estimation example: Gaussian noise and averages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Assignment_extending_radioactive_lighthouse.html">2.3. Assignment: 2D radioactive lighthouse location using MCMC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Parameter_estimation/lecture_05.html">2.4. Lecture 5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parameter_estimation_fitting_straight_line_I.html">2.5. Parameter estimation example: fitting a straight line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demo-ModelValidation.html">2.6. Linear Regression and Model Validation demonstration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Parameter_estimation/lecture_06.html">2.7. Lecture 6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="amplitude_in_presence_of_background.html">2.8. Amplitude of a signal in the presence of background</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Assignment_parameter_estimation_followups.html">2.9. Assignment: Follow-ups to Parameter Estimation notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exercise_LinearRegression.html">2.10. Linear Regression exercise</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">2.11. Linear algebra games including SVD for PCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/fluctuation_trend_with_number_of_points_and_data_errors.html">2.12. Follow-up: fluctuation trends with # of points and data errors</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../content/MCMC_sampling_I/MCMC_sampling_I.html">3. MCMC sampling I</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../content/MCMC_sampling_I/lecture_07.html">3.1. Lecture 7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../MCMC_sampling_I/Metropolis_Poisson_example.html">3.2. Metropolis-Hasting MCMC sampling of a Poisson distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/MCMC_sampling_I/lecture_08.html">3.3. Lecture 8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../MCMC_sampling_I/MCMC-random-walk-and-sampling.html">3.4. Exercise: Random walk</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../content/Why_Bayes_is_better/bayes_is_better.html">4. Why Bayes is better</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Why_Bayes_is_better/lecture_09.html">4.1. Lecture 9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Why_Bayes_is_better/bayes_billiard.html">4.2. A Bayesian Billiard game</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Why_Bayes_is_better/lecture_10.html">4.3. Lecture 10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Why_Bayes_is_better/parameter_estimation_fitting_straight_line_II.html">4.4. Parameter estimation example: fitting a straight line II</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Why_Bayes_is_better/lecture_11.html">4.5. Lecture 11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Why_Bayes_is_better/error_propagation_to_functions_of_uncertain_parameters.html">4.6. Error propagation: Example 3.6.2 in Sivia</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Basics/visualization_of_CLT.html">4.7. Visualization of the Central Limit Theorem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Basics/correlation_intuition.html">4.8. Building intuition about correlations (and a bit of Python linear algebra)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Why_Bayes_is_better/lecture_12.html">4.9. Lecture 12</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../MCMC_sampling_I/MCMC-diagnostics.html">4.10. Overview: MCMC Diagnostics</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../content/Why_Bayes_is_better/lecture_13.html">4.12. Lecture 13</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Why_Bayes_is_better/dealing_with_outliers.html">4.13. Dealing with outliers</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../content/Model_selection/model_selection.html">5. Model selection</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Model_selection/lecture_14.html">5.1. Lecture 14</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Model_selection/lecture_15.html">5.2. Lecture 15</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Model_selection/Evidence_for_model_EFT_coefficients.html">5.3. Evidence calculation for EFT expansions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Model_selection/lecture_16.html">5.4. Lecture 16</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mini-projects/MCMC-parallel-tempering_ptemcee.html">5.5. Example: Parallel tempering for multimodal distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mini-projects/MCMC-parallel-tempering_ptemcee_vs_zeus.html">5.6. Example: Parallel tempering for multimodal distributions vs. zeus</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../content/MCMC_sampling_II/MCMC_sampling_II.html">6. MCMC sampling II</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../content/MCMC_sampling_II/lecture_17.html">6.1. Lecture 17</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../MCMC_sampling_II/chi_squared_tests.html">6.2. Quick check of the distribution of normal variables squared</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../MCMC_sampling_II/Liouville_theorem_visualization.html">6.3. Liouville Theorem Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../MCMC_sampling_II/Orbital_eqs_with_different_algorithms.html">6.4. Solving orbital equations with different algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/MCMC_sampling_II/lecture_18.html">6.5. Lecture 18</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../MCMC_sampling_II/PyMC3_intro_updated.html">6.6. PyMC3 Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../MCMC_sampling_II/PyMC3_docs_getting_started_updated.html">6.7. Getting started with PyMC3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parameter_estimation_Gaussian_noise_compare_samplers.html">6.8. Comparing samplers for a simple problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mini-projects/zeus_multimodal.html">6.9. zeus: Sampling from multimodal distributions</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../content/Gaussian_processes/gaussian_processes.html">7. Gaussian processes</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Gaussian_processes/lecture_19.html">7.1. Lecture 19</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Gaussian_processes/demo-GaussianProcesses.html">7.2. Gaussian processes demonstration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Gaussian_processes/GaussianProcesses.html">7.3. Learning from data: Gaussian processes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Gaussian_processes/Gaussian_processes_exercises.html">7.4. Exercise: Gaussian Process models with GPy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Gaussian_processes/lecture_20.html">7.5. Lecture 20</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../content/Maximum_entropy/max_ent.html">8. Assigning probabilities</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Maximum_entropy/lecture_21.html">8.1. Lecture 21</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Maximum_entropy/MaxEnt.html">8.2. Ignorance pdfs: Indifference and translation groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Maximum_entropy/Pdfs_from_MaxEnt.html">8.3. MaxEnt for deriving some probability distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Maximum_entropy/MaxEnt_Function_Reconstruction.html">8.4. Maximum Entropy for reconstructing a function from its moments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Maximum_entropy/demo-MaxEnt.html">8.5. Making figures for Ignorance PDF notebook</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../content/Machine_learning/machine_learning.html">9. Machine learning: Bayesian methods</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Machine_learning/lecture_22.html">9.1. Lecture 22</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Machine_learning/Bayesian_optimization.html">9.2. Bayesian Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Machine_learning/lecture_23.html">9.3. Lecture 23</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Machine_learning/Neural_networks_explained.html">9.4. What Are Neural Networks?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Machine_learning/Forssen_tif285_NeuralNet.html">9.5. Neural networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Machine_learning/Forssen_tif285_demo-NeuralNet.html">9.6. Neural network classifier demonstration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Machine_learning/Bayesian_neural_networks_tif285.html">9.7. Bayesian neural networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Machine_learning/lecture_24.html">9.8. Lecture 24</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Machine_learning/demo-Bayesian_neural_networks_tif285.html">9.9. Variational Inference: Bayesian Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Machine_learning/Convolutional_neural_network_explained.html">9.10. What is a convolutional neural network?</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../content/SVD/svd.html">10. PCA, SVD, and all that</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../content/SVD/lecture_25.html">10.1. Lecture 25</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SVD/linear_algebra_games_including_SVD.html">10.2. Linear algebra games including SVD for PCA</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Mini-projects</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../mini-projects/mini-project_I_toy_model_of_EFT.html">
-   Mini-project I: Parameter estimation for a toy model of an EFT
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../mini-projects/model-selection_mini-project-IIa.html">
-   Mini-project IIa: Model selection basics
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../mini-projects/model-selection_mini-project-IIb_How_many_lines_ptemcee.html">
-   Mini-project IIb: How many lines are there?
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../mini-projects/mini-project_IIIa_bayesian_optimization.html">
-   Mini-project IIIa: Bayesian optimization
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../mini-projects/mini-project_IIIb_Bayesian_neural_networks_from_demo.html">
-   Mini-project IIIb: Bayesian Neural Networks
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../mini-projects/mini-project_I_toy_model_of_EFT.html">Mini-project I: Parameter estimation for a toy model of an EFT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mini-projects/model-selection_mini-project-IIa.html">Mini-project IIa: Model selection basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mini-projects/model-selection_mini-project-IIb_How_many_lines_ptemcee.html">Mini-project IIb: How many lines are there?</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../mini-projects/mini-project_IIIa_bayesian_optimization.html">Mini-project IIIa: Bayesian optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mini-projects/mini-project_IIIb_Bayesian_neural_networks_from_demo.html">Mini-project IIIb: Bayesian Neural Networks</a></li>
 </ul>
-<p class="caption" role="heading">
- <span class="caption-text">
-  Reference material
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference material</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../content/zbibliography.html">
-   Bibliography
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../content/related_topics.html">
-   Related topics
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../content/Reference/installing_anaconda.html">
-   Using Anaconda
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../content/Reference/using_github.html">
-   Using GitHub
-  </a>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../content/Reference/python_jupyter.html">
-   Python and Jupyter notebooks
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
-  <label for="toctree-checkbox-11">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Reference/Jupyter_Python_intro_01.html">
-     Python and Jupyter notebooks: part 01
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../Reference/Jupyter_Python_intro_02.html">
-     Python and Jupyter notebooks: part 02
-    </a>
-   </li>
+<li class="toctree-l1"><a class="reference internal" href="../../content/zbibliography.html">Bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../content/related_topics.html">Related topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../content/Reference/installing_anaconda.html">Using Anaconda</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../content/Reference/using_github.html">Using GitHub</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../content/Reference/python_jupyter.html">Python and Jupyter notebooks</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Reference/Jupyter_Python_intro_01.html">Python and Jupyter notebooks: part 01</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Reference/Jupyter_Python_intro_02.html">Python and Jupyter notebooks: part 02</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../content/jb_tests.html">Examples: Jupyter jb-book</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Notebook keys</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../Basics/simple_sum_product_rule_KEY.html">Checking the sum and product rules, and their consequences <span style="color: red">Key</span></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Basics/medical_example_by_Bayes_KEY.html">Standard medical example by applying Bayesian rules of probability <span style="color: red">Key</span></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Basics/radioactive_lighthouse_exercise_key.html">Radioactive lighthouse problem  <span style="color: red">Key</span></a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/DanielRPhillips/LearningFromData/main?urlpath=tree/./LectureNotes/notebooks/Parameter_estimation/linear_algebra_games_I.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onBinder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="initThebeSBT()"
+  class="btn btn-sm btn-launch-thebe dropdown-item"
+  title="Launch Thebe"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-play"></i>
+  </span>
+<span class="btn__text-container">Live Code</span>
+</button>
+</li>
+      
   </ul>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../content/jb_tests.html">
-   Examples: Jupyter jb-book
-  </a>
- </li>
-</ul>
-<p class="caption" role="heading">
- <span class="caption-text">
-  Notebook keys
- </span>
-</p>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../Basics/simple_sum_product_rule_KEY.html">
-   Checking the sum and product rules, and their consequences
-   <span style="color: red">
-    Key
-   </span>
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../Basics/medical_example_by_Bayes_KEY.html">
-   Standard medical example by applying Bayesian rules of probability
-   <span style="color: red">
-    Key
-   </span>
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../Basics/radioactive_lighthouse_exercise_key.html">
-   Radioactive lighthouse problem
-   <span style="color: red">
-    Key
-   </span>
-  </a>
- </li>
-</ul>
+</div>
 
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/DanielRPhillips/LearningFromData" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/DanielRPhillips/LearningFromData/issues/new?title=Issue%20on%20page%20%2Fnotebooks/Parameter_estimation/linear_algebra_games_I.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/Parameter_estimation/linear_algebra_games_I.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
     </div>
-</nav> <!-- To handle the deprecated key -->
-
-<div class="navbar_extra_footer">
-  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+  
 </div>
-
 </div>
+              
+              
 
-
-          
-
-
-          
-<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
-    
-    <div class="topbar container-xl fixed-top">
-    <div class="topbar-contents row">
-        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
-        <div class="col pl-md-4 topbar-main">
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Linear algebra games including SVD for PCA</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
             
-            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
-                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
-                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
-                <i class="fas fa-bars"></i>
-                <i class="fas fa-arrow-left"></i>
-                <i class="fas fa-arrow-up"></i>
-            </button>
-            
-            
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
-            class="fas fa-download"></i></button>
-
-    <div class="dropdown-buttons">
-        <!-- ipynb file if we had a myst markdown file -->
-        
-        <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../_sources/notebooks/Parameter_estimation/linear_algebra_games_I.ipynb"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.ipynb</button></a>
-        <!-- Download PDF via print -->
-        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
-    </div>
-</div>
-
-            <!-- Source interaction buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
-    <div class="dropdown-buttons sourcebuttons">
-        <a class="repository-button"
-            href="https://github.com/furnstahl/Physics-8820"><button type="button" class="btn btn-secondary topbarbtn"
-                data-toggle="tooltip" data-placement="left" title="Source repository"><i
-                    class="fab fa-github"></i>repository</button></a>
-        <a class="issues-button"
-            href="https://github.com/furnstahl/Physics-8820/issues/new?title=Issue%20on%20page%20%2Fnotebooks/Parameter_estimation/linear_algebra_games_I.html&body=Your%20issue%20content%20here."><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
-        
-    </div>
-</div>
-
-            <!-- Full screen (wrap in <a> to have style consistency -->
-
-<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-        title="Fullscreen mode"><i
-            class="fas fa-expand"></i></button></a>
-
-            <!-- Launch buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
-    <div class="dropdown-buttons">
-        
-        <a class="binder-button" href="https://mybinder.org/v2/gh/furnstahl/Physics-8820/main?urlpath=tree/./LectureNotes/notebooks/Parameter_estimation/linear_algebra_games_I.ipynb"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
-                data-placement="left"><img class="binder-button-logo"
-                    src="../../_static/images/logo_binder.svg"
-                    alt="Interact on binder">Binder</button></a>
-        
-        
-        
-        <button type="button" class="btn btn-secondary topbarbtn"
-            onclick="initThebeSBT()" title="Launch Thebe" data-toggle="tooltip" data-placement="left"><i
-                class="fas fa-play"></i><span style="margin-left: .4em;">Live Code</span></button>
-        
-    </div>
-</div>
-
-        </div>
-
-        <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show">
-            
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
+            <div>
+                <h2> Contents </h2>
             </div>
-            <nav id="bd-toc-nav">
+            <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#preliminary-exercise-manipulations-using-the-index-form-of-matrices">
-   Preliminary exercise: manipulations using the index form of matrices
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#svd-basics">
-   SVD basics
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#geometric-interpretation-of-svd">
-     Geometric interpretation of SVD
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#solving-matrix-equations-with-svd">
-     Solving matrix equations with SVD
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#data-reduction">
-     Data reduction
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#python-imports">
-   Python imports
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#svd-applied-to-images-for-compression">
-   SVD applied to images for compression
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#aside-dissection-of-the-python-statement-to-find-the-index-for-accumulation">
-     Aside: dissection of the Python statement to find the index for accumulation
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#things-to-do">
-     Things to do:
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#covariance-pca-and-svd">
-   Covariance, PCA and SVD
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#eigendecomposition-of-the-covariance-matrix">
-     Eigendecomposition of the covariance matrix
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pca-from-duke-course">
-     PCA (from Duke course)
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#principal-components">
-       Principal components
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#using-svd-for-pca">
-     Using SVD for PCA
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#exercises-covariance-matrix-manipulations-in-python-taken-from-the-duke-course">
-   Exercises: covariance matrix manipulations in Python (taken from the Duke course)
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preliminary-exercise-manipulations-using-the-index-form-of-matrices">Preliminary exercise: manipulations using the index form of matrices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#svd-basics">SVD basics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#geometric-interpretation-of-svd">Geometric interpretation of SVD</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-matrix-equations-with-svd">Solving matrix equations with SVD</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-reduction">Data reduction</a></li>
 </ul>
-
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-imports">Python imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#svd-applied-to-images-for-compression">SVD applied to images for compression</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#aside-dissection-of-the-python-statement-to-find-the-index-for-accumulation">Aside: dissection of the Python statement to find the index for accumulation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#things-to-do">Things to do:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covariance-pca-and-svd">Covariance, PCA and SVD</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eigendecomposition-of-the-covariance-matrix">Eigendecomposition of the covariance matrix</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pca-from-duke-course">PCA (from Duke course)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#principal-components">Principal components</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-svd-for-pca">Using SVD for PCA</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-covariance-matrix-manipulations-in-python-taken-from-the-duke-course">Exercises: covariance matrix manipulations in Python (taken from the Duke course)</a></li>
+</ul>
             </nav>
         </div>
     </div>
 </div>
-    <div id="main-content" class="row">
-        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-        
-              <div>
+
+              
                 
-  <div class="section" id="linear-algebra-games-including-svd-for-pca">
-<h1><span class="section-number">2.11. </span>Linear algebra games including SVD for PCA<a class="headerlink" href="#linear-algebra-games-including-svd-for-pca" title="Permalink to this headline">¶</a></h1>
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="linear-algebra-games-including-svd-for-pca">
+<h1><span class="section-number">2.11. </span>Linear algebra games including SVD for PCA<a class="headerlink" href="#linear-algebra-games-including-svd-for-pca" title="Permalink to this heading">#</a></h1>
 <p>Some parts adapted from <a class="reference external" href="https://github.com/cliburn/Computational-statistics-with-Python">Computational-statistics-with-Python.ipynb</a>, which is itself from a course taught at Duke University; other parts from Peter Mills’ <a class="reference external" href="https://blog.statsbot.co/singular-value-decomposition-tutorial-52c695315254">blog</a>.</p>
 <p>The goal here is to practice some linear algebra manipulations by hand and with Python, and to gain some experience and intuition with the Singular Value Decomposition (SVD).
 <span class="math notranslate nohighlight">\(\newcommand{\Amat}{\mathbf{A}} \newcommand{\AmatT}{\mathbf{A^\top}}
@@ -924,8 +583,8 @@
 \newcommand{\Sigmamat}{\mathbf{\Sigma}}
 \newcommand{\Yvec}{\mathbf{Y}}
 \)</span></p>
-<div class="section" id="preliminary-exercise-manipulations-using-the-index-form-of-matrices">
-<h2>Preliminary exercise: manipulations using the index form of matrices<a class="headerlink" href="#preliminary-exercise-manipulations-using-the-index-form-of-matrices" title="Permalink to this headline">¶</a></h2>
+<section id="preliminary-exercise-manipulations-using-the-index-form-of-matrices">
+<h2>Preliminary exercise: manipulations using the index form of matrices<a class="headerlink" href="#preliminary-exercise-manipulations-using-the-index-form-of-matrices" title="Permalink to this heading">#</a></h2>
 <p>If you haven’t already done this earlier, prove that the Maximum Likelihood Estimate (MLE) for <span class="math notranslate nohighlight">\(\chi^2\)</span> given by</p>
 <div class="math notranslate nohighlight">
 \[
@@ -957,9 +616,9 @@
 <li><p>You should get the matrix equation <span class="math notranslate nohighlight">\( (\AmatT \Sigmamat^{-1} \Yvec) = (\AmatT \Sigmamat^{-1} \Amat)\thetavec\)</span>. At this point you can directly solve for <span class="math notranslate nohighlight">\(\thetavec\)</span>. <em>Why can you do this now?</em></p></li>
 <li><p>If you get stuck, see Dick’s notes from the Parameter Estimation III lecture.</p></li>
 </ul>
-</div>
-<div class="section" id="svd-basics">
-<h2>SVD basics<a class="headerlink" href="#svd-basics" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="svd-basics">
+<h2>SVD basics<a class="headerlink" href="#svd-basics" title="Permalink to this heading">#</a></h2>
 <p>A singular value decomposition (SVD) decomposes a matrix <span class="math notranslate nohighlight">\(A\)</span> into three other matrices (we’ll skip the boldface font here):</p>
 <div class="math notranslate nohighlight">
 \[
@@ -996,8 +655,8 @@ A = U S V^\top
   A_{ij} \approx \sum_{k=1}^{p} U_{ik} S_k V_{jk}
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(p &lt; n\)</span> is the number of singular values included. Typically this is not a large number.</p>
-<div class="section" id="geometric-interpretation-of-svd">
-<h3>Geometric interpretation of SVD<a class="headerlink" href="#geometric-interpretation-of-svd" title="Permalink to this headline">¶</a></h3>
+<section id="geometric-interpretation-of-svd">
+<h3>Geometric interpretation of SVD<a class="headerlink" href="#geometric-interpretation-of-svd" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Geometric interpretation of SVD</p>
 <ul>
@@ -1045,9 +704,9 @@ M^{-1} R^\top X^\top X R M^{-1}= 1.
 \]</div>
 <p>which is just a rearrangement of the equation from above, <span class="math notranslate nohighlight">\(A^\top A V = V S^2\)</span>.</p>
 <p><strong>Interpretation:</strong> If <span class="math notranslate nohighlight">\(A\)</span> is considered to be a collection of points, then the singular values are the axes of a least-squares fitted ellipsoid while <span class="math notranslate nohighlight">\(V\)</span> is its orientation.  The matrix <span class="math notranslate nohighlight">\(U\)</span> is the projection of each of the points in <span class="math notranslate nohighlight">\(A\)</span> onto the axes.</p>
-</div>
-<div class="section" id="solving-matrix-equations-with-svd">
-<h3>Solving matrix equations with SVD<a class="headerlink" href="#solving-matrix-equations-with-svd" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="solving-matrix-equations-with-svd">
+<h3>Solving matrix equations with SVD<a class="headerlink" href="#solving-matrix-equations-with-svd" title="Permalink to this heading">#</a></h3>
 <p>We can solve for <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -1069,14 +728,14 @@ M^{-1} R^\top X^\top X R M^{-1}= 1.
   \min_{\mathbf{x}} |A\mathbf x - b| \;.
 \]</div>
 <p><strong>Task:</strong> <em>prove these results (work backwards from the last equation as a least-squares minimization)</em>.</p>
-</div>
-<div class="section" id="data-reduction">
-<h3>Data reduction<a class="headerlink" href="#data-reduction" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="data-reduction">
+<h3>Data reduction<a class="headerlink" href="#data-reduction" title="Permalink to this heading">#</a></h3>
 <p>For machine learning (ML), there might be several hundred variables but the algorithms are made for a few dozen.  We can use SVD in ML for variable reduction.  This is also the connection to sloppy physics models.  In general, our matrix <span class="math notranslate nohighlight">\(A\)</span> can be closely approximated by only keeping the largest of the singular values.  We’ll see that visually below using images.</p>
-</div>
-</div>
-<div class="section" id="python-imports">
-<h2>Python imports<a class="headerlink" href="#python-imports" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="python-imports">
+<h2>Python imports<a class="headerlink" href="#python-imports" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
@@ -1213,9 +872,9 @@ Ap =  [[ 8.15988596e-01 -5.38974619e-01  1.13170353e+00]
 </div>
 </div>
 <p>For a square matrix, compare the singular values in <span class="math notranslate nohighlight">\(S\)</span> to the eigenvalues from <code class="docutils literal notranslate"><span class="pre">la.eig</span></code>.  What do you conclude?  Now try this for a symmetric matrix (note that a matrix plus its transpose is symmetric).</p>
-</div>
-<div class="section" id="svd-applied-to-images-for-compression">
-<h2>SVD applied to images for compression<a class="headerlink" href="#svd-applied-to-images-for-compression" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="svd-applied-to-images-for-compression">
+<h2>SVD applied to images for compression<a class="headerlink" href="#svd-applied-to-images-for-compression" title="Permalink to this heading">#</a></h2>
 <p>Read in <code class="docutils literal notranslate"><span class="pre">../../_images/elephant.jpg</span></code> as a gray-scale image. The image has <span class="math notranslate nohighlight">\(1066 \times 1600\)</span> values. Using SVD, recreate the image with a relative error of less than 0.5%. What is the relative size of the compressed image as a percentage?</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1231,7 +890,7 @@ Ap =  [[ 8.15988596e-01 -5.38974619e-01  1.13170353e+00]
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>shape of img:  (1066, 1600)
 </pre></div>
 </div>
-<img alt="../../_images/linear_algebra_games_I_20_1.png" src="../../_images/linear_algebra_games_I_20_1.png" />
+<img alt="../../_images/4560aea8eeb53b56c5611a6dc8aba90976e4c870bcc1ca93daf9982a2dcf0f54.png" src="../../_images/4560aea8eeb53b56c5611a6dc8aba90976e4c870bcc1ca93daf9982a2dcf0f54.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1243,7 +902,7 @@ Ap =  [[ 8.15988596e-01 -5.38974619e-01  1.13170353e+00]
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/linear_algebra_games_I_21_0.png" src="../../_images/linear_algebra_games_I_21_0.png" />
+<img alt="../../_images/0f6de9c36e1c0add2d6021c4a25256a4be729bbba00549b36f1cb97fcb844823.png" src="../../_images/0f6de9c36e1c0add2d6021c4a25256a4be729bbba00549b36f1cb97fcb844823.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1281,7 +940,7 @@ Ap =  [[ 8.15988596e-01 -5.38974619e-01  1.13170353e+00]
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1066, 1600)
 </pre></div>
 </div>
-<img alt="../../_images/linear_algebra_games_I_24_1.png" src="../../_images/linear_algebra_games_I_24_1.png" />
+<img alt="../../_images/0f6de9c36e1c0add2d6021c4a25256a4be729bbba00549b36f1cb97fcb844823.png" src="../../_images/0f6de9c36e1c0add2d6021c4a25256a4be729bbba00549b36f1cb97fcb844823.png" />
 </div>
 </div>
 <p>Here’s how we can efficiently reduce the size of the matrices.  Our SVD should be sorted, so we are keeping only the largest singular values up to a point.</p>
@@ -1293,8 +952,8 @@ Ap =  [[ 8.15988596e-01 -5.38974619e-01  1.13170353e+00]
 </div>
 </div>
 </div>
-<div class="section" id="aside-dissection-of-the-python-statement-to-find-the-index-for-accumulation">
-<h3>Aside: dissection of the Python statement to find the index for accumulation<a class="headerlink" href="#aside-dissection-of-the-python-statement-to-find-the-index-for-accumulation" title="Permalink to this headline">¶</a></h3>
+<section id="aside-dissection-of-the-python-statement-to-find-the-index-for-accumulation">
+<h3>Aside: dissection of the Python statement to find the index for accumulation<a class="headerlink" href="#aside-dissection-of-the-python-statement-to-find-the-index-for-accumulation" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
@@ -1335,7 +994,7 @@ The last result is the index we are looking for.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/linear_algebra_games_I_29_0.png" src="../../_images/linear_algebra_games_I_29_0.png" />
+<img alt="../../_images/95a6224e4a2d95afb06bf4f58eb94e9c58a8cdff6e2438ef4692ded15b91660b.png" src="../../_images/95a6224e4a2d95afb06bf4f58eb94e9c58a8cdff6e2438ef4692ded15b91660b.png" />
 </div>
 </div>
 <p>Now keep only the most significant eigenvalues (those up to k).</p>
@@ -1360,7 +1019,7 @@ The last result is the index we are looking for.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/linear_algebra_games_I_32_0.png" src="../../_images/linear_algebra_games_I_32_0.png" />
+<img alt="../../_images/aa47327dec6123af1b5b017b38e5c092d90a4531eacd13c9d336ad2e2dae0a01.png" src="../../_images/aa47327dec6123af1b5b017b38e5c092d90a4531eacd13c9d336ad2e2dae0a01.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1379,7 +1038,7 @@ The last result is the index we are looking for.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/linear_algebra_games_I_34_0.png" src="../../_images/linear_algebra_games_I_34_0.png" />
+<img alt="../../_images/24a20140e62a31e1f7332d166ba74009180eb3a572bf5aa9ed6aa6a23a78d5e8.png" src="../../_images/24a20140e62a31e1f7332d166ba74009180eb3a572bf5aa9ed6aa6a23a78d5e8.png" />
 </div>
 </div>
 <p>Let’s try another interesting picture …</p>
@@ -1432,7 +1091,7 @@ img995 shape = (3088, 2320)
 U shape: (3088, 24), S shape: (24,), V shape: (2320, 24)
 </pre></div>
 </div>
-<img alt="../../_images/linear_algebra_games_I_36_1.png" src="../../_images/linear_algebra_games_I_36_1.png" />
+<img alt="../../_images/68900d3075e2447eebb166b831c6ed4255d68c267f4ea08d2b3770374cea2ded.png" src="../../_images/68900d3075e2447eebb166b831c6ed4255d68c267f4ea08d2b3770374cea2ded.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1449,22 +1108,22 @@ U shape: (3088, 24), S shape: (24,), V shape: (2320, 24)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/linear_algebra_games_I_37_0.png" src="../../_images/linear_algebra_games_I_37_0.png" />
+<img alt="../../_images/89655bbe174c0788b9db405ad4c73253fc83feee9bda4cdc65f1e24f2441e91a.png" src="../../_images/89655bbe174c0788b9db405ad4c73253fc83feee9bda4cdc65f1e24f2441e91a.png" />
 </div>
 </div>
-</div>
-<div class="section" id="things-to-do">
-<h3>Things to do:<a class="headerlink" href="#things-to-do" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="things-to-do">
+<h3>Things to do:<a class="headerlink" href="#things-to-do" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Get your own figure and duplicate these results.  Then play!</p></li>
 <li><p>As you reduce the percentage of the variance kept, what features of the image are retained and what are lost?</p></li>
 <li><p>See how small you can make the percentage and still recognize the picture.</p></li>
 <li><p>How is this related to doing a spatial Fourier transform, applying a low-pass filter, and transforming back.  (Experts: try this!)</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="covariance-pca-and-svd">
-<h2>Covariance, PCA and SVD<a class="headerlink" href="#covariance-pca-and-svd" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="covariance-pca-and-svd">
+<h2>Covariance, PCA and SVD<a class="headerlink" href="#covariance-pca-and-svd" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
@@ -1486,7 +1145,7 @@ U shape: (3088, 24), S shape: (24,), V shape: (2320, 24)
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cov</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns covariance of vectors x and y).&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns covariance of vectors x and y).&quot;&quot;&quot;</span>
     <span class="n">xbar</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
     <span class="n">ybar</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="n">xbar</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">ybar</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
@@ -1544,8 +1203,8 @@ U shape: (3088, 24), S shape: (24,), V shape: (2320, 24)
 </div>
 </div>
 </div>
-<div class="section" id="eigendecomposition-of-the-covariance-matrix">
-<h3>Eigendecomposition of the covariance matrix<a class="headerlink" href="#eigendecomposition-of-the-covariance-matrix" title="Permalink to this headline">¶</a></h3>
+<section id="eigendecomposition-of-the-covariance-matrix">
+<h3>Eigendecomposition of the covariance matrix<a class="headerlink" href="#eigendecomposition-of-the-covariance-matrix" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Zero mean but off-diagonal correlation matrix</span>
@@ -1558,7 +1217,7 @@ U shape: (3088, 24), S shape: (24,), V shape: (2320, 24)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/linear_algebra_games_I_49_0.png" src="../../_images/linear_algebra_games_I_49_0.png" />
+<img alt="../../_images/1c435e104e9e59a4e0bf7f219d751c905c9a73df9b5ba6e5f2167c9ac513a91b.png" src="../../_images/1c435e104e9e59a4e0bf7f219d751c905c9a73df9b5ba6e5f2167c9ac513a91b.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1600,17 +1259,17 @@ U shape: (3088, 24), S shape: (24,), V shape: (2320, 24)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/linear_algebra_games_I_53_0.png" src="../../_images/linear_algebra_games_I_53_0.png" />
+<img alt="../../_images/9797bf50e7e8bb77beb59fbf59a6cb5087f85360505cafad15b2965a224bad13.png" src="../../_images/9797bf50e7e8bb77beb59fbf59a6cb5087f85360505cafad15b2965a224bad13.png" />
 </div>
 </div>
-</div>
-<div class="section" id="pca-from-duke-course">
-<h3>PCA (from Duke course)<a class="headerlink" href="#pca-from-duke-course" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="pca-from-duke-course">
+<h3>PCA (from Duke course)<a class="headerlink" href="#pca-from-duke-course" title="Permalink to this heading">#</a></h3>
 <p>“Principal Components Analysis” (PCA) basically means to find and rank all the eigenvalues and eigenvectors of a covariance matrix. This is useful because high-dimensional data (with <span class="math notranslate nohighlight">\(p\)</span> features) may have nearly all their variation in a small number of dimensions <span class="math notranslate nohighlight">\(k&lt;p\)</span>, i.e. in the subspace spanned by the eigenvectors of the covariance matrix that have the <span class="math notranslate nohighlight">\(k\)</span> largest eigenvalues. If we project the original data into this subspace, we can have a dimension reduction (from <span class="math notranslate nohighlight">\(p\)</span> to <span class="math notranslate nohighlight">\(k\)</span>) with hopefully little loss of information.</p>
 <p>Numerically, PCA is typically done using SVD on the data matrix rather than eigendecomposition on the covariance matrix. Numerically, the condition number for working with the covariance matrix directly is the square of the condition number using SVD, so SVD minimizes errors.”</p>
 <p>For zero-centered vectors,</p>
-<div class="amsmath math notranslate nohighlight" id="equation-a63c2a96-cba0-4363-b399-ad07dd43bbf1">
-<span class="eqno">(2.3)<a class="headerlink" href="#equation-a63c2a96-cba0-4363-b399-ad07dd43bbf1" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-6b8f8129-acb7-4508-af0b-0b33b49a9cb5">
+<span class="eqno">(2.3)<a class="headerlink" href="#equation-6b8f8129-acb7-4508-af0b-0b33b49a9cb5" title="Permalink to this equation">#</a></span>\[\begin{align}
 \text{Cov}(X, Y) &amp;= \frac{\sum_{i=1}^n(X_i - \bar{X})(Y_i - \bar{Y})}{n-1} \\
   &amp;= \frac{\sum_{i=1}^nX_iY_i}{n-1} \\
   &amp;= \frac{XY^T}{n-1}
@@ -1717,8 +1376,8 @@ U shape: (3088, 24), S shape: (24,), V shape: (2320, 24)
 </div>
 </div>
 </div>
-<div class="section" id="principal-components">
-<h4>Principal components<a class="headerlink" href="#principal-components" title="Permalink to this headline">¶</a></h4>
+<section id="principal-components">
+<h4>Principal components<a class="headerlink" href="#principal-components" title="Permalink to this heading">#</a></h4>
 <p>Principal components are simply the eigenvectors of the covariance matrix used as basis vectors. Each of the original data points is expressed as a linear combination of the principal components, giving rise to a new set of coordinates.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1734,17 +1393,17 @@ U shape: (3088, 24), S shape: (24,), V shape: (2320, 24)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/linear_algebra_games_I_66_0.png" src="../../_images/linear_algebra_games_I_66_0.png" />
+<img alt="../../_images/e85c816c38029b92b1ab1066a05d5f3c9f337a4311f048a19379f277225576d6.png" src="../../_images/e85c816c38029b92b1ab1066a05d5f3c9f337a4311f048a19379f277225576d6.png" />
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="using-svd-for-pca">
-<h3>Using SVD for PCA<a class="headerlink" href="#using-svd-for-pca" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+<section id="using-svd-for-pca">
+<h3>Using SVD for PCA<a class="headerlink" href="#using-svd-for-pca" title="Permalink to this heading">#</a></h3>
 <p>SVD is a decomposition of the data matrix <span class="math notranslate nohighlight">\(X = U S V^T\)</span> where <span class="math notranslate nohighlight">\(U\)</span> and <span class="math notranslate nohighlight">\(V\)</span> are orthogonal matrices and <span class="math notranslate nohighlight">\(S\)</span> is a diagonal matrix.</p>
 <p>Recall that the transpose of an orthogonal matrix is also its inverse, so if we multiply on the right by <span class="math notranslate nohighlight">\(X^T\)</span>, we get the following simplification</p>
-<div class="amsmath math notranslate nohighlight" id="equation-dcfc3850-78ac-424a-965a-af33995499b5">
-<span class="eqno">(2.4)<a class="headerlink" href="#equation-dcfc3850-78ac-424a-965a-af33995499b5" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-0004e840-edf6-48ec-99c9-5ab68c83f787">
+<span class="eqno">(2.4)<a class="headerlink" href="#equation-0004e840-edf6-48ec-99c9-5ab68c83f787" title="Permalink to this equation">#</a></span>\[\begin{align}
 X &amp;= U S V^T \\
 X X^T &amp;= U S V^T (U S V^T)^T \\
  &amp;= U S V^T V S U^T \\
@@ -1771,7 +1430,7 @@ X X^T &amp;= U S V^T (U S V^T)^T \\
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/linear_algebra_games_I_69_0.png" src="../../_images/linear_algebra_games_I_69_0.png" />
+<img alt="../../_images/b1eaea902d145faa63e9a7467fc5c8c815ae1c256164353f5ff3e893445db810.png" src="../../_images/b1eaea902d145faa63e9a7467fc5c8c815ae1c256164353f5ff3e893445db810.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1824,16 +1483,16 @@ X X^T &amp;= U S V^T (U S V^T)^T \\
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="exercises-covariance-matrix-manipulations-in-python-taken-from-the-duke-course">
-<h2>Exercises: covariance matrix manipulations in Python (taken from the Duke course)<a class="headerlink" href="#exercises-covariance-matrix-manipulations-in-python-taken-from-the-duke-course" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="exercises-covariance-matrix-manipulations-in-python-taken-from-the-duke-course">
+<h2>Exercises: covariance matrix manipulations in Python (taken from the Duke course)<a class="headerlink" href="#exercises-covariance-matrix-manipulations-in-python-taken-from-the-duke-course" title="Permalink to this heading">#</a></h2>
 <p>Given the following covariance matrix</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">]])</span>
 </pre></div>
 </div>
 <p>use Python to do these basic tasks (that is, do not do them by hand but use <code class="docutils literal notranslate"><span class="pre">scipy.linalg</span></code> functions).</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>Show that the eigenvectors of <span class="math notranslate nohighlight">\(A\)</span> are orthogonal.</p></li>
 <li><p>What is the vector representing the first principal component direction?</p></li>
 <li><p>Find <span class="math notranslate nohighlight">\(A^{-1}\)</span> without performing a matrix inversion.</p></li>
@@ -1861,7 +1520,7 @@ X X^T &amp;= U S V^T (U S V^T)^T \\
 f(x) = ax^2 + bx^3 + c\sin{x}
 \]</div>
 <p>with some added noise. Find optimal values of the parameters <span class="math notranslate nohighlight">\(\beta = (a, b, c)\)</span> that minimize <span class="math notranslate nohighlight">\(\Vert y - f(x) \Vert^2\)</span></p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>using <code class="docutils literal notranslate"><span class="pre">scipy.linalg.lstsq</span></code></p></li>
 <li><p>solving the normal equations <span class="math notranslate nohighlight">\(X^TX \beta = X^Ty\)</span></p></li>
 <li><p>using <code class="docutils literal notranslate"><span class="pre">scipy.linalg.svd</span></code></p></li>
@@ -1886,14 +1545,14 @@ f(x) = ax^2 + bx^3 + c\sin{x}
 </div>
 </div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
         requestKernel: true,
         binderOptions: {
-            repo: "furnstahl/Physics-8820",
+            repo: "DanielRPhillips/LearningFromData",
             ref: "main",
         },
         codeMirrorConfig: {
@@ -1901,7 +1560,7 @@ f(x) = ax^2 + bx^3 + c\sin{x}
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./notebooks/Parameter_estimation"
         },
         predefinedOutput: true
@@ -1909,36 +1568,127 @@ f(x) = ax^2 + bx^3 + c\sin{x}
     </script>
     <script>kernelName = 'python3'</script>
 
-              </div>
+                </article>
               
-        
-        <div class='prev-next-bottom'>
-            
-    <a class='left-prev' id="prev-link" href="exercise_LinearRegression.html" title="previous page"><span class="section-number">2.10. </span>Linear Regression exercise</a>
-    <a class='right-next' id="next-link" href="../assignments/fluctuation_trend_with_number_of_points_and_data_errors.html" title="next page"><span class="section-number">2.12. </span>Follow-up: fluctuation trends with # of points and data errors</a>
 
-        </div>
-        
-        </div>
-    </div>
-    <footer class="footer mt-5 mt-md-0">
-    <div class="container">
-      <p>
-        
-          By Dick Furnstahl<br/>
-        
-            &copy; Copyright 2021.<br/>
-      </p>
-    </div>
-  </footer>
-</main>
-
-
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="exercise_LinearRegression.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">2.10. </span>Linear Regression exercise</p>
       </div>
-    </div>
+    </a>
+    <a class="right-next"
+       href="../assignments/fluctuation_trend_with_number_of_points_and_data_errors.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">2.12. </span>Follow-up: fluctuation trends with # of points and data errors</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
   
-  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+</div>
 
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preliminary-exercise-manipulations-using-the-index-form-of-matrices">Preliminary exercise: manipulations using the index form of matrices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#svd-basics">SVD basics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#geometric-interpretation-of-svd">Geometric interpretation of SVD</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-matrix-equations-with-svd">Solving matrix equations with SVD</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-reduction">Data reduction</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-imports">Python imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#svd-applied-to-images-for-compression">SVD applied to images for compression</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#aside-dissection-of-the-python-statement-to-find-the-index-for-accumulation">Aside: dissection of the Python statement to find the index for accumulation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#things-to-do">Things to do:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covariance-pca-and-svd">Covariance, PCA and SVD</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eigendecomposition-of-the-covariance-matrix">Eigendecomposition of the covariance matrix</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pca-from-duke-course">PCA (from Duke course)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#principal-components">Principal components</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-svd-for-pca">Using SVD for PCA</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-covariance-matrix-manipulations-in-python-taken-from-the-duke-course">Exercises: covariance matrix manipulations in Python (taken from the Duke course)</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
   
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dick Furnstahl
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2021.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
   </body>
 </html>
