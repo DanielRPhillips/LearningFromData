@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>1.8. Lecture 3 &#8212; Learning from data</title>
+    <title>1.6. Lecture 3 &#8212; Learning from data</title>
   
   
   
@@ -68,8 +68,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="2. Bayesian parameter estimation" href="../Parameter_estimation/param_est.html" />
-    <link rel="prev" title="1.7. Radioactive lighthouse problem" href="../../notebooks/Basics/radioactive_lighthouse_exercise.html" />
+    <link rel="next" title="1.7. Radioactive lighthouse problem" href="../../notebooks/Basics/radioactive_lighthouse_exercise.html" />
+    <link rel="prev" title="1.5. Interactive Bayesian updating: coin flipping example" href="../../notebooks/Basics/Bayesian_updating_coinflip_interactive.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -168,13 +168,13 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="basics.html">1. Basics of Bayesian statistics</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="lecture_01.html">1.1. Lecture 1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebooks/Basics/Exploring_pdfs.html">1.2. Exploring PDFs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebooks/Basics/simple_sum_product_rule.html">1.3. Checking the sum and product rules, and their consequences</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/Basics/simple_sum_product_rule.html">1.2. Checking the sum and product rules, and their consequences</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/Basics/Exploring_pdfs.html">1.3. Exploring PDFs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lecture_02.html">1.4. Lecture 2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/Basics/Bayesian_updating_coinflip_interactive.html">1.5. Interactive Bayesian updating: coin flipping example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebooks/Basics/medical_example_by_Bayes.html">1.6. Standard medical example by applying Bayesian rules of probability</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">1.6. Lecture 3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/Basics/radioactive_lighthouse_exercise.html">1.7. Radioactive lighthouse problem</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">1.8. Lecture 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/Basics/medical_example_by_Bayes.html">1.8. Standard medical example by applying Bayesian rules of probability</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Parameter_estimation/param_est.html">2. Bayesian parameter estimation</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -491,7 +491,6 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-through-the-medical-example-key">Step through the medical example key</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recap-of-coin-flipping-notebook">Recap of coin flipping notebook</a></li>
 </ul>
             </nav>
@@ -505,37 +504,20 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="lecture-3">
-<h1><span class="section-number">1.8. </span>Lecture 3<a class="headerlink" href="#lecture-3" title="Permalink to this heading">#</a></h1>
-<section id="step-through-the-medical-example-key">
-<h2>Step through the medical example key<a class="headerlink" href="#step-through-the-medical-example-key" title="Permalink to this heading">#</a></h2>
-<p>Some of the answers are straightforward but make sure you agree with your neighbors. We’ll split out a few follow-up points.</p>
-<div class="admonition-follow-up-question-on-2 admonition">
-<p class="admonition-title">Follow-up question on 2.</p>
-<p>Why is it <span class="math notranslate nohighlight">\(p(H|D)\)</span> and not <span class="math notranslate nohighlight">\(p(H,D)\)</span>?</p>
-<div class="dropdown admonition">
-<p class="admonition-title">Answer</p>
-<p>Recall that <span class="math notranslate nohighlight">\(p(H,D) = p(H|D) \cdot p(D)\)</span>. You are generally interested in <span class="math notranslate nohighlight">\(p(H|D)\)</span>.
-If you know <span class="math notranslate nohighlight">\(p(D) = 1\)</span>, then they are the same.</p>
-</div>
-</div>
-<div class="admonition-follow-up-question-on-5 admonition">
-<p class="admonition-title">Follow-up question on 5.</p>
-<p>The emphasis here is on the sum rule. Why didn’t any column except Total in the sum/product rule notebook add to 1?</p>
-<div class="dropdown admonition">
-<p class="admonition-title">Answer</p>
-<p>Because were were looking at <span class="math notranslate nohighlight">\(p(\text{tall,blue}) + p(\text{short,blue}) \neq 1\)</span>, whereas <span class="math notranslate nohighlight">\(p(\text{tall}| \text{blue}) + p(\text{short}| \text{blue}) = 1\)</span>.</p>
-</div>
-</div>
-<ul class="simple">
-<li><p>In general and for 6. in particular we emphasise the usefulness of Bayes’ theorem to express <span class="math notranslate nohighlight">\(p(H|D)\)</span> in terms of <span class="math notranslate nohighlight">\(p(D|H)\)</span>.</p></li>
-<li><p>Make sure that 8. and 9. are clear to you. In 8., this is standard but not so obvious at first; after it becomes familiar you will find that you jump right to the end.</p></li>
-</ul>
-</section>
+<h1><span class="section-number">1.6. </span>Lecture 3<a class="headerlink" href="#lecture-3" title="Permalink to this heading">#</a></h1>
 <section id="recap-of-coin-flipping-notebook">
 <h2>Recap of coin flipping notebook<a class="headerlink" href="#recap-of-coin-flipping-notebook" title="Permalink to this heading">#</a></h2>
 <p>Recall the names of the pdfs in Bayes’ theoem: posterior, likelihood, prior, evidence; and recall Bayesian updating: prior + data <span class="math notranslate nohighlight">\(\rightarrow\)</span> posterior <span class="math notranslate nohighlight">\(\rightarrow\)</span> updated prior <span class="math notranslate nohighlight">\(\rightarrow\)</span> updated posterior <span class="math notranslate nohighlight">\(\rightarrow\)</span> <span class="math notranslate nohighlight">\(\ldots\)</span>.</p>
 <p>Take-aways and follow-up questions from coin flipping:</p>
 <ol class="arabic">
+<li><p>How often should the 68% degree of belief interval contain the true
+answer for <span class="math notranslate nohighlight">\(p_H\)</span>?</p></li>
+<li><p>Is the frequentist 1<span class="math notranslate nohighlight">\(\sigma\)</span> interval the same as the Bayesian 68% DoB interval? If so, should they be? If not, why are they different?</p></li>
+<li><p>What prior would you choose? How does this affect how long it takes
+you to arrive at the correct conclusion? Note that the answer to
+this question may be dependent.</p></li>
+<li><p>What would your standard be for deciding the coin was so unfair that you would walk away? That you’d call the police? That you’d try and publish the fact that you found an unfair coin in a scientific journal?</p></li>
+<li><p>What if you were sure the coin was unfair before you started? (E.g. you saw the person doctoring it.) What prior would you choose then? What happens to the posterior in this case?</p></li>
 <li><p>Different priors <em>eventually</em> give the same posterior with enough data. This is called <em>Bayesian convergence</em>. How many tosses are enough? Hit <code class="docutils literal notranslate"><span class="pre">New</span> <span class="pre">Data</span></code> multiple times to see the fluctuations. Clearly it depends on <span class="math notranslate nohighlight">\(p_h\)</span> and how close you want the posteriors to be. How about for <span class="math notranslate nohighlight">\(p_h = 0.4\)</span> or <span class="math notranslate nohighlight">\(p_h = 0.9\)</span>?</p>
 <div class="dropdown admonition">
 <p class="admonition-title">Answer</p>
@@ -612,15 +594,17 @@ Let results be <span class="math notranslate nohighlight">\(D = \{D_k\}\)</span>
 <p class="admonition-title">Warning</p>
 <p>Don’t do that!</p>
 </div>
+<div class="highlight-{admonition}Something notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
 </li>
 </ol>
-<div class="highlight-{admonition}Something notranslate"><div class="highlight"><pre><span></span>Maximum-likelihood means: what value of $p_h$ maximizes the likelihood (notation: $\mathcal{L}$ is often used for the likelihood)
-
-$$
+<p>Maximum-likelihood means: what value of <span class="math notranslate nohighlight">\(p_h\)</span> maximizes the likelihood (notation: <span class="math notranslate nohighlight">\(\mathcal{L}\)</span> is often used for the likelihood)</p>
+<div class="math notranslate nohighlight">
+\[
   p(R,N|p_h) \equiv \mathcal{L}(R,N|p_h) = \mathcal{N}p_h^R (1-p_h)^{N-R} \,?
-$$  
-:::{admonition}Answer
-:class: dropdown
+\]</div>
+<div class="highlight-{admonition}Answer notranslate"><div class="highlight"><pre><span></span>:class: dropdown
 
 $$
     \frac{d}{dp_h}\mathcal{L} = \mathcal{N}\bigl(
@@ -631,29 +615,11 @@ $$
 
 Similarly, the standard deviation is $\sigma = \sqrt{p_h(1-p_h)/N}$.
 
-:::
 </pre></div>
 </div>
-<div class="admonition-different-types-of-independence-see-question-5-in-radioactive-lighthouse-notebook admonition">
-<p class="admonition-title">Different types of independence (see question 5. in radioactive-lighthouse notebook)</p>
-<p>Let’s suppose we flip two <em>fair</em> coins. Consider the propositions:</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(A\)</span>: 1st coin comes up heads</p></li>
-<li><p><span class="math notranslate nohighlight">\(B\)</span>: 2nd coin comes up heads</p></li>
-<li><p><span class="math notranslate nohighlight">\(C\)</span>: the two results are the same</p></li>
-</ul>
-<p><span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> are independent: <span class="math notranslate nohighlight">\(p(A,B) = p(A|B)p(B) = p(A) p(B)\)</span> and each is equal to 1/2.<br />
-<span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(B\)</span>, and <span class="math notranslate nohighlight">\(C\)</span> are <em>pairwise independent</em>:</p>
-<div class="math notranslate nohighlight">
-\[
- p(A|C) = p(A); \quad
- p(B|C) = p(B); \quad
- p(C|A) = p(C); \quad
- p(C|B) = p(C)
-\]</div>
-<p><span class="math notranslate nohighlight">\(\Lra\)</span> we don’t know anything more given the proposition to the right of the <span class="math notranslate nohighlight">\(|\)</span>.</p>
-<p><em>But <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> are <strong>not</strong> conditionally independent given <span class="math notranslate nohighlight">\(C\)</span>.</em>
-In particular, if you know <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(C\)</span> are true, then <span class="math notranslate nohighlight">\(B\)</span> is determined! In the radioactive lighthouse case, knowing <span class="math notranslate nohighlight">\(x_0,y_0\)</span> tells us about <span class="math notranslate nohighlight">\(x_2\)</span>, but also knowing <span class="math notranslate nohighlight">\(x_1\)</span> tells us nothing in addition.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+
+</pre></div>
 </div>
 </section>
 </section>
@@ -690,20 +656,20 @@ In particular, if you know <span class="math notranslate nohighlight">\(A\)</spa
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../../notebooks/Basics/radioactive_lighthouse_exercise.html"
+       href="../../notebooks/Basics/Bayesian_updating_coinflip_interactive.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">1.7. </span>Radioactive lighthouse problem</p>
+        <p class="prev-next-title"><span class="section-number">1.5. </span>Interactive Bayesian updating: coin flipping example</p>
       </div>
     </a>
     <a class="right-next"
-       href="../Parameter_estimation/param_est.html"
+       href="../../notebooks/Basics/radioactive_lighthouse_exercise.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">2. </span>Bayesian parameter estimation</p>
+        <p class="prev-next-title"><span class="section-number">1.7. </span>Radioactive lighthouse problem</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -725,7 +691,6 @@ In particular, if you know <span class="math notranslate nohighlight">\(A\)</spa
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-through-the-medical-example-key">Step through the medical example key</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recap-of-coin-flipping-notebook">Recap of coin flipping notebook</a></li>
 </ul>
   </nav></div>
