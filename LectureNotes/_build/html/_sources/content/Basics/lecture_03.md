@@ -1,34 +1,24 @@
 #  Lecture 3
 
-## Step through the medical example key
-
-Some of the answers are straightforward but make sure you agree with your neighbors. We'll split out a few follow-up points.
-
-::::{admonition} Follow-up question on 2.
-Why is it $p(H|D)$ and not $p(H,D)$?
-:::{admonition} Answer
-:class: dropdown 
-Recall that $p(H,D) = p(H|D) \cdot p(D)$. You are generally interested in $p(H|D)$.
-If you know $p(D) = 1$, then they are the same.
-:::
-::::
-
-::::{admonition} Follow-up question on 5.
-The emphasis here is on the sum rule. Why didn't any column except Total in the sum/product rule notebook add to 1?
-:::{admonition} Answer
-:class: dropdown 
-Because were were looking at $p(\text{tall,blue}) + p(\text{short,blue}) \neq 1$, whereas $p(\text{tall}| \text{blue}) + p(\text{short}| \text{blue}) = 1$.
-:::
-::::
-
-* In general and for 6. in particular we emphasise the usefulness of Bayes' theorem to express $p(H|D)$ in terms of $p(D|H)$. 
-* Make sure that 8. and 9. are clear to you. In 8., this is standard but not so obvious at first; after it becomes familiar you will find that you jump right to the end.
-
 ## Recap of coin flipping notebook
 
 Recall the names of the pdfs in Bayes' theoem: posterior, likelihood, prior, evidence; and recall Bayesian updating: prior + data $\rightarrow$ posterior $\rightarrow$ updated prior $\rightarrow$ updated posterior $\rightarrow$ $\ldots$.
 
 Take-aways and follow-up questions from coin flipping:
+
+1. How often should the 68% degree of belief interval contain the true
+answer for $p_H$?
+
+1. Is the frequentist 1$\sigma$ interval the same as the Bayesian 68% DoB interval? If so, should they be? If not, why are they different?
+
+1. What prior would you choose? How does this affect how long it takes
+   you to arrive at the correct conclusion? Note that the answer to
+   this question may be dependent.
+
+1. What would your standard be for deciding the coin was so unfair that you would walk away? That you’d call the police? That you’d try and publish the fact that you found an unfair coin in a scientific journal?
+
+1. What if you were sure the coin was unfair before you started? (E.g. you saw the person doctoring it.) What prior would you choose then? What happens to the posterior in this case? 
+
 1. Different priors *eventually* give the same posterior with enough data. This is called *Bayesian convergence*. How many tosses are enough? Hit `New Data` multiple times to see the fluctuations. Clearly it depends on $p_h$ and how close you want the posteriors to be. How about for $p_h = 0.4$ or $p_h = 0.9$?
     :::{admonition} Answer
     :class: dropdown
@@ -109,7 +99,7 @@ Let results be $D = \{D_k\}$ (in practice take 0's and 1's as the two choices $\
     :::
 
 
-::::{admonition}Something to come back to: Frequentist point estimates
+    ::::{admonition}Something to come back to: Frequentist point estimates
 Maximum-likelihood means: what value of $p_h$ maximizes the likelihood (notation: $\mathcal{L}$ is often used for the likelihood)
 
 $$
@@ -130,26 +120,4 @@ Similarly, the standard deviation is $\sigma = \sqrt{p_h(1-p_h)/N}$.
 :::
 ::::
 
-:::{admonition} Different types of independence (see question 5. in radioactive-lighthouse notebook)
-Let's suppose we flip two *fair* coins. Consider the propositions:
-* $A$: 1st coin comes up heads
-* $B$: 2nd coin comes up heads
-* $C$: the two results are the same
-
-$A$ and $B$ are independent: $p(A,B) = p(A|B)p(B) = p(A) p(B)$ and each is equal to 1/2.  
-$A$, $B$, and $C$ are *pairwise independent*:
-
-$$
- p(A|C) = p(A); \quad
- p(B|C) = p(B); \quad
- p(C|A) = p(C); \quad
- p(C|B) = p(C)
-$$
-
-$\Lra$ we don't know anything more given the proposition to the right of the $|$.
-
-*But $A$ and $B$ are **not** conditionally independent given $C$.*
-In particular, if you know $A$ and $C$ are true, then $B$ is determined! In the radioactive lighthouse case, knowing $x_0,y_0$ tells us about $x_2$, but also knowing $x_1$ tells us nothing in addition.
-
-:::
 

@@ -68,7 +68,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="1.6. Standard medical example by applying Bayesian rules of probability" href="medical_example_by_Bayes.html" />
+    <link rel="next" title="1.6. Lecture 3" href="../../content/Basics/lecture_03.html" />
     <link rel="prev" title="1.4. Lecture 2" href="../../content/Basics/lecture_02.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -168,13 +168,13 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../../content/Basics/basics.html">1. Basics of Bayesian statistics</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../content/Basics/lecture_01.html">1.1. Lecture 1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Exploring_pdfs.html">1.2. Exploring PDFs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="simple_sum_product_rule.html">1.3. Checking the sum and product rules, and their consequences</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simple_sum_product_rule.html">1.2. Checking the sum and product rules, and their consequences</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Exploring_pdfs.html">1.3. Exploring PDFs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/Basics/lecture_02.html">1.4. Lecture 2</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">1.5. Interactive Bayesian updating: coin flipping example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="medical_example_by_Bayes.html">1.6. Standard medical example by applying Bayesian rules of probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Basics/lecture_03.html">1.6. Lecture 3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="radioactive_lighthouse_exercise.html">1.7. Radioactive lighthouse problem</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/Basics/lecture_03.html">1.8. Lecture 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="medical_example_by_Bayes.html">1.8. Standard medical example by applying Bayesian rules of probability</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../content/Parameter_estimation/param_est.html">2. Bayesian parameter estimation</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -541,8 +541,8 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-name-python-python-jupyter-set-up-a"><a name="Python">Python/Jupyter set up</a></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-name-updating-bayesian-updating-examples-a"><a name="Updating">Bayesian updating examples</a></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#determining-the-bias-of-a-coin">Determining the bias of a coin</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#determining-the-bias-of-a-coin">Determining the bias of a coin</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-name-updating-bayesian-updating-for-the-coin-a"><a name="Updating">Bayesian updating for the coin</a></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#main-code-for-coin-flipping-ui">Main code for coin-flipping UI</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#user-interface-for-coin-flipping">User-interface for coin-flipping</a></li>
 </ul>
@@ -595,10 +595,16 @@ document.write(`
 </div>
 </div>
 </section>
-<section id="a-name-updating-bayesian-updating-examples-a">
-<h2><a name="Updating">Bayesian updating examples</a><a class="headerlink" href="#a-name-updating-bayesian-updating-examples-a" title="Permalink to this heading">#</a></h2>
+<section id="determining-the-bias-of-a-coin">
+<h2>Determining the bias of a coin<a class="headerlink" href="#determining-the-bias-of-a-coin" title="Permalink to this heading">#</a></h2>
+<p>Suppose we observe a succession of coin flips and record the number of heads and tails. Is the coin fair? The frequentist approach to this problem is to set up a null hypothesis, i.e., the hypothesis that the coin is fair, and then determine the probability that the observed data is generated given that that hypothesis holds. If the probability is a low number <span class="math notranslate nohighlight">\(p\)</span> then the null hypothesis can be rejected at a confidence of <span class="math notranslate nohighlight">\(1 - p\)</span>.</p>
+<p>Here we instead adopt a Bayesian approach. We will treat this as a <em>parameter estimation</em> problem, with the parameter we want to estimate being the probability that any one coin flip generates a head. We label this <span class="math notranslate nohighlight">\(p_h\)</span>. (Note that Sivia labels it <span class="math notranslate nohighlight">\(H\)</span>.) Whereas the frequentist wants to compute <span class="math notranslate nohighlight">\({\rm p}(\mbox{# tosses, # heads}|p_h=0.5)\)</span> the Bayesian gets to ask the more general question as to what is <span class="math notranslate nohighlight">\({\rm p}(p_h|\mbox{# tosses, # heads},I)\)</span>. Best estimates for <span class="math notranslate nohighlight">\(p_h\)</span>, intervals that encompass the true value with a certain probability can then all be computed from this probability density function.</p>
+<p>But this only makes sense if each value of <span class="math notranslate nohighlight">\(p_h\)</span> is associated with a degree of belief in its trueness. Presumably we would all start with some prior belief regarding how likely different values of <span class="math notranslate nohighlight">\(p_h\)</span> are. In the Bayesian framework this is encoded via the prior pdf for <span class="math notranslate nohighlight">\(p_h\)</span>, i.e., <span class="math notranslate nohighlight">\({\rm p}(p_h|I)\)</span>. <span class="math notranslate nohighlight">\(I\)</span> could be information regarding the character of the coin flipper, it could be based on a previous experiment (we managed to get hold of the coin and flip it a few times before hand!), or it could be an “ignorance prior”, the formulation of which we will come back to later in the course.</p>
+<p>One of the key points of this exercise though, is that with each flip of the coin we acquire more information on its fairness or otherwise—on the value of <span class="math notranslate nohighlight">\(p_h\)</span>. The logical thing to do is to update the state of our belief, our pdf for <span class="math notranslate nohighlight">\({\rm p}(p_h|\mbox{# tosses, # heads},I)\)</span> each time the number of coin tosses is incremented by 1.</p>
+<section id="a-name-updating-bayesian-updating-for-the-coin-a">
+<h3><a name="Updating">Bayesian updating for the coin</a><a class="headerlink" href="#a-name-updating-bayesian-updating-for-the-coin-a" title="Permalink to this heading">#</a></h3>
 <p><span class="math notranslate nohighlight">\(  \newcommand{\thetavec}{\boldsymbol{\theta}} \newcommand{\pr}{\textrm{p}}\)</span>
-Recall Bayes’ theorem with <span class="math notranslate nohighlight">\(\thetavec\)</span> the vector of parameters we seek and information <span class="math notranslate nohighlight">\(I\)</span> is kept implicit.</p>
+To do this we recall Bayes’ theorem with <span class="math notranslate nohighlight">\(\thetavec\)</span> the vector of parameters we seek and <span class="math notranslate nohighlight">\(I\)</span> the information we had before this round of data collection started.</p>
 <div class="math notranslate nohighlight">
 \[
   \overbrace{\pr(\thetavec \mid \textrm{data},I)}^{\textrm{posterior}} =
@@ -606,10 +612,8 @@ Recall Bayes’ theorem with <span class="math notranslate nohighlight">\(\theta
    \color{blue}{\overbrace{\pr(\thetavec \mid I)}^{\textrm{prior}}}}
    {\color{darkgreen}{\underbrace{\pr(\textrm{data} \mid I)}_{\textrm{evidence}}}}
 \]</div>
-<p>If we view the prior as the initial information we have about <span class="math notranslate nohighlight">\(\thetavec\)</span>, summarized as a probability density function, then Bayes’ theorem tells us how to <em>update</em> that information after observing some data: this is the posterior pdf.  Here we will give some examples of how this plays out when tossing coins.</p>
-<section id="determining-the-bias-of-a-coin">
-<h3>Determining the bias of a coin<a class="headerlink" href="#determining-the-bias-of-a-coin" title="Permalink to this heading">#</a></h3>
-<p>The idea here is that we are observing successive flips of a coin, which is a proxy for any process that has a binary outcome.  There is a definite true probability for getting heads, which we’ll label <span class="math notranslate nohighlight">\(p_h\)</span>, but we don’t know what it is.  We start with a preconceived notion of the probability expressed in terms of a prior pdf for <span class="math notranslate nohighlight">\(p_h\)</span>, i.e., <span class="math notranslate nohighlight">\(\pr(p_h)\)</span>.  With each flip of the coin, we have more information, so our goal is to <em>update</em> our expectation of <span class="math notranslate nohighlight">\(p_h\)</span>, meaning we want the posterior <span class="math notranslate nohighlight">\(\pr(p_h \mid \mbox{# tosses, # heads})\)</span>.</p>
+<p>If we view the prior as the information we have about <span class="math notranslate nohighlight">\(\thetavec\)</span> before additional data <span class="math notranslate nohighlight">\(D\)</span> is acquired, and we summarize that as a probability density function, then Bayes’ theorem tells us how to <em>update</em> that information after observing some data: this is the posterior pdf.</p>
+<p>Here we will give some examples of how this plays out when tossing coins. Note that when we do this we are using the fungibility of mathematical symbols to let <span class="math notranslate nohighlight">\(I\)</span> stand for different things at different stages of the coin tossing experiment. If we are going to “update” after every coin toss then <span class="math notranslate nohighlight">\(D\)</span> is just the result of the <span class="math notranslate nohighlight">\(N\)</span>th oin toss and <span class="math notranslate nohighlight">\(I\)</span> is what we know about the coin after <span class="math notranslate nohighlight">\(N-1\)</span> coin tosses.</p>
 <section id="main-code-for-coin-flipping-ui">
 <h4>Main code for coin-flipping UI<a class="headerlink" href="#main-code-for-coin-flipping-ui" title="Permalink to this heading">#</a></h4>
 <div class="cell docutils container">
@@ -1081,8 +1085,10 @@ Mean = 0.250; Mode = 0.213
 </div>
 </div>
 </div>
-<p><em>Which Bayesian estimator is the frequentist mean closest to?</em></p>
-<p><em>Is the frequentist 1<span class="math notranslate nohighlight">\(\sigma\)</span> interval the same as the Bayesian 68% DoB interval? If so, should they be? If not, why are they different?</em></p>
+<ul class="simple">
+<li><p><em>Which Bayesian estimator is the frequentist mean closest to?</em></p></li>
+<li><p><em>Is the frequentist 1<span class="math notranslate nohighlight">\(\sigma\)</span> interval the same as the Bayesian 68% DoB interval? If so, should they be? If not, why are they different?</em></p></li>
+</ul>
 <p>Now we will also generate the summary statistics for the other priors. (What is coded is for the default values. After running through the exercise you can come back and try and change it; indeed, you should do that if you comparing to results where you altered the prior above.)</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1151,8 +1157,10 @@ Mean = 0.222; Mode = 0.213
 </div>
 </div>
 </div>
-<p><em>So what is the best approach in this case? Objectivity? Trust? Suspicion?</em></p>
-<p><em>Now having printed out the results for my particular coin-tossing experiment you should play with things and see what the different summary statistics give for other “experimental runs”.</em></p>
+<ul class="simple">
+<li><p><em>So what is the best approach in this case? Objectivity? Trust? Suspicion?</em></p></li>
+<li><p><em>Now having printed out the results for my particular coin-tossing experiment you should play with things and see what the different summary statistics give for other “experimental runs”.</em></p></li>
+</ul>
 </section>
 </section>
 
@@ -1197,11 +1205,11 @@ Mean = 0.222; Mode = 0.213
       </div>
     </a>
     <a class="right-next"
-       href="medical_example_by_Bayes.html"
+       href="../../content/Basics/lecture_03.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">1.6. </span>Standard medical example by applying Bayesian rules of probability</p>
+        <p class="prev-next-title"><span class="section-number">1.6. </span>Lecture 3</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1224,8 +1232,8 @@ Mean = 0.222; Mode = 0.213
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-name-python-python-jupyter-set-up-a"><a name="Python">Python/Jupyter set up</a></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-name-updating-bayesian-updating-examples-a"><a name="Updating">Bayesian updating examples</a></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#determining-the-bias-of-a-coin">Determining the bias of a coin</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#determining-the-bias-of-a-coin">Determining the bias of a coin</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-name-updating-bayesian-updating-for-the-coin-a"><a name="Updating">Bayesian updating for the coin</a></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#main-code-for-coin-flipping-ui">Main code for coin-flipping UI</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#user-interface-for-coin-flipping">User-interface for coin-flipping</a></li>
 </ul>
