@@ -105,19 +105,124 @@ Maximum-likelihood means: what value of $p_h$ maximizes the likelihood (notation
 $$
   p(R,N|p_h) \equiv \mathcal{L}(R,N|p_h) = \mathcal{N}p_h^R (1-p_h)^{N-R} \,?
 $$  
-:::{admonition}Answer
+
+Exercise: Carry out the maximization
+
+## Gaussian noise and averages
+
+Let's work through [](/notebooks/Basics/parameter_estimation_Gaussian_noise.ipynb).
+
+* Import of modules
+    * Using seaborn just to make nice graphs
+* Example from Sivia's book {cite}`Sivia2006`: Gaussian noise and averages.
+
+    $$
+      p(x | \mu,\sigma) = \frac{1}{\sqrt{2\pi\sigma^2}}
+         e^{-\frac{(x-\mu)^2}{2\sigma^2}}
+    $$
+
+    where $\mu$ and $\sigma$ are given and the pdf is normalized ($\int_{-\infty}^{+\infty} \frac{1}{\sqrt{2\pi}\sigma}e^{-(x-\mu)^2/2\sigma^2} dx = 1$).
+
+    Its justification as a theoretical model is via maximum entropy, the "central limit theorem" (CLT), or general considerations, all of which we will come back to in the future.
+
+* $M$ data measurements $D \equiv \{x_k\} = (x_1, \ldots, x_M)$ (e.g., $M=100$), distributed according to $p(x|\mu,\sigma)$ (that implies that if you histogrammed the samples, they would roughly look like the Gaussian).
+
+* How do we get such measurements? We will "sample" from $\mathcal{N}(\mu,\sigma^2)$.
+
+* Goal: given the measurements $D$, find the approximate $\mu$ and $\sigma$.
+    * Frequentist: use the maximum likelihood method
+    * Bayesian: compute posterior pdf $p(\mu,\sigma|D,I)$
+
+* Random seed of 1 means the same series of "random" numbers are used every time you repeat. If you put 2 or 42, then a different series from 1 will be used, but still the same with every run that has that seed.
+
+* `stats.norm.rvs` ("norm" for normal or Gaussian distribution; "rvs" for random variates) as in [](/notebooks/Basics/Exploring_pdfs.ipynb). 
+    * `size=M` is a "keyword argument" (often `kw` $\equiv$ keyword), which means it is optional and there is a default value (here the default is $M=1$).
+
+* Consider the number of entries in the tails, say beyond $2\sigma$ $\Longrightarrow$ $x>12$ or $x < 8$.
+
+* Note the pattern (or lack of pattern) and repeat to get different numbers. (How? Change the random seed from 1.) Always play! 
+
+* Questions about plotting? Some notes:
+    * We'll repeatedly use constructions like this, so get used to it!
+    * `;` means we put multiple statements on the same line; this is not necessary and probably should be avoided in most cases.
+    * `alpha=0.5` makes the (default) color lighter.
+    * Try `color='red'` on your own in the scatter plot.
+    * You might prefer side-by-side graphs $\Longrightarrow$ alternative code.
+    * An "axis" in Matplotlib means an entire subfigure, not just the x-axis or y-axis.
+    * If you want to know about a potting command already there, `shift-tab-tab` (or you can always google it).
+    * To find `vlines` (vertical lines), google "matplotlib vertical line". (Try it to find horizontal lines.)
+    * `fig.tight_layout()` for good spacing with subplots.
+
+* Frequentist approach
+    * *true* value for parameters $\mu,\sigma$, not a pdf
+    * $\log\mathcal{L}$ for several reasons.
+        * to avoid problems with extreme values
+        * $\mathcal{L} = (\text{const.})e^{-\chi^2}$ so maximizing $\mathcal{L}$ is same as maximizing $\log\mathcal{L}$ or minimizing $\chi^2$.
+
+    :::{admonition} Carry out the maximization
+    :class: dropdown
+    
+    $$
+      \frac{\partial\log\mathcal{L}}{\partial\mu}
+      = -\frac{1}{2}\sum_{i=1}^M 2 \frac{x_i-\mu}{\sigma^2}\cdot (-1)
+      = \frac{1}{\sigma^2}\sum_{i=1}^M (x_i-\mu)
+      = \frac{1}{\sigma^2}\Bigl(\bigl(\sum_{i=1}^M x_i\bigr) - M\mu\Bigr)
+    $$
+    
+    Set equal to zero to find $\mu_0$ $\Longrightarrow$ 
+    $M\mu_0 = \sum_{i=1}^M x_i$ or $\mu_0 = \frac{1}{M}\sum_{i=1}^M x_i$.
+    
+    You do $\sigma_0^2$! (Easier to do $d/d\sigma^2$ than $d/d\sigma$.) 
+    :::
+
+    * Do these make sense?
+    * Note the use of `.sum` to add up the $D$ array elements.
+    * Printing with f strings: `f'...'`
+        * `.2f` means a float with 2 decimal places.
+    * Note comment on "unbiased estimator"
+        * an *accurate* statistic
+        * Here compare $\mu_0$ estimated from $\frac{1}{M}$ vs. $\frac{1}{M-1}$.
+        * If you do this many times, you'll find that $\frac{1}{M}$ doesn't quite give $\mu_{\rm true}$ correctly (take mean of $\mu_0$s from many trials) but $\frac{1}{M-1}$ does!
+        * The difference is $\mathcal{O}(1/M)$, so small for large $M$.
+    * Compare estimates to true. Are they good estimates? How can you tell? E.g., should they be within 0.1, 0.01, or what?
+    (More about this as we proceed!)
+
+* Bayesian approach $\Longrightarrow$ $p(\mu,\sigma|D,I)$ is the posterior: the probability (density) of finding some $\mu,\sigma$ given data $D$ and what else we know ($I$).
+    * $I$ could be that $\sigma > 0$ or $\mu$ should be near zero.        
+
+One more time with Bayes' theorem:
+
+$$
+  p(\mu,\sigma | D,I) = \frac{p(D | \mu,\sigma,I)\,p(\mu,\sigma|I)}{p(D|I)}
+$$ (eq:bayes_again)
+
+:::{admonition} Label each term in Eq. {eq}`eq:bayes_again`.
 :class: dropdown
 
 $$
-    \frac{d}{dp_h}\mathcal{L} = \mathcal{N}\bigl(
-       R p_h^{R-1}(1-p_h)^{N-R} - (N-R)p_h^R (1-p_h)^{N-R-1}
-       \bigr)
-       = 0 \ \Longrightarrow p_h = \frac{R}{N}
+  \underbrace{p(\mu,\sigma | D,I)}_{\text{posterior}} = \frac{\overbrace{p(D | \mu,\sigma,I)}^{\text{likelihood}}\ \ \overbrace{p(\mu,\sigma|I)}^{\text{prior}}}{\underbrace{p(D|I)}_{\text{evidence or data probability}}}
 $$
 
-Similarly, the standard deviation is $\sigma = \sqrt{p_h(1-p_h)/N}$.
-
 :::
-::::
 
+* Bayes' Theorem tells you how to flip $p(\mu,\sigma|D,I) \leftrightarrow p(D|\mu,\sigma,I)$. Here the first pdf is hard to think about evaluating but the second pdf is easy.
 
+* If $p(\mu,\sigma | I) \propto 1$, this is called a "flat" or "uniform" prior, in which case
+
+$$
+  p(\mu,\sigma | D,I) \propto \mathcal{L}(D|\mu,\sigma)
+$$
+
+and a Frequentist and Bayesian will get the same answer for the most likely values $\mu_0,\sigma_0$ (called "point estimates" as opposed to a full pdf).
+* We will argue against the use of uniform priors later.
+
+* The prior includes additional knowledge (information). It is what you know *before* the measurement in question.
+
+:::{admonition}Discussion point
+A frequentist claims that the use of a prior is nonsense because it is subjective and tied to an individual.
+What would a Bayesian statistician say?
+:::
+
+## To the lighthouse!
+
+Homework: work through [](/notebooks/Basics/radioactive_lighthouse_exercise.ipynb).
