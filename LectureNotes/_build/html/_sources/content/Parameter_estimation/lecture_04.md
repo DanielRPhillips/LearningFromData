@@ -1,4 +1,4 @@
-# Lecture 4: Clean up and Parameter estimation
+# Lecture 4: A couple of frequentist connections
 
 
 
@@ -19,7 +19,7 @@ to describe a probability distribution. Here are two:
 ### The Gaussian is to statistics what the harmonic oscillator is to mechanics
 
 Suppose we have a probability distribution $p(x | D,I)$ that is
-unimodal (has only one hump), then one way to form a ``best estimate''
+unimodal (has only one hump), then one way to form a "best estimate''
 for the variable $x$ is to compute the maximum of the
 distribution. (To save writing we denote the pdf of interest as $p(x)$
 for a while hereafter.) 
@@ -120,13 +120,81 @@ variance $n \sigma^2$.
   _regardless_ of the probability distiburtion the values are drawn
   from.
 
-* The binomial, Poisson, Student's t-, and ... distribtuions all kind
-  of look liek Gaussian distributions in the limit of a large number
+* The binomial, Poisson, Student's t-, and ... distributions all kind
+  of look like Gaussian distributions in the limit of a large number
   of degrees of freedom.
 
-#### Proof:
+#### Proof in a special case:
 
-See worksheet.
+Start with *independent* random variables $x_1,\cdots,x_n$ drawn from a distribution with mean $\langle x \rangle = 0$ and variance $\langle x^2\rangle = \sigma^2$, where
+
+$$
+  \langle x^n \rangle \equiv \int x^n p(x)\, dx 
+$$
+
+(generalize later to nonzero mean). Now let 
+
+$$
+  X = \frac{1}{\sqrt{n}}(x_1 + x_2 + \cdots + x_n)
+   = \sum_{j=1}^n \frac{x_j}{\sqrt{n}} ,   
+$$
+
+(we scale by $1/\sqrt{n}$ so that $X$ is finite in the $n\rightarrow\infty$ limit).
+
+What is the distribution of $X$?
+$\Longrightarrow$ call it $p(X|I)$, where $I$ is the information about the probability distribution for $x_j$. 
+
+**Plan:** Use the sum and product rules and their consequences to relate $p(X)$ to what we know of $p(x_j)$. (Note: we'll suppress $I$ to keep the formulas from getting too cluttered.)
+
+$$\begin{align}
+  p(X) &= \int_{-\infty}^{\infty} dx_1 \cdots dx_n\,
+            p(X,x_1,\cdots,x_n) \\
+       &= \int_{-\infty}^{\infty} dx_1 \cdots dx_n\,
+            p(X|x_1,\cdots,x_n)\,p(x_1,\cdots,x_n) \\
+       &= \int_{-\infty}^{\infty} dx_1 \cdots dx_n\,
+            p(X|x_1,\cdots,x_n)\,p(x_1)\cdots p(x_n) .     
+\end{align}$$
+
+:::{admonition} Class: state the rule used to justify each step
+:class: dropdown 
+1. marginalization
+1. product rule
+1. independence
+:::
+
+We might proceed by using a direct, normalized expression for $p(X|x_1,\cdots,x_n)$:
+::::{admonition} Question
+What is $p(X|x_1,\cdots,x_n)$?
+:::{admonition} Answer
+:class: dropdown 
+$p(X|x_1,\cdots,x_n) = \delta\Bigl(X - \frac{1}{\sqrt{n}}(x_1 + \cdots + x_n)\Bigr)$
+:::
+::::
+
+Instead we will use a Fourier representation:
+
+$$
+p(X|x_1,\cdots,x_n) = \delta\Bigl(X - \frac{1}{\sqrt{n}}(x_1 + \cdots + x_n)\Bigr)
+  = \frac{1}{2\pi} \int_{-\infty}^{\infty} d\omega
+    \, e^{i\omega\Bigl(X - \frac{1}{\sqrt{n}}\sum_{j=1}^n x_j\Bigr)} .
+$$  
+
+Substituting into $p(X)$ and gathering together all pieces with $x_j$ dependence while exchanging the order of integrations:
+
+$$ 
+ p(X) = \frac{1}{2\pi} \int_{-\infty}^{\infty} d\omega
+    \, e^{i\omega X} \prod_{j=1}^n \left[\int_{-\infty}^{\infty} dx_j\, e^{i\omega x_j / \sqrt{n}} p(x_j) \right] 
+$$ 
+
+* Observe that the terms in []s have factorized into a product of independent integrals and they are all the same (just different labels for the integration variables).
+* Now we Taylor expand $e^{i\omega x_j/\sqrt{n}}$, arguing that the Fourier integral is dominated by small $x$ as $n\rightarrow\infty$. (*When does this fail?*)
+
+$$
+  e^{i\omega x/\sqrt{n}} = 1 + \frac{i\omega x}{\sqrt{n}}
+    + \frac{(i\omega)^2 x^2}{2 n} + \mathcal{O}\left(\frac{\omega^3 x^3}{n^{3/2}}\right)
+$$
+
+Then, using that $p(x)$ is normalized (i.e., $\int_{-\infty}^{\infty} dx\, p(x) = 1$), 
 
 #### Notebook:
 
@@ -153,21 +221,21 @@ bound on a parameter value, is to quote a p-value.
 
 * Then you pick a level of proof you are comfortable with. For the
   Higgs boson (and for many other particle physics experiments) it is
-  `` 5 sigma''. How do you think we convert this statement to a
+  "5 sigma''. How do you think we convert this statement to a
   probability?
 
 * One minus the resulting probability is called the $p$-value. We will
   denote it $p_{\rm crit}$. There is nothing
-  God-given about it. It is a standard (like ``beyond a resaonable
+  God-given about it. It is a standard (like "beyond a resaonable
   doubt") that has been established in a research community for
   determining that something is (likely) going on. 
 
-* You then take data and compute $p(D|null hypothesis)$. If $p(D|null
-  hypothesis) < p_{\rm crit}$ then you conclude that the ``the null
-  hypothesis is rejected at the $1- p_{\rm crit}$ level''.
+* You then take data and compute $p(D|{\rm null~hypothesis})$. If
+  $p(D|{\rm null~ hypothesis}) < p_{\rm crit}$ then you conclude that the "the null
+  hypothesis is rejected at the $p_{\rm crit}$ significance level''.
 
-* Note that if $p(D|null hypothesis) > p_{\rm crit}$ you cannot
-  conculde that the null hypothesis is true. It just means ``no effect
+* Note that if $p(D|{null~hypothesis}) > p_{\rm crit}$ you cannot
+  conculde that the null hypothesis is true. It just means "no effect
   was observeed".
 
 * Look at
@@ -227,81 +295,4 @@ interval.
       interval. [E.g., lower a horizontal line over the distribution until the desired interval percentage is covered by regions above the line.]
 
 
-
-
-## Parameter estimation overview comments
-
-* In general terms, "parameter estimation" in physics means obtaining values for parameters (i.e., constants) that appear in a theoretical model that describes data. (Exceptions exist, of course.)
-* Examples:
-    * couplings in a Hamiltonian
-    * coefficients of a polynomial or exponential model of data
-    * parameters describing a peak in a measured spectrum, such as the peak height and width (e.g., fitting a Lorentzian line shape) and the size of the background
-    * cosmological parameters such as the Hubble constant 
-* Conventionally this process is known as "fitting the parameters" and the goal is to find the "best fit" and maybe error bars.
-* We will make particular interpretations of these phrases from our Bayesian point of view.
-* Plan: set up the problem and look at how familiar ideas like "least-squares fitting" show up from a Bayesian perspective.
-* As we proceed, we'll make the case that for physics a Bayesian
-approach is particular well suited.
-
-## What can go wrong in a fit?
-
-As a teaser, let's ask: what can go wrong in a fit? 
-
-```{image} /_images/over_under_fitting_cartoon.png
-:alt: bootstrapping
-:class: bg-primary
-:width: 400px
-:align: center
-```
-
-Bayesian methods can identify and prevent both underfitting (model is not complex enough to describe the fit data) or overfitting (model tunes to data fluctuations or terms are underdetermined, leading to them playing off each other).  
-$\Longrightarrow$ we'll see how this plays out.
-
-## Notebook: Fitting a line
-
-Look at [](/notebooks/Parameter_estimation/parameter_estimation_fitting_straight_line_I.ipynb).
-
-Annotations of the notebook:
-* same imports as before
-* assume we create data $y_{\rm exp}$ ("exp" for "experiment") from an underlying model of the form
-
-    $$
-      y_{\rm exp}(x) = m_{\rm true} x + b_{\rm true} + \mbox{Gaussian noise}
-    $$
-
-    where
-
-    $$
-     \boldsymbol{\theta}_{\rm true} = [b_{\rm true}, m_{\rm true}]
-      = [\text{intercept, slope}]_{\rm true}
-    $$
-
-* The Gaussian noise is taken to have mean $\mu=0$ and standard deviation $\sigma = dy$ independent of $x$. This is implemented as
-`y += dy * rand.randn(N)` (note `randn`).
-* The $x_i$ points themselves are also chosen randomly according to a uniform distribution $\Longrightarrow$ `rand.rand(N)`.
-* Here we are using the `numpy` random number generators while we will mostly use those from `scipy.stats` elsewhere.
-
-The theoretical model $y_{\rm th}$ is:
-
-$$
-   y_{\rm th} = m x + b, \quad \mbox{with}\ \theta = [b, m]
-$$  
-
-So in the sense of distributions (i.e., not an algebraic equation),
-
-$$
-  y_{\rm exp} = y_{\rm th} + \delta y_{\rm exp} + \delta y_{\rm th}
-$$  
-
-* The last term, which is the model discrepancy (or "theory error") will be critically important in many applications, but has often been neglected. More on this later!
-* Here we'll take $\delta y_{\rm th}$ to be negligible, which means that
-
-    $$
-      y_i \sim \mathcal{N}(y_{\rm th}(x_i;\boldsymbol{\theta}), dy^2)
-    $$
-
-    * The notation here means that the random variable $y_i$ is drawn from a normal (i.e., Gaussian) distribution with mean $y_{\rm th}(x_i;\boldsymbol{\theta})$ (first entry) and variance $dy^2$ (second entry). 
-    * For a long list of other probability distributions, see Appendix A of BDA3, which is what everyone calls Ref. {cite}`gelman2013bayesian`.
-
-* We are assuming independence here. Is that a reasonable assumption?
 

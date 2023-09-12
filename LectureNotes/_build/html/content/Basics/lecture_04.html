@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>2.1. Lecture 5: Parameter estimation &#8212; Learning from data</title>
+    <title>1.10. Lecture 4: A couple of frequentist connections &#8212; Learning from data</title>
   
   
   
@@ -63,13 +63,13 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"N": ["\\mathbb{N}"], "Z": ["\\mathbb{Z}"], "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"], "alphavec": ["\\boldsymbol{\\alpha}"], "muvec": ["\\boldsymbol{\\mu}"], "phivec": ["\\boldsymbol{\\phi}"], "sigmavec": ["\\boldsymbol{\\sigma}"], "Sigmavec": ["\\boldsymbol{\\Sigma}"], "thetavec": ["\\boldsymbol{\\theta}"], "thetavechat": ["\\widehat\\thetavec"], "avec": ["\\boldsymbol{a}"], "Bvec": ["\\boldsymbol{B}"], "fvec": ["\\boldsymbol{f}"], "mvec": ["\\boldsymbol{m}"], "qvec": ["\\boldsymbol{q}"], "rvec": ["\\boldsymbol{r}"], "uvec": ["\\boldsymbol{u}"], "wvec": ["\\boldsymbol{w}"], "xvec": ["\\boldsymbol{x}"], "yvec": ["\\boldsymbol{y}"], "Lra": ["\\Longrightarrow"], "abar": ["\\overline a"], "Xbar": ["\\overline X"], "alphahat": ["\\widehat\\alpha"], "Hhat": ["\\hat H"], "yth": ["y_{\\text{th}}"], "yexp": ["y_{\\text{exp}}"], "ym": ["y_{\\text{m}}"], "gs": ["{0}"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'content/Parameter_estimation/lecture_05';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'content/Basics/lecture_04';</script>
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="2.2. Parameter estimation example: fitting a straight line" href="../../notebooks/Parameter_estimation/parameter_estimation_fitting_straight_line_I.html" />
-    <link rel="prev" title="2. Bayesian parameter estimation" href="param_est.html" />
+    <link rel="next" title="1.11. Visualization of the Central Limit Theorem" href="../../notebooks/Basics/visualization_of_CLT.html" />
+    <link rel="prev" title="1.9. Standard medical example by applying Bayesian rules of probability" href="../../notebooks/Basics/medical_example_by_Bayes.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -166,25 +166,25 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Topics</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../Basics/basics.html">1. Basics of Bayesian statistics</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../Basics/lecture_01.html">1.1. Lecture 1</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="basics.html">1. Basics of Bayesian statistics</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="lecture_01.html">1.1. Lecture 1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/Basics/simple_sum_product_rule.html">1.2. Checking the sum and product rules, and their consequences</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/Basics/Exploring_pdfs.html">1.3. Exploring PDFs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Basics/lecture_02.html">1.4. Lecture 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lecture_02.html">1.4. Lecture 2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/Basics/Bayesian_updating_coinflip_interactive.html">1.5. Interactive Bayesian updating: coin flipping example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Basics/lecture_03.html">1.6. Lecture 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lecture_03.html">1.6. Lecture 3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/Basics/parameter_estimation_Gaussian_noise.html">1.7. Parameter estimation example: Gaussian noise and averages I</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/Basics/radioactive_lighthouse_exercise.html">1.8. Radioactive lighthouse problem</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/Basics/medical_example_by_Bayes.html">1.9. Standard medical example by applying Bayesian rules of probability</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Basics/lecture_04.html">1.10. Lecture 4: A couple of frequentist connections</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">1.10. Lecture 4: A couple of frequentist connections</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/Basics/visualization_of_CLT.html">1.11. Visualization of the Central Limit Theorem</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="param_est.html">2. Bayesian parameter estimation</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">2.1. Lecture 5: Parameter estimation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Parameter_estimation/param_est.html">2. Bayesian parameter estimation</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Parameter_estimation/lecture_05.html">2.1. Lecture 5: Parameter estimation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/Parameter_estimation/parameter_estimation_fitting_straight_line_I.html">2.2. Parameter estimation example: fitting a straight line</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/Parameter_estimation/demo-ModelValidation.html">2.3. Linear Regression and Model Validation demonstration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lecture_06.html">2.4. Lecture 6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Parameter_estimation/lecture_06.html">2.4. Lecture 6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/Parameter_estimation/amplitude_in_presence_of_background.html">2.5. Amplitude of a signal in the presence of background</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/assignments/Assignment_parameter_estimation_followups.html">2.6. Assignment: Follow-ups to Parameter Estimation notebooks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/Parameter_estimation/exercise_LinearRegression.html">2.7. Linear Regression exercise</a></li>
@@ -369,7 +369,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/DanielRPhillips/LearningFromData/issues/new?title=Issue%20on%20page%20%2Fcontent/Parameter_estimation/lecture_05.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/DanielRPhillips/LearningFromData/issues/new?title=Issue%20on%20page%20%2Fcontent/Basics/lecture_04.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -399,7 +399,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="../../_sources/content/Parameter_estimation/lecture_05.md" target="_blank"
+      <li><a href="../../_sources/content/Basics/lecture_04.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -481,7 +481,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Lecture 5: Parameter estimation</h1>
+    <h1>Lecture 4: A couple of frequentist connections</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -491,12 +491,18 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-estimation-overview-comments">Parameter estimation overview comments</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-can-go-wrong-in-a-fit">What can go wrong in a fit?</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notebook-fitting-a-line">Notebook: Fitting a line</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correlated-posteriors">Correlated posteriors</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#likelihoods-or-posteriors-with-two-variables-with-quadratic-approximation">Likelihoods (or posteriors) with two variables with quadratic approximation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-gaussian-noise-sampling-to-lighthouse-calculation">Compare Gaussian noise sampling to lighthouse calculation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-near-ubiquity-of-gaussians">The near ubiquity of Gaussians</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-gaussian-is-to-statistics-what-the-harmonic-oscillator-is-to-mechanics">The Gaussian is to statistics what the harmonic oscillator is to mechanics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-central-limit-theorem">The Central Limit Theorem</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#consequences">Consequences:</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#proof-in-a-special-case">Proof in a special case:</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#notebook">Notebook:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#p-values-when-all-you-can-do-is-falsify">p-values: when all you can do is falsify</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bayesian-degree-of-belief-intervals-and-frequentist-confidence-intervals">Bayesian degree of belief intervals and frequentist confidence intervals</a></li>
 </ul>
             </nav>
         </div>
@@ -508,285 +514,297 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="lecture-5-parameter-estimation">
-<h1><span class="section-number">2.1. </span>Lecture 5: Parameter estimation<a class="headerlink" href="#lecture-5-parameter-estimation" title="Permalink to this heading">#</a></h1>
-<section id="parameter-estimation-overview-comments">
-<h2>Parameter estimation overview comments<a class="headerlink" href="#parameter-estimation-overview-comments" title="Permalink to this heading">#</a></h2>
-<ul class="simple">
-<li><p>In general terms, “parameter estimation” in physics means obtaining values for parameters (i.e., constants) that appear in a theoretical model that describes data. (Exceptions exist, of course.)</p></li>
-<li><p>Examples:</p>
-<ul>
-<li><p>couplings in a Hamiltonian</p></li>
-<li><p>coefficients of a polynomial or exponential model of data</p></li>
-<li><p>parameters describing a peak in a measured spectrum, such as the peak height and width (e.g., fitting a Lorentzian line shape) and the size of the background</p></li>
-<li><p>cosmological parameters such as the Hubble constant</p></li>
-</ul>
-</li>
-<li><p>Conventionally this process is known as “fitting the parameters” and the goal is to find the “best fit” and maybe error bars.</p></li>
-<li><p>We will make particular interpretations of these phrases from our Bayesian point of view.</p></li>
-<li><p>Plan: set up the problem and look at how familiar ideas like “least-squares fitting” show up from a Bayesian perspective.</p></li>
-<li><p>As we proceed, we’ll make the case that for physics a Bayesian
-approach is particular well suited.</p></li>
-</ul>
-</section>
-<section id="what-can-go-wrong-in-a-fit">
-<h2>What can go wrong in a fit?<a class="headerlink" href="#what-can-go-wrong-in-a-fit" title="Permalink to this heading">#</a></h2>
-<p>As a teaser, let’s ask: what can go wrong in a fit?</p>
-<a class="bg-primary reference internal image-reference" href="../../_images/over_under_fitting_cartoon.png"><img alt="bootstrapping" class="bg-primary align-center" src="../../_images/over_under_fitting_cartoon.png" style="width: 400px;" /></a>
-<p>Bayesian methods can identify and prevent both underfitting (model is not complex enough to describe the fit data) or overfitting (model tunes to data fluctuations or terms are underdetermined, leading to them playing off each other).<br />
-<span class="math notranslate nohighlight">\(\Longrightarrow\)</span> we’ll see how this plays out.</p>
-</section>
-<section id="notebook-fitting-a-line">
-<h2>Notebook: Fitting a line<a class="headerlink" href="#notebook-fitting-a-line" title="Permalink to this heading">#</a></h2>
-<p>Look at <a class="reference internal" href="../../notebooks/Parameter_estimation/parameter_estimation_fitting_straight_line_I.html"><span class="doc std std-doc">Parameter estimation example: fitting a straight line</span></a>.</p>
-<p>Annotations of the notebook:</p>
-<ul>
-<li><p>same imports as before</p></li>
-<li><p>assume we create data <span class="math notranslate nohighlight">\(y_{\rm exp}\)</span> (“exp” for “experiment”) from an underlying model of the form</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="lecture-4-a-couple-of-frequentist-connections">
+<h1><span class="section-number">1.10. </span>Lecture 4: A couple of frequentist connections<a class="headerlink" href="#lecture-4-a-couple-of-frequentist-connections" title="Permalink to this heading">#</a></h1>
+<section id="the-near-ubiquity-of-gaussians">
+<h2>The near ubiquity of Gaussians<a class="headerlink" href="#the-near-ubiquity-of-gaussians" title="Permalink to this heading">#</a></h2>
+<p>In the last lecture we considered a Gaussian distribution and
+estimated its mean and variance. We are going to see a lot of Gaussian
+distributions in this course. And indeed some people implicitly always
+assume Gaussian distributions. So this seems like as good a place as
+any to pause and consider why Gaussian distributions are a common
+choice to describe noise, as well as thinking about the circumstances
+in which that choice might be a poor one.</p>
+<p>It turns out there are several reasons why one might choose a Gaussian
+to describe a probability distribution. Here are two:</p>
+<section id="the-gaussian-is-to-statistics-what-the-harmonic-oscillator-is-to-mechanics">
+<h3>The Gaussian is to statistics what the harmonic oscillator is to mechanics<a class="headerlink" href="#the-gaussian-is-to-statistics-what-the-harmonic-oscillator-is-to-mechanics" title="Permalink to this heading">#</a></h3>
+<p>Suppose we have a probability distribution <span class="math notranslate nohighlight">\(p(x | D,I)\)</span> that is
+unimodal (has only one hump), then one way to form a “best estimate’’
+for the variable <span class="math notranslate nohighlight">\(x\)</span> is to compute the maximum of the
+distribution. (To save writing we denote the pdf of interest as <span class="math notranslate nohighlight">\(p(x)\)</span>
+for a while hereafter.)</p>
+<a class="bg-primary reference internal image-reference" href="../../_images/point_estimate_cartoon.png"><img alt="point estimate" class="bg-primary align-right" src="../../_images/point_estimate_cartoon.png" style="width: 250px;" /></a>
+<p>We find this point, which we’ll denote by <span class="math notranslate nohighlight">\(x_0\)</span>, using calculus:</p>
 <div class="math notranslate nohighlight">
 \[
-      y_{\rm exp}(x) = m_{\rm true} x + b_{\rm true} + \mbox{Gaussian noise}
-    \]</div>
-<p>where</p>
-<div class="math notranslate nohighlight">
-\[
-     \boldsymbol{\theta}_{\rm true} = [b_{\rm true}, m_{\rm true}]
-      = [\text{intercept, slope}]_{\rm true}
-    \]</div>
-</li>
-<li><p>The Gaussian noise is taken to have mean <span class="math notranslate nohighlight">\(\mu=0\)</span> and standard deviation <span class="math notranslate nohighlight">\(\sigma = dy\)</span> independent of <span class="math notranslate nohighlight">\(x\)</span>. This is implemented as
-<code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">+=</span> <span class="pre">dy</span> <span class="pre">*</span> <span class="pre">rand.randn(N)</span></code> (note <code class="docutils literal notranslate"><span class="pre">randn</span></code>).</p></li>
-<li><p>The <span class="math notranslate nohighlight">\(x_i\)</span> points themselves are also chosen randomly according to a uniform distribution <span class="math notranslate nohighlight">\(\Longrightarrow\)</span> <code class="docutils literal notranslate"><span class="pre">rand.rand(N)</span></code>.</p></li>
-<li><p>Here we are using the <code class="docutils literal notranslate"><span class="pre">numpy</span></code> random number generators while we will mostly use those from <code class="docutils literal notranslate"><span class="pre">scipy.stats</span></code> elsewhere.</p></li>
-</ul>
-<p>The theoretical model <span class="math notranslate nohighlight">\(y_{\rm th}\)</span> is:</p>
-<div class="math notranslate nohighlight">
-\[
-   y_{\rm th} = m x + b, \quad \mbox{with}\ \theta = [b, m]
+  \left.\frac{dp}{dx}\right|_{x_0} = 0
+  \quad \mbox{with} \quad
+    \left.\frac{d^2p}{dx^2}\right|_{x_0} &lt; 0 \ \text{(maximum)}.
 \]</div>
-<p>So in the sense of distributions (i.e., not an algebraic equation),</p>
+<p>To characterize the posterior <span class="math notranslate nohighlight">\(p(x)\)</span>, we look nearby. We want to know
+how sharp this maximum is: is <span class="math notranslate nohighlight">\(p(x)\)</span> sharply peaked around <span class="math notranslate nohighlight">\(x=x_0\)</span> or
+is the maximum kind-of shallow? To work this out we’ll do a Taylor
+expansion around <span class="math notranslate nohighlight">\(x=x_0\)</span>.
+<span class="math notranslate nohighlight">\(p(x)\)</span> itself
+varies too fast, but since <span class="math notranslate nohighlight">\(p(x)\)</span> is positive definite we can
+Taylor expand <span class="math notranslate nohighlight">\(\log p\)</span> instead. (See the box below for a strict mathematical
+reason why it’s a bad idea to directly Taylor expand <span class="math notranslate nohighlight">\(p(x)\)</span> around its
+maximum.)</p>
 <div class="math notranslate nohighlight">
 \[
-  y_{\rm exp} = y_{\rm th} + \delta y_{\rm exp} + \delta y_{\rm th}
+ \Longrightarrow\ L(x) \equiv \log p(x|D,I) = 
+   L(x_0) + \left.\frac{dL}{dx}\right|_{x_0 = 0}
+   + \frac{1}{2} \left.\frac{d^2L}{dx^2}\right|_{x_0 = 0}(x-x_0)^2 + \cdots
 \]</div>
-<ul>
-<li><p>The last term, which is the model discrepancy (or “theory error”) will be critically important in many applications, but has often been neglected. More on this later!</p></li>
-<li><p>Here we’ll take <span class="math notranslate nohighlight">\(\delta y_{\rm th}\)</span> to be negligible, which means that</p>
+<p>Note that <span class="math notranslate nohighlight">\(\left.\frac{d^2L}{dx^2}\right|_{x_0 = 0} &lt; 0\)</span>.
+If we can neglect higher-order terms, then</p>
 <div class="math notranslate nohighlight">
 \[
-      y_i \sim \mathcal{N}(y_{\rm th}(x_i;\boldsymbol{\theta}), dy^2)
-    \]</div>
+  p(x| D,I) \approx A\, e^{\frac{1}{2}\left.\frac{d^2L}{dx^2}\right|_{x_0 = 0}(x-x_0)^2} ,
+\]</div>
+<p>with <span class="math notranslate nohighlight">\(A\)</span> a normalization factor. So in this general circumstance we get a Gaussian. Comparing to</p>
+<div class="math notranslate nohighlight">
+\[
+  p(x|D,I) = \frac{1}{\sqrt{2\pi\sigma^2}}e^{-(x-\mu)^2/\sigma^2}
+  \quad\Longrightarrow\quad
+  \mu = x_0, \ \sigma = \left(-\left.\frac{d^2L}{dx^2}\right|_{x_0}\right)^{-1/2}
+\]</div>
 <ul class="simple">
-<li><p>The notation here means that the random variable <span class="math notranslate nohighlight">\(y_i\)</span> is drawn from a normal (i.e., Gaussian) distribution with mean <span class="math notranslate nohighlight">\(y_{\rm th}(x_i;\boldsymbol{\theta})\)</span> (first entry) and variance <span class="math notranslate nohighlight">\(dy^2\)</span> (second entry).</p></li>
-<li><p>For a long list of other probability distributions, see Appendix A of BDA3, which is what everyone calls Ref. <span id="id1">[<a class="reference internal" href="../zbibliography.html#id3" title="A. Gelman, J.B. Carlin, H.S. Stern, D.B. Dunson, A. Vehtari, and D.B. Rubin. Bayesian Data Analysis, Third Edition. Chapman &amp; Hall/CRC Texts in Statistical Science. Taylor &amp; Francis, 2013. URL: http://www.stat.columbia.edu/~gelman/book/BDA3.pdf.">GCS+13</a>]</span>.</p></li>
+<li><p>We usually quote <span class="math notranslate nohighlight">\(x = x_0 \pm \sigma\)</span>, because <em>if</em> it is a Gaussian this is <em>sufficient</em> to tell us the entire distribution and <span class="math notranslate nohighlight">\(n\)</span> standard deviations is <span class="math notranslate nohighlight">\(n\times \sigma\)</span>.</p></li>
+<li><p>But for a Bayesian, the full posterior <span class="math notranslate nohighlight">\(p(x|D,I)\)</span> for all <span class="math notranslate nohighlight">\(x\)</span> is
+the general result, and <span class="math notranslate nohighlight">\(x = x_0 \pm \sigma\)</span> may be only an
+approximate characterization.</p></li>
 </ul>
-</li>
-<li><p>We are assuming independence here. Is that a reasonable assumption?</p></li>
-</ul>
-</section>
-<section id="correlated-posteriors">
-<h2>Correlated posteriors<a class="headerlink" href="#correlated-posteriors" title="Permalink to this heading">#</a></h2>
-<ul class="simple">
-<li><p>The pdf we worked out for <span class="math notranslate nohighlight">\(p(\mu,\sigma|D,I)\)</span> a couple of lectures
-ago is characterized by elliptical contours of equal probability
-density whose major axes are aligned with the <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\sigma\)</span>
-axes. (You can also look at the version obtained by sampling in a
-section appended at the end of this lecture.)</p>
-<ul>
-<li><p>This is a signal of <em>independent</em> random variables.</p></li>
-<li><p>Let’s look at a case where this is <em>not</em> true and then look analytically at what we should expect with correlations.</p></li>
-</ul>
-</li>
-<li><p>So return to notebook <a class="reference internal" href="../../notebooks/Parameter_estimation/parameter_estimation_fitting_straight_line_I.html"><span class="doc std std-doc">Parameter estimation example: fitting a straight line</span></a></p>
-<ul>
-<li><p>Review the <em>statistical model</em>.</p></li>
-<li><p>What are we trying to find? <span class="math notranslate nohighlight">\(p(\thetavec|D,I)\)</span>, just as in the other notebooks, now with <span class="math notranslate nohighlight">\(\thetavec =[b,m]\)</span>.</p></li>
-</ul>
-</li>
-</ul>
-<p>Comments on the notebook:</p>
-<ul class="simple">
-<li><p>Note that <span class="math notranslate nohighlight">\(x_i\)</span> is alo randomly distributed uniformly.</p></li>
-<li><p>Log likelihood gives fluctuating results whose size depend on the # of data points <span class="math notranslate nohighlight">\(N\)</span> and the standard deviation of the noise <span class="math notranslate nohighlight">\(dy\)</span>.</p></li>
-</ul>
-<div class="admonition-explore admonition">
-<p class="admonition-title">Explore!</p>
-<p>Play with the notebook and explore how the size varies with <span class="math notranslate nohighlight">\(N\)</span> and <span class="math notranslate nohighlight">\(dy\)</span>.</p>
+<div class="admonition-to-think-about admonition">
+<p class="admonition-title">To think about …</p>
+<p>What if <span class="math notranslate nohighlight">\(p(x|D,I)\)</span> is asymmetric? What if it is multimodal?</p>
 </div>
+<div class="admonition-p-or-log-p admonition">
+<p class="admonition-title"><span class="math notranslate nohighlight">\(p\)</span> or <span class="math notranslate nohighlight">\(\log p\)</span>?</p>
 <ul class="simple">
-<li><p>Compare priors on the slope <span class="math notranslate nohighlight">\(\Longrightarrow\)</span> uniform in <span class="math notranslate nohighlight">\(m\)</span> vs. uniform in angle.</p></li>
-<li><p>Implementation of plots comparing priors:</p></li>
+<li><p>We motivated Gaussian approximations from a Taylor expansion to quadratic order of the <em>logarithm</em> of a pdf.
+What would go wrong if we directly expanded the pdf? Well, if we do
+that we get:</p></li>
 </ul>
-<div class="admonition-questions-for-the-class admonition">
-<p class="admonition-title">Questions for the class</p>
+<div class="math notranslate nohighlight">
+\[
+  p(x) \approx p(x_0) + \frac{1}{2}-\left.\frac{d^2p}{dx^2}\right|_{x_0}(x-x_0)^2
+ \ \overset{x\pm\rightarrow\infty}{\longrightarrow} -\infty,
+\]</div>
+<p>i.e., we get something that diverges as <span class="math notranslate nohighlight">\(x\)</span> tends to either plus or
+minus infinity.</p>
+<a class="bg-primary reference internal image-reference" href="../../_images/pdf_expansion_cartoon.png"><img alt="pdf expansion" class="bg-primary align-center" src="../../_images/pdf_expansion_cartoon.png" style="width: 400px;" /></a>
 <ul class="simple">
-<li><p>With the first set of data with <span class="math notranslate nohighlight">\(N=20\)</span> points, does the prior matter?</p></li>
-<li><p>With the second set of data with <span class="math notranslate nohighlight">\(N=3\)</span> points, does the prior matter?</p></li>
+<li><p>A pdf must be normalizable and positive definite, so this approximation violates these conditions!</p></li>
 </ul>
+</div>
+</section>
+<section id="the-central-limit-theorem">
+<h3>The Central Limit Theorem<a class="headerlink" href="#the-central-limit-theorem" title="Permalink to this heading">#</a></h3>
+<p>Another reason a Gaussian pdf emerges in many calculations is because
+the Central Limit Theorem states that all (or almost all) probability
+distributions will eventually produce Gaussians if you take enough
+data (or, equivalently, draw enough samples) from them.</p>
+<p><em>Central Limit Theorem</em>: The sum of <span class="math notranslate nohighlight">\(n\)</span> random values drawn from any
+pdf of finite variance <span class="math notranslate nohighlight">\(\sigma^2\)</span> tends as <span class="math notranslate nohighlight">\(n \rightarrow \infty\)</span> to
+be Gaussian distributed about the expectation value of the sum, with
+variance <span class="math notranslate nohighlight">\(n \sigma^2\)</span>.</p>
+<section id="consequences">
+<h4>Consequences:<a class="headerlink" href="#consequences" title="Permalink to this heading">#</a></h4>
+<ul class="simple">
+<li><p>The mean of a large number of values becomes normally distributed
+<em>regardless</em> of the probability distiburtion the values are drawn
+from.</p></li>
+<li><p>The binomial, Poisson, Student’s t-, and … distributions all kind
+of look like Gaussian distributions in the limit of a large number
+of degrees of freedom.</p></li>
+</ul>
+</section>
+<section id="proof-in-a-special-case">
+<h4>Proof in a special case:<a class="headerlink" href="#proof-in-a-special-case" title="Permalink to this heading">#</a></h4>
+<p>Start with <em>independent</em> random variables <span class="math notranslate nohighlight">\(x_1,\cdots,x_n\)</span> drawn from a distribution with mean <span class="math notranslate nohighlight">\(\langle x \rangle = 0\)</span> and variance <span class="math notranslate nohighlight">\(\langle x^2\rangle = \sigma^2\)</span>, where</p>
+<div class="math notranslate nohighlight">
+\[
+  \langle x^n \rangle \equiv \int x^n p(x)\, dx 
+\]</div>
+<p>(generalize later to nonzero mean). Now let</p>
+<div class="math notranslate nohighlight">
+\[
+  X = \frac{1}{\sqrt{n}}(x_1 + x_2 + \cdots + x_n)
+   = \sum_{j=1}^n \frac{x_j}{\sqrt{n}} ,   
+\]</div>
+<p>(we scale by <span class="math notranslate nohighlight">\(1/\sqrt{n}\)</span> so that <span class="math notranslate nohighlight">\(X\)</span> is finite in the <span class="math notranslate nohighlight">\(n\rightarrow\infty\)</span> limit).</p>
+<p>What is the distribution of <span class="math notranslate nohighlight">\(X\)</span>?
+<span class="math notranslate nohighlight">\(\Longrightarrow\)</span> call it <span class="math notranslate nohighlight">\(p(X|I)\)</span>, where <span class="math notranslate nohighlight">\(I\)</span> is the information about the probability distribution for <span class="math notranslate nohighlight">\(x_j\)</span>.</p>
+<p><strong>Plan:</strong> Use the sum and product rules and their consequences to relate <span class="math notranslate nohighlight">\(p(X)\)</span> to what we know of <span class="math notranslate nohighlight">\(p(x_j)\)</span>. (Note: we’ll suppress <span class="math notranslate nohighlight">\(I\)</span> to keep the formulas from getting too cluttered.)</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+  p(X) &amp;= \int_{-\infty}^{\infty} dx_1 \cdots dx_n\,
+            p(X,x_1,\cdots,x_n) \\
+       &amp;= \int_{-\infty}^{\infty} dx_1 \cdots dx_n\,
+            p(X|x_1,\cdots,x_n)\,p(x_1,\cdots,x_n) \\
+       &amp;= \int_{-\infty}^{\infty} dx_1 \cdots dx_n\,
+            p(X|x_1,\cdots,x_n)\,p(x_1)\cdots p(x_n) .     
+\end{align}\end{split}\]</div>
 <div class="dropdown admonition">
-<p class="admonition-title">Answers</p>
-<p>No!<br />
-Yes!</p>
+<p class="admonition-title">Class: state the rule used to justify each step</p>
+<ol class="arabic simple">
+<li><p>marginalization</p></li>
+<li><p>product rule</p></li>
+<li><p>independence</p></li>
+</ol>
 </div>
-</div>
-<ul class="simple">
-<li><p>Note: log(posterior) = log(likelihood) + log(prior)</p>
-<ul>
-<li><p>Maximum is set to 1 for plotting</p></li>
-<li><p>Exponentiate: posterior = exp(log(posterior))</p></li>
-</ul>
-</li>
-</ul>
-<div class="admonition-what-does-it-mean-that-the-ellipses-are-slanted admonition">
-<p class="admonition-title">What does it mean that the ellipses are slanted?</p>
-<p> </p>
-</div>
-<ul class="simple">
-<li><p>On the second set of data:</p>
-<ul>
-<li><p>True answers are intercept <span class="math notranslate nohighlight">\(b = 25.0\)</span>, slope <span class="math notranslate nohighlight">\(m=0.5\)</span>.</p></li>
-<li><p>Flat prior gives <span class="math notranslate nohighlight">\(b = -50 \pm 75\)</span>, <span class="math notranslate nohighlight">\(m = 1.5 \pm 1, so barely at the \)</span>1\sigma$ level.</p></li>
-<li><p>Symmetric prior gives <span class="math notranslate nohighlight">\(b = 25 \pm 50\)</span>, slope = 0.5 \pm 0.75, so much better.</p></li>
-<li><p>Distributions are wide (only three points!).</p></li>
-</ul>
-</li>
-</ul>
-</section>
-<section id="likelihoods-or-posteriors-with-two-variables-with-quadratic-approximation">
-<h2>Likelihoods (or posteriors) with two variables with quadratic approximation<a class="headerlink" href="#likelihoods-or-posteriors-with-two-variables-with-quadratic-approximation" title="Permalink to this heading">#</a></h2>
-<a class="bg-primary reference internal image-reference" href="../../_images/posterior_ellipse_cartoon.png"><img alt="posterior ellipse" class="bg-primary align-left" src="../../_images/posterior_ellipse_cartoon.png" style="width: 250px;" /></a>
-<p>Find <span class="math notranslate nohighlight">\(X_0\)</span>, <span class="math notranslate nohighlight">\(Y_0\)</span> (best estimate) by differentiating</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
- L(X,Y) &amp;= \log p(X,Y|\{\text{data}\}, I) \\
-  \quad&amp;\Longrightarrow\quad
-  \left.\frac{dL}{dX}\right|_{X_0,Y_0} = 0, \ 
-  \left.\frac{dL}{dY}\right|_{X_0,Y_0} = 0
-\end{align}\end{split}\]</div>
-<ul class="simple">
-<li><p>To check reliability, Taylor expand around <span class="math notranslate nohighlight">\(L(X_0,Y_0)\)</span>:</p></li>
-</ul>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
- L &amp;= L(X_0,Y_0) + \frac{1}{2}\Bigl[
-   \left.\frac{\partial^2L}{\partial X^2}\right|_{X_0,Y_0}(X-X_0)^2
-  + \left.\frac{\partial^2L}{\partial Y^2}\right|_{X_0,Y_0}(Y-Y_0)^2 \\
-  &amp; \qquad\qquad\qquad + 2 \left.\frac{\partial^2L}{\partial X\partial Y}\right|_{X_0,Y_0}(X-X_0)(Y-Y_0)
-   \Bigr] + \ldots \\
-   &amp;\equiv L(X_0, Y_0) + \frac{1}{2}Q + \ldots
-\end{align}\end{split}\]</div>
-<p>It makes sense to do this in (symmetric) matrix notation:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-  Q = 
-  \begin{pmatrix} X-X_0 &amp; Y-Y_0 
-  \end{pmatrix}
-  \begin{pmatrix} A &amp; C \\
-                  C &amp; B 
-  \end{pmatrix}
-  \begin{pmatrix} X-X_0 \\
-                  Y-Y_0 
-  \end{pmatrix}
-\end{split}\]</div>
-<div class="math notranslate nohighlight">
-\[
- \Longrightarrow
- A = \left.\frac{\partial^2L}{\partial X^2}\right|_{X_0,Y_0},
- \quad
- B = \left.\frac{\partial^2L}{\partial Y^2}\right|_{X_0,Y_0},
- \quad
- C = \left.\frac{\partial^2L}{\partial X\partial Y}\right|_{X_0,Y_0}
-\]</div>
-<ul class="simple">
-<li><p>So in quadratic approximation, the contour <span class="math notranslate nohighlight">\(Q=k\)</span> for some <span class="math notranslate nohighlight">\(k\)</span> is an ellipse centered at <span class="math notranslate nohighlight">\(X_0, Y_0\)</span>. The orientation and eccentricity are determined by <span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(B\)</span>, and <span class="math notranslate nohighlight">\(C\)</span>.</p></li>
-<li><p>The principal axes are found from the eigenvectors of the Hessian matrix <span class="math notranslate nohighlight">\(\begin{pmatrix} A &amp; C \\ C &amp; B  \end{pmatrix}\)</span>.</p></li>
-</ul>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{pmatrix}
-     A &amp; C \\
-     C &amp; B
-\end{pmatrix}
-\begin{pmatrix}
- x \\ y
-\end{pmatrix}
-=
-\lambda
-\begin{pmatrix}
- x \\ y
-\end{pmatrix}
-\quad\Longrightarrow\quad
-\lambda_1,\lambda_2 &lt; 0 \ \mbox{so $(x_0,y_0)$ is a maximum}
-\end{split}\]</div>
-<ul class="simple">
-<li><p>What is the ellipse is skewed?</p></li>
-</ul>
-<a class="bg-primary reference internal image-reference" href="../../_images/skewed_ellipse_cartoon.png"><img alt="posterior ellipse" class="bg-primary align-left" src="../../_images/skewed_ellipse_cartoon.png" style="width: 250px;" /></a>
-<p>Look at correlation matrix</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
- \begin{pmatrix}
- \sigma_x^2 &amp; \sigma^2_{xy} \\
- \sigma^2_{xy} &amp; \sigma_y^2
- \end{pmatrix}
- = - \begin{pmatrix}
-     A &amp; C \\
-     C &amp; B
-     \end{pmatrix}^{-1}
-\end{split}\]</div>
-</section>
-<section id="compare-gaussian-noise-sampling-to-lighthouse-calculation">
-<h2>Compare Gaussian noise sampling to lighthouse calculation<a class="headerlink" href="#compare-gaussian-noise-sampling-to-lighthouse-calculation" title="Permalink to this heading">#</a></h2>
-<ul>
-<li><p>Jump to the Bayesian approach in <a class="reference internal" href="../../notebooks/Parameter_estimation/parameter_estimation_Gaussian_noise-2.html"><span class="doc std std-doc">Parameter estimation example: Gaussian noise and averages II</span></a> and then come back to contrast with the frequentist approach.</p></li>
-<li><p>The goal is to sample a posterior <span class="math notranslate nohighlight">\(p(\thetavec|D,I)\)</span></p>
-<div class="math notranslate nohighlight">
-\[
-         p(\mu,\sigma | D, I) \leftrightarrow p(x_0,y_0|X,I)
-    \]</div>
-<p>where <span class="math notranslate nohighlight">\(D\)</span> on the left are the <span class="math notranslate nohighlight">\(x\)</span> points and <span class="math notranslate nohighlight">\(D\)</span> on the right are the <span class="math notranslate nohighlight">\(\{x_k\}\)</span> where flashes hit.</p>
-</li>
-<li><p>What do we need? From Bayes’ theorem, we need</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-      \text{likelihood:}&amp; \quad p(D|\mu,\sigma,I) \leftrightarrow p(D|x_0,y_0,I) \\
-      \text{prior:}&amp; \quad p(\mu,\sigma|I) \leftrightarrow p(x_0,y_0|I)
-    \end{align}\end{split}\]</div>
-</li>
-<li><p>You are generalizing the functions for log pdfs and the plotting of posteriors that are in notebook <span class="xref myst"></span>.</p></li>
-<li><p>Note in <span class="xref myst"></span> the functions for log-prior and log-likelihood.</p>
-<ul class="simple">
-<li><p>Here <span class="math notranslate nohighlight">\(\thetavec = [\mu,\sigma]\)</span> is a vector of parameters; cf.  <span class="math notranslate nohighlight">\(\thetavec = [x_0,y_0]\)</span>.</p></li>
-</ul>
-</li>
-<li><p>Step through the set up for <code class="docutils literal notranslate"><span class="pre">emcee</span></code>.</p>
-<ul class="simple">
-<li><p>It is best to create an environment that will include <code class="docutils literal notranslate"><span class="pre">emcee</span></code> and <code class="docutils literal notranslate"><span class="pre">corner</span></code>.</p></li>
-</ul>
-<div class="admonition hint">
-<p class="admonition-title">Hint</p>
-<p>Nothing in the <code class="docutils literal notranslate"><span class="pre">emcee</span></code> sampling part needs to change!</p>
-</div>
-<ul class="simple">
-<li><p>More later on what is happening, but basically we are doing 50 random walks in parallel to explore the posterior. Where the walkers end up will define our samples of <span class="math notranslate nohighlight">\(\mu,\sigma\)</span>
-<span class="math notranslate nohighlight">\(\Longrightarrow\)</span> the histogram <em>is</em> an approximation to the (unnormalized) joint posterior.</p></li>
-<li><p>Plotting is also the same, once you change labels and <code class="docutils literal notranslate"><span class="pre">mu_true</span></code>, <code class="docutils literal notranslate"><span class="pre">sigma_true</span></code> to <code class="docutils literal notranslate"><span class="pre">x0_true</span></code>, <code class="docutils literal notranslate"><span class="pre">y0_true</span></code>. (And skip the <code class="docutils literal notranslate"><span class="pre">maxlike</span></code> part.)</p></li>
-</ul>
-</li>
-<li><p>Analysis:</p>
-<ul class="simple">
-<li><p>Maximum likelihood here is the frequentist estimate <span class="math notranslate nohighlight">\(\longrightarrow\)</span> this is an optimization problem.</p></li>
-</ul>
+<p>We might proceed by using a direct, normalized expression for <span class="math notranslate nohighlight">\(p(X|x_1,\cdots,x_n)\)</span>:</p>
 <div class="admonition-question admonition">
 <p class="admonition-title">Question</p>
-<p>Are <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\sigma\)</span> correlated or uncorrelated?</p>
+<p>What is <span class="math notranslate nohighlight">\(p(X|x_1,\cdots,x_n)\)</span>?</p>
 <div class="dropdown admonition">
 <p class="admonition-title">Answer</p>
-<p>They are <em>uncorrelated</em> because the contour ellipses in the joint posterior have their major and minor axes parallel to the <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\sigma\)</span> axes. Note that the fact that they look like circles is just an accident of the ranges chosen for the axes; if you changed the <span class="math notranslate nohighlight">\(\sigma\)</span> axis range by a factor of two, the circle would become flattened.</p>
+<p><span class="math notranslate nohighlight">\(p(X|x_1,\cdots,x_n) = \delta\Bigl(X - \frac{1}{\sqrt{n}}(x_1 + \cdots + x_n)\Bigr)\)</span></p>
 </div>
 </div>
+<p>Instead we will use a Fourier representation:</p>
+<div class="math notranslate nohighlight">
+\[
+p(X|x_1,\cdots,x_n) = \delta\Bigl(X - \frac{1}{\sqrt{n}}(x_1 + \cdots + x_n)\Bigr)
+  = \frac{1}{2\pi} \int_{-\infty}^{\infty} d\omega
+    \, e^{i\omega\Bigl(X - \frac{1}{\sqrt{n}}\sum_{j=1}^n x_j\Bigr)} .
+\]</div>
+<p>Substituting into <span class="math notranslate nohighlight">\(p(X)\)</span> and gathering together all pieces with <span class="math notranslate nohighlight">\(x_j\)</span> dependence while exchanging the order of integrations:</p>
+<div class="math notranslate nohighlight">
+\[ 
+ p(X) = \frac{1}{2\pi} \int_{-\infty}^{\infty} d\omega
+    \, e^{i\omega X} \prod_{j=1}^n \left[\int_{-\infty}^{\infty} dx_j\, e^{i\omega x_j / \sqrt{n}} p(x_j) \right] 
+\]</div>
 <ul class="simple">
-<li><p>Read off marginalized estimates for <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\sigma\)</span>.</p></li>
+<li><p>Observe that the terms in []s have factorized into a product of independent integrals and they are all the same (just different labels for the integration variables).</p></li>
+<li><p>Now we Taylor expand <span class="math notranslate nohighlight">\(e^{i\omega x_j/\sqrt{n}}\)</span>, arguing that the Fourier integral is dominated by small <span class="math notranslate nohighlight">\(x\)</span> as <span class="math notranslate nohighlight">\(n\rightarrow\infty\)</span>. (<em>When does this fail?</em>)</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+  e^{i\omega x/\sqrt{n}} = 1 + \frac{i\omega x}{\sqrt{n}}
+    + \frac{(i\omega)^2 x^2}{2 n} + \mathcal{O}\left(\frac{\omega^3 x^3}{n^{3/2}}\right)
+\]</div>
+<p>Then, using that <span class="math notranslate nohighlight">\(p(x)\)</span> is normalized (i.e., <span class="math notranslate nohighlight">\(\int_{-\infty}^{\infty} dx\, p(x) = 1\)</span>),</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+\int_{-\infty}^{\infty} dx\, e^{i\omega x / \sqrt{n}}
+p(x)&amp;=
+\int_{-\infty}^\infty dx p(x)
+\left[1 +\frac{ i \omega x}{\sqrt{n}} + \frac{(i \omega)^2 x^2}{2 n} + \ldots\right]\\
+&amp;=1  + \frac{i \omega}{\sqrt{n}} \langle x \rangle  - \frac{\omega^2}{2
+n^2} \langle x^2 \rangle + \langle x^3 \rangle
+\frac{\omega^3}{n^{3/2}}\\
+&amp;=1 - \frac{\omega^2 \sigma^2}{2 n^2} +
+\mathcal{O}\left(\frac{\omega^3}{n^{3/2}}\right)
+\end{align}
+\end{split}\]</div>
+<p>Now we can substitute into the posterior for <span class="math notranslate nohighlight">\(X\)</span> and take the large
+<span class="math notranslate nohighlight">\(n\)</span> limit:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+p(X)&amp;=\frac{1}{2 \pi} \int_{-\infty}^\infty d \omega e^{i \omega X}
+\left[1 - \frac{\omega^2 \sigma^2}{2 n^2} + \mathcal{O} \left(\frac{\omega^3}{n^{3/2}}\right)\right]^n\\
+&amp;\stackrel{n\rightarrow \infty}{\longrightarrow} \frac{1}{2 \pi} \int
+d\omega e^{i \omega X} e^{- \omega^2 \sigma^2/2}=\frac{1}{\sqrt{2
+\pi}} e^{-X^2/(2 \sigma^2)}.
+\end{align}
+\end{split}\]</div>
+</section>
+<section id="notebook">
+<h4>Notebook:<a class="headerlink" href="#notebook" title="Permalink to this heading">#</a></h4>
+<p>Look at <a class="reference internal" href="../../notebooks/Basics/visualization_of_CLT.html"><span class="doc std std-doc">Visualization of the Central Limit Theorem</span></a>.</p>
+<p>Things to think about:</p>
+<ul class="simple">
+<li><p>What does ``large’’ number of degrees of freedom acutally mean? Does
+it matter where we look?</p></li>
+<li><p>Can you identify a case where the CLT will fail?</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="p-values-when-all-you-can-do-is-falsify">
+<h2>p-values: when all you can do is falsify<a class="headerlink" href="#p-values-when-all-you-can-do-is-falsify" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>A common way for a frequentist to discuss a theory/model, or put a
+bound on a parameter value, is to quote a p-value.</p></li>
+<li><p>This is set up using something called the null hypothesis. Somewhat
+perversely you should pick the null hypothesis to be the opposite of
+what you want to prove. So if you want to discover the Higgs boson,
+the null hypothesis is that the Higgs boson does not exist.</p></li>
+<li><p>Then you pick a level of proof you are comfortable with. For the
+Higgs boson (and for many other particle physics experiments) it is
+“5 sigma’’. How do you think we convert this statement to a
+probability?</p></li>
+<li><p>One minus the resulting probability is called the <span class="math notranslate nohighlight">\(p\)</span>-value. We will
+denote it <span class="math notranslate nohighlight">\(p_{\rm crit}\)</span>. There is nothing
+God-given about it. It is a standard (like “beyond a resaonable
+doubt”) that has been established in a research community for
+determining that something is (likely) going on.</p></li>
+<li><p>You then take data and compute <span class="math notranslate nohighlight">\(p(D|{\rm null~hypothesis})\)</span>. If
+<span class="math notranslate nohighlight">\(p(D|{\rm null~ hypothesis}) &lt; p_{\rm crit}\)</span> then you conclude that the “the null
+hypothesis is rejected at the <span class="math notranslate nohighlight">\(p_{\rm crit}\)</span> significance level’’.</p></li>
+<li><p>Note that if <span class="math notranslate nohighlight">\(p(D|{null~hypothesis}) &gt; p_{\rm crit}\)</span> you cannot
+conculde that the null hypothesis is true. It just means “no effect
+was observeed”.</p></li>
+<li><p>Look at
+<a class="reference internal" href="../../notebooks/Basics/Bayesian_updating_coinflip_interactive.html"><span class="doc std std-doc">Interactive Bayesian updating: coin flipping example</span></a>. Pick
+a <span class="math notranslate nohighlight">\(p\)</span>-value. If  <span class="math notranslate nohighlight">\(H=0.4\)</span> work out how many coin tosses it would take
+to reject the null hypothesis that it’s a fair coin (<span class="math notranslate nohighlight">\(H=0.5\)</span>) at
+that <span class="math notranslate nohighlight">\(p\)</span>-value.</p></li>
+</ul>
+</section>
+<section id="bayesian-degree-of-belief-intervals-and-frequentist-confidence-intervals">
+<h2>Bayesian degree of belief intervals and frequentist confidence intervals<a class="headerlink" href="#bayesian-degree-of-belief-intervals-and-frequentist-confidence-intervals" title="Permalink to this heading">#</a></h2>
+<p>In class on Wednesday we also talked about the difference between the
+68% degree of belief interval for the most likely value (in that case
+the bias weighting of the coin) and a frequentist <span class="math notranslate nohighlight">\(1 \sigma\)</span> confidence
+interval.</p>
+<ul class="simple">
+<li><p>First point is that <span class="math notranslate nohighlight">\(1 \sigma=68\)</span>% assumes a Gaussian distribution
+around the maximum of the posterior (cf. above). While this will
+often work out okay, it may not. And, as we seek to translate,
+<span class="math notranslate nohighlight">\(n \sigma\)</span> intervals into DoB statements, assuming a Gaussian
+becomes more and more questionable the higher <span class="math notranslate nohighlight">\(n\)</span> is. (Why?)</p></li>
+<li><p>But the second point is more philosophical (meta-statistical?). One
+interval is a statement about <span class="math notranslate nohighlight">\(p(x|D,I)\)</span>, while the other is a
+statement about <span class="math notranslate nohighlight">\(p(D|x,I)\)</span>.</p></li>
+<li><p>(Note that because the conversion between the two pdfs requires the
+use of Bayes’ theorem the Bayesian interval may be affected by the
+choice of the prior.)</p></li>
+<li><p>Bayesian version is easy; a 68% credible interval or Bayesian
+confidence interval or degree-of-belief (DoB) interval is: given
+some data and some information <span class="math notranslate nohighlight">\(I\)</span>, there is a 68% chance (probability) that the interval contains the true parameter.</p></li>
+<li><p>Frequentist 68% confidence interval</p>
+<ul>
+<li><p>Assuming the model (contained in <span class="math notranslate nohighlight">\(I\)</span>) and the value of the
+parameter <span class="math notranslate nohighlight">\(x\)</span> then if we do the experiment a large number of
+times then 68% of them will produce data in that interval.</p></li>
+<li><p>So the <em>parameter</em> is fixed (no pdf) and the confidence
+interval is a statement about data</p></li>
+<li><p>Frequentists will try to make statements about parameters, but
+they end up a bit tangled, e.g., “There is a 68% probability
+that when I compute a confidence interval from data of this sort
+that the true value of <span class="math notranslate nohighlight">\(\theta\)</span> will fall within the
+(hypothetical) space of observations.”</p></li>
+</ul>
+</li>
+<li><p>For a one-dimensional posterior that is symmetric, it is clear how to define the <span class="math notranslate nohighlight">\(d\%\)</span> confidence interval.</p>
+<ul>
+<li><p>Algorithm: start from the center, step outward on both sides, stop when <span class="math notranslate nohighlight">\(d\%\)</span> is enclosed.</p></li>
+<li><p>For a two-dimensional posterior, need a way to integrate from the top. (Could lower a plane, as desribed below for HPD.)</p></li>
+</ul>
+</li>
+<li><p>What if asymmetic or multimodal? Two of the possible choices:</p>
+<ul>
+<li><p>Equal-tailed interval (central interval): the area above and below the interval are equal.</p></li>
+<li><p>Highest posterior density (HPD) region: posterior density for
+every point is higher than the posterior density for any point
+outside the
+interval. [E.g., lower a horizontal line over the distribution until the desired interval percentage is covered by regions above the line.]</p></li>
 </ul>
 </li>
 </ul>
@@ -806,7 +824,7 @@ Yes!</p>
         },
         kernelOptions: {
             name: "python3",
-            path: "./content/Parameter_estimation"
+            path: "./content/Basics"
         },
         predefinedOutput: true
     }
@@ -825,20 +843,20 @@ Yes!</p>
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="param_est.html"
+       href="../../notebooks/Basics/medical_example_by_Bayes.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">2. </span>Bayesian parameter estimation</p>
+        <p class="prev-next-title"><span class="section-number">1.9. </span>Standard medical example by applying Bayesian rules of probability</p>
       </div>
     </a>
     <a class="right-next"
-       href="../../notebooks/Parameter_estimation/parameter_estimation_fitting_straight_line_I.html"
+       href="../../notebooks/Basics/visualization_of_CLT.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">2.2. </span>Parameter estimation example: fitting a straight line</p>
+        <p class="prev-next-title"><span class="section-number">1.11. </span>Visualization of the Central Limit Theorem</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -860,12 +878,18 @@ Yes!</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-estimation-overview-comments">Parameter estimation overview comments</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-can-go-wrong-in-a-fit">What can go wrong in a fit?</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notebook-fitting-a-line">Notebook: Fitting a line</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correlated-posteriors">Correlated posteriors</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#likelihoods-or-posteriors-with-two-variables-with-quadratic-approximation">Likelihoods (or posteriors) with two variables with quadratic approximation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-gaussian-noise-sampling-to-lighthouse-calculation">Compare Gaussian noise sampling to lighthouse calculation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-near-ubiquity-of-gaussians">The near ubiquity of Gaussians</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-gaussian-is-to-statistics-what-the-harmonic-oscillator-is-to-mechanics">The Gaussian is to statistics what the harmonic oscillator is to mechanics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-central-limit-theorem">The Central Limit Theorem</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#consequences">Consequences:</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#proof-in-a-special-case">Proof in a special case:</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#notebook">Notebook:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#p-values-when-all-you-can-do-is-falsify">p-values: when all you can do is falsify</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bayesian-degree-of-belief-intervals-and-frequentist-confidence-intervals">Bayesian degree of belief intervals and frequentist confidence intervals</a></li>
 </ul>
   </nav></div>
 
