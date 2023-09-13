@@ -250,7 +250,7 @@ $$
 * Analysis:
     * Maximum likelihood here is the frequentist estimate $\longrightarrow$ this is an optimization problem.
     ::::{admonition} Question
-    Are $\mu$ and $\sigma$ correlated or uncorrelated?
+    Are $\mu$ and $\sigma$ correlated or uncorrelated?y
     :::{admonition} Answer
     :class: dropdown 
     They are *uncorrelated* because the contour ellipses in the joint posterior have their major and minor axes parallel to the $\mu$ and $\sigma$ axes. Note that the fact that they look like circles is just an accident of the ranges chosen for the axes; if you changed the $\sigma$ axis range by a factor of two, the circle would become flattened.
