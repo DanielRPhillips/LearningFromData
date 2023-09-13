@@ -58,7 +58,7 @@ The level of the background is $B$, the peak height of the signal above the back
 The distribution is
 
 $$
-  D_k = n_0 [A e^{-(x_k-x_0)^2/2w^2} + D]
+  D_k = n_0 [A e^{-(x_k-x_0)^2/2w^2} + B]
 $$
 
 
