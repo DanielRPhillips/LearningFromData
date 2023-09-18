@@ -176,20 +176,20 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../Basics/parameter_estimation_Gaussian_noise.html">1.7. Parameter estimation example: Gaussian noise and averages I</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Basics/radioactive_lighthouse_exercise.html">1.8. Radioactive lighthouse problem</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Basics/medical_example_by_Bayes.html">1.9. Standard medical example by applying Bayesian rules of probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Basics/lecture_04.html">1.10. Lecture 4: A couple of frequentist connections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Basics/visualization_of_CLT.html">1.11. Visualization of the Central Limit Theorem</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../content/Parameter_estimation/param_est.html">2. Bayesian parameter estimation</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../content/Parameter_estimation/lecture_04.html">2.1. Lecture 4: Clean up and Parameter estimation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Basics/visualization_of_CLT.html">2.2. Visualization of the Central Limit Theorem</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/Parameter_estimation/lecture_05.html">2.3. Lecture 5</a></li>
-<li class="toctree-l2"><a class="reference internal" href="parameter_estimation_fitting_straight_line_I.html">2.4. Parameter estimation example: fitting a straight line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Parameter_estimation/lecture_05.html">2.1. Lecture 5: Parameter estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parameter_estimation_fitting_straight_line_I.html">2.2. Parameter estimation example: fitting a straight line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/Parameter_estimation/lecture_06.html">2.3. Lecture 6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="amplitude_in_presence_of_background.html">2.4. Amplitude of a signal in the presence of background</a></li>
 <li class="toctree-l2"><a class="reference internal" href="demo-ModelValidation.html">2.5. Linear Regression and Model Validation demonstration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/Parameter_estimation/lecture_06.html">2.6. Lecture 6</a></li>
-<li class="toctree-l2"><a class="reference internal" href="amplitude_in_presence_of_background.html">2.7. Amplitude of a signal in the presence of background</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../assignments/Assignment_parameter_estimation_followups.html">2.8. Assignment: Follow-ups to Parameter Estimation notebooks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="exercise_LinearRegression.html">2.9. Linear Regression exercise</a></li>
-<li class="toctree-l2"><a class="reference internal" href="linear_algebra_games_I.html">2.10. Linear algebra games including SVD for PCA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../assignments/fluctuation_trend_with_number_of_points_and_data_errors.html">2.11. Follow-up: fluctuation trends with # of points and data errors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Assignment_parameter_estimation_followups.html">2.6. Assignment: Follow-ups to Parameter Estimation notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exercise_LinearRegression.html">2.7. Linear Regression exercise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linear_algebra_games_I.html">2.8. Linear algebra games including SVD for PCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/fluctuation_trend_with_number_of_points_and_data_errors.html">2.9. Follow-up: fluctuation trends with # of points and data errors</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../../content/MCMC_sampling_I/MCMC_sampling_I.html">3. MCMC sampling I</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
@@ -607,7 +607,7 @@ is often used as a theoretical model to describe the noise associated with exper
 </div>
 </div>
 <p><strong>Side note:</strong> try shift-tab-tab to get documentation!</p>
-<p><em>Look at the array <code class="docutils literal notranslate"><span class="pre">D</span></code>.  Are the number of entries in the “tails” what you would expect?</em></p>
+<p><em>Look at the array <code class="docutils literal notranslate"><span class="pre">D</span></code>.</em></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">D</span>
@@ -639,52 +639,6 @@ is often used as a theoretical model to describe the noise associated with exper
 </div>
 </div>
 </div>
-<p><em>Hint: Roughly how many entries do you expect to find two sigma away from the mean?</em></p>
-<p>Let’s verify your answer with visualizations!</p>
-<p>First, let’s make two simple visualizations of the “measured” data: a scatter plot and a histogram</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig1</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">M</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">vlines</span><span class="p">([</span><span class="n">mu_true</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">);</span> <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;measurement number&quot;</span><span class="p">);</span>
-
-<span class="n">fig2</span><span class="p">,</span> <span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">D</span><span class="p">,</span><span class="n">alpha</span>   <span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="c1">#ax1.vlines([mu_true], 0, M, alpha=0.2)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">);</span> <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;counts&quot;</span><span class="p">);</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/1ac01463f2ea220f451d76df0c0eedeae127bbfa70343fbb55a155de4a73f4d2.png" src="../../_images/1ac01463f2ea220f451d76df0c0eedeae127bbfa70343fbb55a155de4a73f4d2.png" />
-<img alt="../../_images/f2a2a7aab4f1da4848b04ce60cd6d2815fd39fc147a0ef45bf369b9598e97405.png" src="../../_images/f2a2a7aab4f1da4848b04ce60cd6d2815fd39fc147a0ef45bf369b9598e97405.png" />
-</div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">Matplotlib</span></code> alternative: one figure with two subplots using an array of axes.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
-<span class="c1"># An alternative keeping the same axis names as before would be:</span>
-<span class="c1">#  fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=(12,5))</span>
-
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">M</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">vlines</span><span class="p">([</span><span class="n">mu_true</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">);</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;measurement number&quot;</span><span class="p">);</span>
-
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">D</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">);</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;counts&quot;</span><span class="p">);</span>
-
-<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/b13428b097f86c10d239a439a2a1c02b3f90b9f58143a51493a093ff79f823d6.png" src="../../_images/b13428b097f86c10d239a439a2a1c02b3f90b9f58143a51493a093ff79f823d6.png" />
-</div>
-</div>
-<p><em>What can you conclude about the tails?</em></p>
-<p><em>Change np.random.seed(1) to a different number so that a different set of random numbers is generated.</em></p>
 <section id="frequentist-approach-to-gaussian-parameter-estimation">
 <h2>Frequentist approach to Gaussian parameter estimation<a class="headerlink" href="#frequentist-approach-to-gaussian-parameter-estimation" title="Permalink to this heading">#</a></h2>
 <p>We’ll start with the classical frequentist <strong>maximum likelihood</strong> approach. The probability of a single measurement <span class="math notranslate nohighlight">\(D_i\)</span> having a value <span class="math notranslate nohighlight">\(x_i\)</span> is given by</p>
@@ -725,33 +679,6 @@ is often used as a theoretical model to describe the noise associated with exper
       
       Sample estimators: 
       (mu,sigma)_0  = 10.08, 0.97 (based on 100 measurements)
-      
-</pre></div>
-</div>
-</div>
-</div>
-<p><strong>Aside:</strong> using <code class="docutils literal notranslate"><span class="pre">fstrings</span></code> by putting an <code class="docutils literal notranslate"><span class="pre">f</span></code> in front of the quotes.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Estimators: sample mean and (sqrt of) sample variance</span>
-<span class="c1"># Sometimes the *unbiased* estimator for the sample variance is used with </span>
-<span class="c1"># (M-1) degrees of freedom...</span>
-<span class="n">mu_est</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="n">M</span>
-<span class="n">sigma_est</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(((</span><span class="n">D</span><span class="o">-</span><span class="n">mu_est</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="n">M</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">      (mu,sigma)_true = </span><span class="si">{</span><span class="n">mu_true</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">sigma_true</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span>
-<span class="s2">      </span>
-<span class="s2">      Sample estimators:</span>
-<span class="s2">      (mu,sigma)_0 = </span><span class="si">{</span><span class="n">mu_est</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">sigma_est</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> (based on </span><span class="si">{</span><span class="n">M</span><span class="si">}</span><span class="s2"> measurements)</span>
-<span class="s2">      &quot;&quot;&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      (mu,sigma)_true = 10.00, 1.00
-      
-      Sample estimators:
-      (mu,sigma)_0 = 10.08, 0.97 (based on 100 measurements)
       
 </pre></div>
 </div>
@@ -889,7 +816,7 @@ Mean acceptance fraction: 0.719 (in total 50000 steps)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/4db3cc5e205c36e273e875c6ce2921912b77d173cd9fe2ed04561078ad428bad.png" src="../../_images/4db3cc5e205c36e273e875c6ce2921912b77d173cd9fe2ed04561078ad428bad.png" />
+<img alt="../../_images/559e21789fc72893f94ecc2122a71ac26fce8e258c2ce2536303d9f9c64b66ad.png" src="../../_images/559e21789fc72893f94ecc2122a71ac26fce8e258c2ce2536303d9f9c64b66ad.png" />
 </div>
 </div>
 <p>The lower left panel in the corner plot shows the joint probability distribution for the two model parameters. The two plots on the diagonal show marginalized distributions (with one parameter integrated out) for the two model parameters. The blue lines indicate the <em>true</em> values of the model parameters, while the title and the dashed lines indicate the most probable value as well as a 68% confidence interval. We will be discussing these representative measures of a posterior distribution during the course.</p>
