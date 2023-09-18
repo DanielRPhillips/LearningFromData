@@ -104,8 +104,8 @@ This necessitates *importance sampling*, which reweights the integrand to more a
 1. Decide whether or not to accept candidate $\phivec$ for $\thetavec_{i+1}$. Here we'll use the *Metropolis* condition (later we'll see other ways that may be better).
     * This dates from the 1950's in physics but didn't become widespread in statistics until almost 1980.
     * Enabled Bayesian methods to be much more widely applied.
-
-:::{admonition}Metropolis condition
+	
+:::{admonition} Metropolis condition
 Calculate Metropolis ratio $r$ given current $\thetavec_i$ and proposed candidate $\phivec$:
 
 $$
@@ -125,18 +125,14 @@ Note that the last case means you *do* have a $\theta_{i+1}$, but it is the same
 
 The acceptance probability is the minimum of $1,r$.
 
-:::{admonition}Algorithm pseudo-code:
+:::{admonition} Algorithm pseudo-code:
 1. Initialize $\thetavec_i$, set $i=0$.
 1. Repeat  
    \{  
-   &nbsp;&nbsp;&nbsp;&nbsp;
    Obtain new candidate $\phivec$ from $q(\phivec|\theta_i)$.  
-   &nbsp;&nbsp;&nbsp;&nbsp;
-   Sample $U \sim \text{uniform}(0,1)$  
-   &nbsp;&nbsp;&nbsp;&nbsp;
+   Sample $U \sim \text{uniform}(0,1)$
    If $U \leq r$ set $\thetavec_{i+1} = \phivec$, else set
    $\thetavec_{i+1} = \thetavec_i$.  
-   &nbsp;&nbsp;&nbsp;&nbsp;
    $i++$     
    \}
 
@@ -172,7 +168,7 @@ There are excellent javascript visualizations of MCMC sampling out there.
 
 Here are some comments and observations on the basic MH simulation.
 * The target distribution is a two-dimensional Gaussian (just the product of two one-dimensional Gaussians).
-    :::{admonition}Question
+    :::{admonition} Question
       Is the distribution correlated? How do you know?
     :::
 
