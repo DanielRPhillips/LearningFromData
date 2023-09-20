@@ -148,8 +148,6 @@ It's important to do the `else` step for $U \gt r$.
 
 ## Visualization of MCMC sampling
 
-* [Check Christian Forssen entries]
-
 There are excellent javascript visualizations of MCMC sampling out there.
 
 * A particularly effective set of interactive demos was created by Chi Feng, available at [https://chi-feng.github.io/mcmc-demo/](https://chi-feng.github.io/mcmc-demo/)
@@ -185,7 +183,7 @@ Here are some comments and observations on the basic MH simulation.
 * Problems: we are constantly looking for the right step size, which is big enough to explore the space, but small enough to not get rejected too often.
     * High dimensions is a big space! It is hard to stay in a region of high probability while also exploring enough (in a reasonable time).
 
-:::{admonition}Note on donuts in high dimensions
+:::{admonition} Note on donuts in high dimensions
 ```{image} /_images/bayes_talk.028.png
 :alt: point estimate
 :class: bg-primary
