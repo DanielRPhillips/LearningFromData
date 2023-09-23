@@ -42,9 +42,10 @@ parts:
       sections:
       - file: content/MCMC_sampling_I/lecture_07.md
       - file: notebooks/MCMC_sampling_I/Metropolis_Poisson_example.ipynb
-      - file: notebooks/MCMC_sampling_I/parameter_estimation_Gaussian_noise-2.ipynb
       - file: content/MCMC_sampling_I/lecture_08.md
+      - file: notebooks/MCMC_sampling_I/parameter_estimation_Gaussian_noise-2.ipynb
       - file: notebooks/MCMC_sampling_I/MCMC-random-walk-and-sampling.ipynb
+      - file: notebooks/MCMC_sampling_I/MCMC-diagnostics.ipynb
       - file: notebooks/assignments/Assignment_extending_radioactive_lighthouse.ipynb
     - title: "Why Bayes is better"
       file: content/Why_Bayes_is_better/bayes_is_better.md
@@ -57,7 +58,6 @@ parts:
       - file: notebooks/Why_Bayes_is_better/error_propagation_to_functions_of_uncertain_parameters.ipynb
       - file: notebooks/Basics/correlation_intuition.ipynb
       - file: content/Why_Bayes_is_better/lecture_12.md
-      - file: notebooks/MCMC_sampling_I/MCMC-diagnostics.ipynb
       - file: content/Why_Bayes_is_better/lecture_13.md
       - file: notebooks/Why_Bayes_is_better/dealing_with_outliers.ipynb 
     - title: "Model selection"
