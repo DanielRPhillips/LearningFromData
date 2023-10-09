@@ -68,7 +68,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="3.3. Parameter estimation example: Gaussian noise and averages II" href="parameter_estimation_Gaussian_noise-2.html" />
+    <link rel="next" title="3.3. Lecture 8" href="../../content/MCMC_sampling_I/lecture_08.html" />
     <link rel="prev" title="3.1. Lecture 7" href="../../content/MCMC_sampling_I/lecture_07.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -195,8 +195,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../../content/MCMC_sampling_I/MCMC_sampling_I.html">3. MCMC sampling I</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../content/MCMC_sampling_I/lecture_07.html">3.1. Lecture 7</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">3.2. Metropolis-Hasting MCMC sampling of a Poisson distribution</a></li>
-<li class="toctree-l2"><a class="reference internal" href="parameter_estimation_Gaussian_noise-2.html">3.3. Parameter estimation example: Gaussian noise and averages II</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/MCMC_sampling_I/lecture_08.html">3.4. Lecture 8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/MCMC_sampling_I/lecture_08.html">3.3. Lecture 8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parameter_estimation_Gaussian_noise-2.html">3.4. Parameter estimation example: Gaussian noise and averages II</a></li>
 <li class="toctree-l2"><a class="reference internal" href="MCMC-random-walk-and-sampling.html">3.5. Exercise: Random walk</a></li>
 <li class="toctree-l2"><a class="reference internal" href="MCMC-diagnostics.html">3.6. Overview: MCMC Diagnostics</a></li>
 
@@ -605,7 +605,7 @@ p(k|\mu) = \frac{\mu^k e^{-\mu}}{k!} \quad \mbox{for }k\geq 0 \;.
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Set mu and k0</span>
 <span class="n">mu</span> <span class="o">=</span> <span class="mf">3.</span>
-<span class="n">k0</span> <span class="o">=</span> <span class="mi">10</span>    
+<span class="n">k0</span> <span class="o">=</span> <span class="mi">100</span>    
 
 <span class="n">num_steps</span> <span class="o">=</span> <span class="mi">1000</span>  <span class="c1"># number of MCMC steps we&#39;ll take</span>
 <span class="c1"># generate the two sets of uniform random numbers we&#39;ll need for 2. and 4.</span>
@@ -633,7 +633,7 @@ p(k|\mu) = \frac{\mu^k e^{-\mu}}{k!} \quad \mbox{for }k\geq 0 \;.
         <span class="n">k_array</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">k_now</span>
 
 <span class="c1"># 6. Choose how many steps to skip</span>
-<span class="n">warm_up_steps</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">warm_up_steps</span> <span class="o">=</span> <span class="mi">500</span>
 
 <span class="c1"># Set up for side-by-side plots</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
@@ -671,7 +671,7 @@ p(k|\mu) = \frac{\mu^k e^{-\mu}}{k!} \quad \mbox{for }k\geq 0 \;.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/e24cf1f9e48ffa4792371ad3579a4b10abf02f60ed2786784bb96e46a1bcbbd2.png" src="../../_images/e24cf1f9e48ffa4792371ad3579a4b10abf02f60ed2786784bb96e46a1bcbbd2.png" />
+<img alt="../../_images/05fc435b45c365b9d65a15836a04a59bd24339e86cf5127878fb2c3d9f30f840.png" src="../../_images/05fc435b45c365b9d65a15836a04a59bd24339e86cf5127878fb2c3d9f30f840.png" />
 </div>
 </div>
 <p><em>What do you observe about these plots?</em></p>
@@ -686,9 +686,9 @@ p(k|\mu) = \frac{\mu^k e^{-\mu}}{k!} \quad \mbox{for }k\geq 0 \;.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> MCMC mean = 2.73
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> MCMC mean = 3.05
 Exact mean = 3.00
-   MCMC sd = 1.58
+   MCMC sd = 2.03
   Exact sd = 1.73
 </pre></div>
 </div>
@@ -748,11 +748,11 @@ Exact mean = 3.00
       </div>
     </a>
     <a class="right-next"
-       href="parameter_estimation_Gaussian_noise-2.html"
+       href="../../content/MCMC_sampling_I/lecture_08.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">3.3. </span>Parameter estimation example: Gaussian noise and averages II</p>
+        <p class="prev-next-title"><span class="section-number">3.3. </span>Lecture 8</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
