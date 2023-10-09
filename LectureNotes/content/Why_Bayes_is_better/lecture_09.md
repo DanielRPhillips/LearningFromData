@@ -38,16 +38,25 @@ For some problems, a Bayesian analysis may simply lead to a familiar statistic. 
  
 
 ### Occam's razor
-Occam’s razor is a principle attributed to the medieval philosopher William of Occam (or Ockham). The principle states that one should not make more assumptions than the minimum needed. It underlies all scientific modeling and theory building. It cautions us to choose from a set of otherwise equivalent models of a given phenomenon the simplest one. In any given model, Occam’s razor helps us to "shave off" those variables that are not really needed to explain the phenomenon. It was previously thought to be only a qualitative principle. 
+Occam’s razor is a principle attributed to the medieval philosopher
+William of Occam (or Ockham). The principle states that one should not
+make more assumptions than the minimum needed: "plurality should not
+be posited without necessity" or "Entities should not be multiplied
+without necessity". It underlies all scientific modeling and theory
+building. It cautions us to choose from a set of otherwise equivalent
+models of a given phenomenon the simplest one. In any given model,
+Occam’s razor helps us to "shave off" those variables that are not
+really needed to explain the phenomenon.
 
-The Bayesian quantitative Occam’s razor can also save a lot of time that might otherwise be spent chasing noise artifacts that masquerade as possible detections of real phenomena.
-We'll have much more to say about this later when we discuss the Bayesian evidence in detail!
-
+It was previously thought to be only a qualitative principle. But
+there is a quantitative, Bayesian, version of Occam's razor. 
+We'll have much more to say about this later when we discuss the
+Bayesian evidence in detail in a couple of weeks.
 
 
 ## Nuisance parameters (I)
 
-Nuisance parameters are parameters we introduce to characterize a situation but whih we don't care about or know in detail. We could also call them "auxiliary variables". The Bayesian way to deal with them is to marginalize, i.e., to integrate over them.
+Nuisance parameters are parameters we introduce to characterize a situation but which we don't care about or know in detail. We could also call them "auxiliary variables". The Bayesian way to deal with them is to marginalize, i.e., to integrate over them.
 
 The procedure is illustrated in the notebook
 ["A Bayesian Billiard game"](/notebooks/Why_Bayes_is_better/bayes_billiard.ipynb)
@@ -108,15 +117,18 @@ This estimate yields $p(B) \approx 0.053$ or about 18 to 1 odds.
 
 You should try to fill in the details here!
 
-:::{admonition}What pdf is the goal here?
+:::{admonition} What pdf is the goal here?
 :class: dropdown
 Find $p(B|D,I)$ where $D = \{n_A = 5, n_B = 3\}$.
 :::
+
 :::{admonition} What would $I$ include here?
 :class: dropdown
-$I$ includes all the details of the game, such as how $\alpha$ enters and how the winner of each roll is determined.
+$I$ includes all the details of the game, such as how $\alpha$ enters
+and how the winner of each roll is determined.
 :::
-* Plan: introduce $\alpha$ as a nuisance parameter. If we know $\alpha$, the calculation is strightforward. If we only know it with some probability, then marginalize (i.e., do an appropriately weighted integral over $\alpha$).
+
+* Plan: introduce $\alpha$ as a nuisance parameter. If we know $\alpha$, the calculation is straightforward. If we only know it with some probability, then marginalize (i.e., do an appropriately weighted integral over $\alpha$).
 * Note that we can take several different equivalent paths to the same result:
 
 $$\begin{align}
@@ -129,10 +141,12 @@ $$\begin{align}
 \end{align}$$
 
 * What shall we do about $p(\alpha|D,I)$?
-:::{admonition}What was the naive frequentist distribution for $p(\alpha|D,I)$?
+:::{admonition} What was the naive frequentist distribution for $p(\alpha|D,I)$?
 :class: dropdown
-The naive frequentist used the MLE: $p(\alpha|D,I) = \delta(\alpha-\alphahat)$.
+The naive frequentist used the MLE: $p(\alpha|D,I) =
+\delta(\alpha-\alphahat)$.
 :::
+
 The Bayesian approach is to use Bayes' theorem to write $p(\alpha|D)$ in terms of pdfs we know.
 :::{admonition} Write it out
 :class: dropdown
