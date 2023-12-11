@@ -4,9 +4,9 @@
 
 In most cases, you will turn in a Jupyter notebook relevant to your research interests (which doesn't has to be your thesis research area!) using Bayesian tools. As already stressed in class, the project does not have to be completed if it will continue as part of your thesis work.
 
-## Overview of Intro to PyMC3 notebook
+## Overview of Intro to PyMC notebook
 
-[](/notebooks/MCMC_sampling_II/PyMC3_intro_updated.ipynb) starts with sampling to find the posterior for $\mu$, the mean of a distribution, given data that is generated according to a normal distribution with mean zero.
+[](/notebooks/MCMC_sampling_II/PyMC_intro_updated.ipynb) starts with sampling to find the posterior for $\mu$, the mean of a distribution, given data that is generated according to a normal distribution with mean zero.
 * Try changing the true $\mu$, sampling sigma as well.
 * The standard deviation is initially fixed at 1.
 
